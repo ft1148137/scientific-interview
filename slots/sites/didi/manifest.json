@@ -1,0 +1,22 @@
+{
+  "id": "didi",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "company": "滴滴",
+  "domains": [
+    "talent.didiglobal.com"
+  ],
+  "entry_url": "https://talent.didiglobal.com/social?page=1&size=10",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait",
+    "fill"
+  ],
+  "search_fields": [
+    "keyword"
+  ]
+}

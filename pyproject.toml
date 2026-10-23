@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scientific-interview"
+version = "0.8.0"
+description = "Scientific Interview：有依据的岗位匹配、简历优化与面经复盘"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = []
+
+[project.optional-dependencies]
+resume = ["python-docx>=1.1,<2", "pypdf>=4,<7", "reportlab>=4,<5"]
+
+[project.scripts]
+scientific-interview = "job_workbench.cli:main"
+job-workbench = "job_workbench.cli:main"
+
+[tool.setuptools]
+packages = ["job_workbench"]

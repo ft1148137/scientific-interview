@@ -1,0 +1,88 @@
+{
+  "protocol_version": 1,
+  "id": "demo-second",
+  "source": "demo-company",
+  "slot_version": "1.0.0",
+  "browser_id": "fixture",
+  "query": {
+    "keyword": "AI",
+    "city": "北京"
+  },
+  "observed_at": "2026-10-22T08:05:00+08:00",
+  "gate": "PASS",
+  "coverage": "complete",
+  "records": [
+    {
+      "external_id": "101",
+      "title": "AI 应用工程师",
+      "company": "青禾科技（合成）",
+      "url": "https://jobs.example.com/jobs/101",
+      "location": "北京",
+      "jd": "负责知识助手开发，维护检索与引用链路。要求 Python 与服务端开发经验；增加检索效果评估与故障分析职责。",
+      "jd_complete": true,
+      "status": "open",
+      "closed_reason": null,
+      "observed_at": "2026-10-22T08:00:00+08:00",
+      "evidence": {
+        "url": "https://jobs.example.com/jobs/101",
+        "observed_at": "2026-10-22T08:00:00+08:00",
+        "text": "AI 应用工程师\n负责知识助手开发，维护检索与引用链路。要求 Python 与服务端开发经验；增加检索效果评估与故障分析职责。",
+        "kind": "page"
+      }
+    },
+    {
+      "external_id": "102",
+      "title": "数据平台工程师",
+      "company": "青禾科技（合成）",
+      "url": "https://jobs.example.com/jobs/102",
+      "location": "北京",
+      "jd": null,
+      "jd_complete": false,
+      "status": "closed",
+      "closed_reason": "该岗位已停止招聘",
+      "observed_at": "2026-10-22T08:00:00+08:00",
+      "evidence": {
+        "url": "https://jobs.example.com/jobs/102",
+        "observed_at": "2026-10-22T08:00:00+08:00",
+        "text": "该岗位已停止招聘",
+        "kind": "closed"
+      }
+    },
+    {
+      "external_id": "103",
+      "title": "平台研发工程师",
+      "company": "青禾科技（合成）",
+      "url": "https://jobs.example.com/jobs/103",
+      "location": "北京",
+      "jd": null,
+      "jd_complete": false,
+      "status": "open",
+      "closed_reason": null,
+      "observed_at": "2026-10-22T08:00:00+08:00",
+      "evidence": {
+        "url": "https://jobs.example.com/jobs/103",
+        "observed_at": "2026-10-22T08:00:00+08:00",
+        "text": "平台研发工程师\n岗位详情待补充",
+        "kind": "page"
+      }
+    },
+    {
+      "external_id": "104",
+      "title": "开发者工具工程师",
+      "company": "青禾科技（合成）",
+      "url": "https://jobs.example.com/jobs/104",
+      "location": "北京",
+      "jd": "负责开发者工具与自动化流程，要求代码质量意识及 Python 或 TypeScript 经验。",
+      "jd_complete": true,
+      "status": "open",
+      "closed_reason": null,
+      "observed_at": "2026-10-22T08:00:00+08:00",
+      "evidence": {
+        "url": "https://jobs.example.com/jobs/104",
+        "observed_at": "2026-10-22T08:00:00+08:00",
+        "text": "开发者工具工程师\n负责开发者工具与自动化流程，要求代码质量意识及 Python 或 TypeScript 经验。",
+        "kind": "page"
+      }
+    }
+  ]
+}

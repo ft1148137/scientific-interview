@@ -1,0 +1,21 @@
+{
+  "id": "meituan",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "company": "美团",
+  "domains": [
+    "zhaopin.meituan.com"
+  ],
+  "entry_url": "https://zhaopin.meituan.com/web/position",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ]
+}

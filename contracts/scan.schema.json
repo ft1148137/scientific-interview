@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scientific Interview ScanBatch v1",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "id",
+    "source",
+    "slot_version",
+    "browser_id",
+    "query",
+    "observed_at",
+    "gate",
+    "coverage",
+    "records"
+  ],
+  "properties": {
+    "protocol_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_.:-]{1,160}$"
+    },
+    "source": {
+      "type": "string"
+    },
+    "slot_version": {
+      "type": "string"
+    },
+    "browser_id": {
+      "type": "string"
+    },
+    "query": {
+      "type": "object"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gate": {
+      "enum": [
+        "PASS",
+        "WAIT_USER",
+        "RETRY",
+        "REJECT"
+      ]
+    },
+    "coverage": {
+      "enum": [
+        "complete",
+        "partial",
+        "unknown"
+      ]
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "company",
+          "url",
+          "jd",
+          "jd_complete",
+          "status",
+          "observed_at",
+          "evidence"
+        ],
+        "properties": {
+          "external_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "company": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "jd": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "jd_complete": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "closed",
+              "unknown"
+            ]
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evidence": {
+            "type": "object",
+            "required": [
+              "url",
+              "observed_at",
+              "text",
+              "kind"
+            ],
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "observed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "enum": [
+                  "page",
+                  "closed",
+                  "application",
+                  "user_supplied"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "checkpoint": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "retryAfter": {
+      "type": "number",
+      "minimum": 0
+    },
+    "retry_attempts": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "seen_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "seen_urls": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    }
+  }
+}

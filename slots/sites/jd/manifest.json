@@ -1,0 +1,23 @@
+{
+  "id": "jd",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "company": "京东",
+  "domains": [
+    "zhaopin.jd.com"
+  ],
+  "entry_url": "https://zhaopin.jd.com/web/job_info_list/3?isHunterFlag=false",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait",
+    "fill"
+  ],
+  "search_fields": [
+    "keyword"
+  ],
+  "shared_detail_url": true
+}

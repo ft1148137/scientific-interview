@@ -1,0 +1,1 @@
+{"id":"codex-chrome","kind":"browser","version":"1.0.0","protocol_version":1,"capabilities":["navigate","observe","click","fill","wait","scroll","screenshot"],"entry":"adapter.mjs","runtime":"Codex cua_repl with Chrome extension"}

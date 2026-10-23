@@ -1,0 +1,16 @@
+/data/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.job-workbench/
+.local/
+dist/
+build/
+.DS_Store
+.env
+
+.env.*
+!.env.example
+*.pem
+*.key

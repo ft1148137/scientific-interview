@@ -1,0 +1,17 @@
+{
+  "title": "知识检索助手（合成示例）",
+  "organization": "示例团队",
+  "dates": "2025.03—2025.09",
+  "context": "内部试用中需要核对引用来源。",
+  "responsibility": "负责检索链路与引用展示。",
+  "actions": "根据失败样例修正切分与检索规则。",
+  "result": "交付内部试用版本并修复引用遗漏。",
+  "evidence": "合成版本记录与试用反馈。",
+  "pending_notes": ["尚缺跨团队使用反馈；不能声称生产规模验证。"],
+  "facts": {
+    "stage": "内部试用，尚非生产部署",
+    "responsibility_boundary": "本人负责技术实现，团队共同确认需求。",
+    "metrics": [{"name":"下一阶段文档覆盖","value":"100","unit":"份","status":"target","period":"下一阶段","definition":"规划目标，尚未验收","owner_scope":"团队目标","disclosure":"public"}],
+    "evidence_refs": [{"reference":"合成试用反馈汇总","kind":"反馈","scope":"内部试用","version":"1","disclosure":"private"}]
+  }
+}

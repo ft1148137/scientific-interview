@@ -1,0 +1,1 @@
+{"id":"demo-company","kind":"site","version":"1.0.0","protocol_version":1,"domains":["jobs.example.com","127.0.0.1"],"entry_url":"https://jobs.example.com/","requires":["navigate","observe"],"search_fields":[],"entry":"adapter.mjs","fixture_only":true}

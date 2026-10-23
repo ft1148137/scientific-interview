@@ -1,0 +1,5 @@
+interface:
+  display_name: "Scientific Interview"
+  short_description: "通过有依据的岗位匹配、简历优化和面经复盘，持续整理个人求职过程"
+  brand_color: "#315847"
+  default_prompt: "使用 $scientific-interview 查看我的求职档案，结合目标岗位和面经复盘继续优化简历与投递选择。"

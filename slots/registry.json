@@ -1,0 +1,18 @@
+{
+  "slots": [
+    "slots/browsers/codex-chrome/manifest.json",
+    "slots/sites/tencent/manifest.json",
+    "slots/sites/demo-company/manifest.json",
+    "slots/sites/manual/manifest.json",
+    "slots/sites/meituan/manifest.json",
+    "slots/sites/amap/manifest.json",
+    "slots/sites/bytedance/manifest.json",
+    "slots/sites/moka-kimi/manifest.json",
+    "slots/sites/moka-zhipu/manifest.json",
+    "slots/sites/moka-step/manifest.json",
+    "slots/sites/xiaohongshu/manifest.json",
+    "slots/sites/kuaishou/manifest.json",
+    "slots/sites/didi/manifest.json",
+    "slots/sites/jd/manifest.json"
+  ]
+}

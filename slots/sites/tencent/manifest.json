@@ -1,0 +1,1 @@
+{"id":"tencent","kind":"site","version":"1.0.0","protocol_version":1,"domains":["careers.tencent.com"],"entry_url":"https://careers.tencent.com/search.html","requires":["navigate","observe","click","wait"],"search_fields":["keyword"],"entry":"adapter.mjs","tested_at":"2026-10-22"}

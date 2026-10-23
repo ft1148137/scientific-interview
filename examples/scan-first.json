@@ -1,0 +1,70 @@
+{
+  "protocol_version": 1,
+  "id": "demo-first",
+  "source": "demo-company",
+  "slot_version": "1.0.0",
+  "browser_id": "fixture",
+  "query": {
+    "keyword": "AI",
+    "city": "北京"
+  },
+  "observed_at": "2026-10-21T08:05:00+08:00",
+  "gate": "PASS",
+  "coverage": "complete",
+  "records": [
+    {
+      "external_id": "101",
+      "title": "AI 应用工程师",
+      "company": "青禾科技（合成）",
+      "url": "https://jobs.example.com/jobs/101",
+      "location": "北京",
+      "jd": "负责知识助手开发，维护检索与引用链路。要求 Python 与服务端开发经验。",
+      "jd_complete": true,
+      "status": "open",
+      "closed_reason": null,
+      "observed_at": "2026-10-21T08:00:00+08:00",
+      "evidence": {
+        "url": "https://jobs.example.com/jobs/101",
+        "observed_at": "2026-10-21T08:00:00+08:00",
+        "text": "AI 应用工程师\n负责知识助手开发，维护检索与引用链路。要求 Python 与服务端开发经验。",
+        "kind": "page"
+      }
+    },
+    {
+      "external_id": "102",
+      "title": "数据平台工程师",
+      "company": "青禾科技（合成）",
+      "url": "https://jobs.example.com/jobs/102",
+      "location": "北京",
+      "jd": "负责数据处理管线与平台开发。要求 SQL、Python 和数据库经验。",
+      "jd_complete": true,
+      "status": "open",
+      "closed_reason": null,
+      "observed_at": "2026-10-21T08:00:00+08:00",
+      "evidence": {
+        "url": "https://jobs.example.com/jobs/102",
+        "observed_at": "2026-10-21T08:00:00+08:00",
+        "text": "数据平台工程师\n负责数据处理管线与平台开发。要求 SQL、Python 和数据库经验。",
+        "kind": "page"
+      }
+    },
+    {
+      "external_id": "103",
+      "title": "平台研发工程师",
+      "company": "青禾科技（合成）",
+      "url": "https://jobs.example.com/jobs/103",
+      "location": "北京",
+      "jd": null,
+      "jd_complete": false,
+      "status": "open",
+      "closed_reason": null,
+      "observed_at": "2026-10-21T08:00:00+08:00",
+      "evidence": {
+        "url": "https://jobs.example.com/jobs/103",
+        "observed_at": "2026-10-21T08:00:00+08:00",
+        "text": "平台研发工程师\n岗位详情待补充",
+        "kind": "page"
+      }
+    }
+  ]
+}

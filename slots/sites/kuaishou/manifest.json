@@ -1,0 +1,21 @@
+{
+  "id": "kuaishou",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "company": "快手",
+  "domains": [
+    "zhaopin.kuaishou.cn"
+  ],
+  "entry_url": "https://zhaopin.kuaishou.cn/#/official/social/",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ]
+}
