@@ -1,0 +1,21 @@
+{
+  "id": "tencent-campus",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "company": "腾讯",
+  "domains": [
+    "join.qq.com"
+  ],
+  "entry_url": "https://join.qq.com/post.html?query=p_1",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ]
+}

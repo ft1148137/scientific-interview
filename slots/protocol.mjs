@@ -14,8 +14,8 @@ export function negotiate(site, browser) {
 export function pageGate(observation) {
   if (observation.gate !== 'PASS') return observation;
   const text = observation.data.text;
-  // A navigation header saying 登录 is not a blocked page.
-  if (/请先登录|登录后查看|请完成验证|拖动滑块|安全验证|sign in to continue/i.test(text)) return gate('WAIT_USER','LOGIN_OR_CHALLENGE','请在浏览器完成登录或验证后继续。');
+  // Navigation 登录 and JD prose about 安全验证 are not blocked pages; explicit prompts still stop.
+  if (/请先登录|登录后查看|请完成验证|拖动滑块|请(?:先|完成|进行|通过)?安全验证|(?:^|\n)\s*安全验证\s*(?:[：:!！]|\n|$)|sign in to continue/i.test(text)) return gate('WAIT_USER','LOGIN_OR_CHALLENGE','请在浏览器完成登录或验证后继续。');
   if (/访问过于频繁|请求过于频繁|too many requests/i.test(text)) return gate('RETRY','RATE_LIMIT','稍后重新运行。',{retryAfter:30});
   return gate('PASS','PAGE_READY');
 }

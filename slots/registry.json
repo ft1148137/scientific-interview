@@ -15,6 +15,13 @@
     "slots/sites/didi/manifest.json",
     "slots/sites/jd/manifest.json",
     "slots/sites/bytedance-campus/manifest.json",
-    "slots/sites/xiaohongshu-campus/manifest.json"
+    "slots/sites/xiaohongshu-campus/manifest.json",
+    "slots/sites/didi-campus/manifest.json",
+    "slots/sites/kuaishou-campus/manifest.json",
+    "slots/sites/tencent-campus/manifest.json",
+    "slots/sites/jd-campus/manifest.json",
+    "slots/sites/moka-kimi-campus/manifest.json",
+    "slots/sites/moka-zhipu-campus/manifest.json",
+    "slots/sites/moka-step-campus/manifest.json"
   ]
 }

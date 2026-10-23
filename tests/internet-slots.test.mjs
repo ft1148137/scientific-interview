@@ -1,27 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {gate} from '../slots/protocol.mjs';
+import {gate,pageGate} from '../slots/protocol.mjs';
 import {runScan} from '../slots/runner.mjs';
 import {createBrowserPort,manifest as browserManifest} from '../slots/browsers/codex-chrome/adapter.mjs';
 import {completeMokaJD} from '../slots/sites/shared/moka.mjs';
 
 // All observations in this file are synthetic; no network or personal data.
-const ids=['bytedance-campus','xiaohongshu-campus','meituan','amap','bytedance','moka-kimi','moka-zhipu','moka-step','xiaohongshu','kuaishou','didi'];
+const ids=['moka-kimi-campus','moka-zhipu-campus','moka-step-campus','tencent-campus','jd-campus','didi-campus','kuaishou-campus','bytedance-campus','xiaohongshu-campus','meituan','amap','bytedance','moka-kimi','moka-zhipu','moka-step','xiaohongshu','kuaishou','didi'];
 const modules=Object.fromEntries(await Promise.all(ids.map(async id=>[id,await import(`../slots/sites/${id}/adapter.mjs`)])));
 function fixture(id, options={}) {
   const module=modules[id],m=module.manifest;
-  const url=id==='bytedance-campus'?'https://jobs.bytedance.com/campus/position/123/detail':id==='xiaohongshu-campus'?'https://job.xiaohongshu.com/campus/position/123':id==='xiaohongshu'?'https://job.xiaohongshu.com/social/position/123':id==='kuaishou'?'https://zhaopin.kuaishou.cn/#/official/social/job-info/123':id==='didi'?'https://talent.didiglobal.com/social/jobDetail?jdId=123':id==='meituan'?'https://zhaopin.meituan.com/web/position/detail?jobUnionId=123':id==='amap'?'https://talent.amap.com/off-campus/position-detail?lang=zh&positionId=123':id==='bytedance'?'https://jobs.bytedance.com/experienced/position/123/detail':m.entry_url.replace('#/jobs','#/job/synthetic-123');
+  const url=id==='tencent-campus'?'https://join.qq.com/post_detail.html?postid=123':id==='jd-campus'?'https://campus.jd.com/#/details?id=123':id==='kuaishou-campus'?'https://campus.kuaishou.cn/recruit/campus/e/#/campus/job-info/123':id==='bytedance-campus'?'https://jobs.bytedance.com/campus/position/123/detail':id==='xiaohongshu-campus'?'https://job.xiaohongshu.com/campus/position/123':id==='xiaohongshu'?'https://job.xiaohongshu.com/social/position/123':id==='kuaishou'?'https://zhaopin.kuaishou.cn/#/official/social/job-info/123':id==='didi'?'https://talent.didiglobal.com/social/jobDetail?jdId=123':id==='meituan'?'https://zhaopin.meituan.com/web/position/detail?jobUnionId=123':id==='amap'?'https://talent.amap.com/off-campus/position-detail?lang=zh&positionId=123':id==='bytedance'?'https://jobs.bytedance.com/experienced/position/123/detail':m.entry_url.replace('#/jobs','#/job/synthetic-123');
   const title='合成工程师',jd='岗位职责\n负责合成示例系统的设计、开发、测试和交付，维护质量并改进文档。\n任职要求\n理解软件工程，能够独立分析问题、验证方案并与团队协作。';
   let current=m.entry_url,page=1,sequence=0;
   const log=[];
   function observation(detail=false) {
-    return gate('PASS','OBSERVED','',{data:{url:current,text:'合成账户页眉，请勿写入证据',observed_at:'2026-10-22T00:00:00Z',snapshot_id:++sequence,fields:detail?{title:options.title || title,jd,location:'合成城市',meta:'正式 · 合成届校园招聘'}:{},lists:detail?{sections:[{heading:'岗位职责',text:'岗位职责\n合成职责'},{heading:'任职要求',text:'任职要求\n合成要求'}],headings:[{text:'职位描述'},{text:'职位要求'}],blocks:[{text:'合成职责'},{text:'合成要求'}]}:{jobs:[{index:0,text:page===1?'合成卡片一':'合成卡片二',title,location:'合成城市',meta:'全职 | 合成城市',...(id.startsWith('moka')||['bytedance','xiaohongshu','bytedance-campus','xiaohongshu-campus'].includes(id)?{href:options.href || url}:{})}],pages:options.noPagination?[]:[{text:'1'},{text:'2'}]},clipped_fields:options.clipped?['jd']:[],controls:{}}});
+    return gate('PASS','OBSERVED','',{data:{url:current,text:'合成账户页眉，请勿写入证据',observed_at:'2026-10-22T00:00:00Z',snapshot_id:++sequence,fields:detail?{title:options.title || title,jd:options.jd ?? jd,location:'合成城市',meta:'正式 · 合成届校园招聘'}:{},lists:detail?{info:options.info || [{label:'职位性质',value:'实习'},{label:'工作地点',value:'合成城市'}],sections:[{heading:id==='tencent-campus'?'岗位描述':'岗位职责',body:'合成职责',text:'岗位职责\n合成职责'},{heading:id==='tencent-campus'?'岗位要求':'任职要求',body:options.missing?'':'合成要求',text:options.missing?'任职要求':'任职要求\n合成要求'}],headings:[{text:'职位描述'},{text:'职位要求'}],blocks:[{text:'合成职责'},{text:options.missing?'':'合成要求'}]}:{jobs:[{index:0,text:page===1?'合成卡片一':'合成卡片二',title,location:'合成城市',meta:'全职 | 合成城市',...(id==='didi-campus'||id.startsWith('moka')||['bytedance','xiaohongshu','bytedance-campus','xiaohongshu-campus'].includes(id)?{href:options.href || url}:{})}],pages:options.noPagination?[]:[{text:'1'},{text:'2'}]},clipped_fields:options.clipped?['jd']:[],controls:{}}});
   }
   const port={manifest:browserManifest,
     observe:async()=>observation(),
     navigate:async(target,opts)=>{log.push({op:'navigate',target,opts});current=options.redirect || target;if(opts?.reload)page=1;return observation();},
     wait:async spec=>{log.push({op:'wait',spec});if(options.challenge)return gate('PASS','OK','',{data:{text:'请先登录',url:current}});const detail=!spec.observe?.lists?.jobs;const result=observation(detail);for(const selector of spec.observe?.controls || [])result.data.controls[selector]=options.noPagination?[]:[{index:0,visible:true,disabled:options.lastPage || page===2}];return result;},
-    act:async action=>{log.push({op:'act',action});if(action.kind==='fill'||action.kind==='press'||action.selector.includes('input-search-button'))return observation();if(action.selector.includes('Pagination')||action.selector.includes('pagination')){if(!options.stuck)page++;}else current=url;return observation();}
+    act:async action=>{log.push({op:'act',action});if(action.kind==='fill'||action.kind==='press'||action.selector.includes('input-search-button')||action.selector==='.search_text')return observation();if(action.selector.includes('Pagination')||action.selector.includes('pagination')||action.selector.includes('el-pager')){if(!options.stuck)page++;}else current=url;return observation();}
   };
   return {port,site:module.createSiteSlot(port),url,title,jd,log};
 }
@@ -92,4 +92,58 @@ for(const id of ['bytedance-campus','xiaohongshu-campus'])test(`${id}: reject so
  assert.equal((await fixture(id,{challenge:true}).site.discover({})).gate,'WAIT_USER');
  assert.equal((await fixture(id,{noPagination:true}).site.discover({})).data.coverage,'partial');
  assert.equal((await fixture(id,{title:'另一职位'}).site.readJob({url:f.url,title:f.title})).code,'IDENTITY_CHANGED');
+});
+
+for(const id of ['tencent-campus','jd-campus','didi-campus','kuaishou-campus'])test(`${id}: campus boundary, interrupted login and conservative coverage`,async()=>{
+ const f=fixture(id);assert.equal((await f.site.readJob({url:'https://example.com/job/123'})).code,'SITE_SCOPE_REJECTED');assert.equal(f.log.length,0);
+ assert.equal((await f.site.readJob({url:modules[id].manifest.entry_url})).code,'SITE_SCOPE_REJECTED');
+ assert.equal((await fixture(id,{challenge:true}).site.discover({})).gate,'WAIT_USER');
+ assert.equal((await fixture(id,{noPagination:true}).site.discover({})).data.coverage,'partial');
+ assert.equal((await fixture(id,{title:'另一岗位'}).site.readJob({url:f.url,title:f.title})).code,'IDENTITY_CHANGED');
+ assert.equal((await f.site.discover({year:2027})).code,'UNSUPPORTED_QUERY');
+ const page2=await f.site.discover({},{page:2});assert.equal(page2.gate,'PASS');assert.equal(page2.data.next_cursor,null);
+ assert.equal((await fixture(id,{stuck:true}).site.discover({},{page:2})).code,'PAGE_NOT_CHANGED');
+ if(id!=='didi-campus')assert.equal((await fixture(id,{missing:true}).site.readJob({url:f.url})).data.jd_complete,false);
+});
+test('JD campus submits keyword with Enter; non-link campus cards reject reordering',async()=>{
+ const f=fixture('jd-campus');await f.site.discover({keyword:'算法'});
+ assert.ok(f.log.some(x=>x.op==='act' && x.action.kind==='press' && x.action.key==='Enter'));
+ for(const id of ['jd-campus','tencent-campus','kuaishou-campus']){
+  const c=fixture(id);const ref=(await c.site.discover({})).data.refs[0];ref.card_text='已变化';
+  assert.equal((await c.site.readJob(ref)).code,'LIST_CHANGED');
+ }
+});
+
+for(const id of ['moka-kimi-campus','moka-zhipu-campus','moka-step-campus'])test(`${id}: preserve campus metadata and keep absent location unknown`,async()=>{
+ const f=fixture(id);const r=await f.site.readJob({url:f.url,title:f.title});
+ assert.match(r.data.jd,/职位性质：实习/);assert.equal(r.data.location,'合成城市');
+ const missing=fixture(id,{info:[{label:'职能类型',value:'算法类'},{label:'工作地点',value:'-'}]});
+ const found=await missing.site.discover({});assert.equal(found.data.refs[0].location,null);
+ assert.equal((await missing.site.readJob(found.data.refs[0])).data.location,null);
+ const clipped=fixture(id,{info:[{label:'工作地点',value:'不完整地点',clipped:true}]});
+ const read=await clipped.site.readJob({url:clipped.url});assert.equal(read.data.location,null);assert.equal(read.data.jd_complete,false);
+ const social=modules[id.replace('-campus','')].manifest.entry_url.replace('#/jobs','#/job/synthetic-123');
+ assert.equal((await f.site.readJob({url:social})).code,'SITE_SCOPE_REJECTED');
+ assert.equal((await fixture(id,{href:social}).site.discover({})).code,'SITE_SCOPE_REJECTED');
+ assert.equal((await fixture(id,{redirect:social}).site.discover({})).code,'SITE_SCOPE_REJECTED');
+ assert.equal((await fixture(id,{challenge:true}).site.discover({})).gate,'WAIT_USER');
+ assert.equal((await fixture(id,{noPagination:true}).site.discover({})).data.coverage,'partial');
+ assert.equal((await fixture(id,{stuck:true}).site.discover({},{page:2})).code,'PAGE_NOT_CHANGED');
+ assert.equal((await f.site.discover({year:2027})).code,'UNSUPPORTED_QUERY');
+ const scan=await runScan(f.port,f.site,{},{maxJobs:1});
+ const resumed=await runScan(f.port,f.site,{},{maxJobs:1,checkpoint:scan.checkpoint});
+ assert.equal(resumed.records.length,0);
+});
+test('campus heading recognition keeps raw text and does not certify an unknown or empty section',async()=>{
+ const body='合成测试正文，负责系统的开发、验证、部署和维护，能够与其他团队协作，并基于证据分析问题。';
+ for(const [duty,req,complete] of [['核心职责','职位要求',true],['【岗位描述】','【任职资格】',true],['## 你会亲手打造','## 我们在找谁',true],['使命','核心要求',false],['岗位职责','任职要求',false]]){
+  const jd=`${duty}\n${body}\n${req}\n${complete||duty==='使命'?body:''}`;
+  const f=fixture('moka-kimi-campus',{jd});const read=await f.site.readJob({url:f.url});
+  assert.equal(read.data.jd_complete,complete);assert.ok(read.data.jd.endsWith(jd));
+ }
+});
+test('security duties do not impersonate a login challenge; actual prompts still stop collection',()=>{
+ const check=text=>pageGate(gate('PASS','OBSERVED','',{data:{text}}));
+ assert.equal(check('岗位职责\n参与工具调用链路的安全验证，跟进漏洞复现。').gate,'PASS');
+ for(const text of ['安全验证','职位列表\n安全验证\n请点击图片','安全验证：请选择图片','请进行安全验证','请先登录','登录后查看','请完成验证','拖动滑块','sign in to continue'])assert.equal(check(text).gate,'WAIT_USER',text);
 });

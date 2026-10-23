@@ -15,7 +15,7 @@ class InternetSlots(unittest.TestCase):
         return dict(protocol_version=1, id='synthetic-' + source, source=source,
                     slot_version=site['version'], browser_id='codex-chrome', query={},
                     observed_at=when, gate='PASS', coverage='partial', records=[dict(
-                        external_id='synthetic-123', title='合成工程师', company=site['company'],
+                        external_id='synthetic-123', title='合成工程师', company=site.get('company', '腾讯'),
                         url=url, jd='合成测试职责和要求', jd_complete=True, status='open',
                         observed_at=when, evidence=dict(url=url, observed_at=when,
                                                        text='合成测试证据', kind='page'))])
@@ -81,7 +81,7 @@ class InternetSlots(unittest.TestCase):
                 ingest_scan(empty_state(), bad)
 
     def test_campus_sources_are_separate_and_reject_social_urls(self):
-        for source in ['bytedance', 'xiaohongshu']:
+        for source in ['bytedance', 'xiaohongshu', 'tencent', 'jd', 'didi', 'kuaishou', 'moka-kimi', 'moka-zhipu', 'moka-step']:
             state = empty_state()
             self.assertFalse(ingest_scan(state, self.scan(source))['rejected'])
             self.assertFalse(ingest_scan(state, self.scan(source + '-campus'))['rejected'])

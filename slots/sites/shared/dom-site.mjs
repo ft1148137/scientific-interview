@@ -63,7 +63,7 @@ export function createDOMSite(port, config) {
       const refs = [];
       for (const card of data.lists.jobs) {
         if (!card.title) return gate('REJECT','LAYOUT_CHANGED','岗位标题字段缺失。');
-        const ref = {...(card.external_id?{external_id:card.external_id}:{}),title:card.title,location:config.location ? config.location(card) : card.location || null,index:card.index,card_text:card.text,page,query};
+        const ref = {...(card.external_id?{external_id:card.external_id}:{}),...(card.company?{company:card.company}:{}),title:card.title,location:config.location ? config.location(card) : card.location || null,index:card.index,card_text:card.text,page,query};
         if (card.href && !card.href.startsWith('javascript:')) {
           const url = new URL(card.href, data.url).href;
           if (!scope(url, true)) return gate('REJECT','SITE_SCOPE_REJECTED','列表包含非本租户的详情链接。');
@@ -103,12 +103,15 @@ export function createDOMSite(port, config) {
       const d = result.data;
       if (!scope(d.url,true) || (expected && config.id(new URL(d.url)) !== expected)) return gate('REJECT','IDENTITY_CHANGED');
       if (closed && !ref.title) return gate('REJECT','CLOSED_WITHOUT_IDENTITY');
-      const parsed = closed ? {title:ref.title,jd:null,complete:false} : config.parse(d);
+      const parsed = closed ? {title:ref.title,company:ref.company,jd:null,complete:false} : config.parse(d);
       if (!parsed.title) return gate('REJECT','LAYOUT_CHANGED','详情缺少标题。');
       if (ref.title && normalized(parsed.title) !== normalized(ref.title)) return gate('REJECT','IDENTITY_CHANGED','列表与详情标题不一致，重新发现。');
+      const company=manifest.company || parsed.company;
+      if (!normalized(company)) return gate('REJECT','COMPANY_MISSING','详情缺少招聘企业，不能以平台名称代替。');
+      if (!manifest.company && ref.company && normalized(company)!==normalized(ref.company)) return gate('REJECT','IDENTITY_CHANGED','列表与详情企业不一致，重新发现。');
       const url = canonical(d.url), id = config.id(new URL(d.url));
-      const text = [parsed.title,parsed.jd,closed?.[0]].filter(Boolean).join('\n');
-      return gate('PASS',closed?'CLOSED':'JOB_READ','',{data:{external_id:id,title:parsed.title,company:manifest.company,url,location:parsed.location || ref.location || null,jd:parsed.jd || null,jd_complete:!!parsed.complete && !(d.clipped_fields || []).includes('jd') && !Object.values(d.lists || {}).flat().some(b=>b.clipped),status:closed?'closed':parsed.jd?'open':'unknown',...(closed?{closed_reason:closed[0]}:{}),observed_at:d.observed_at,evidence:{url,observed_at:d.observed_at,text,kind:closed?'closed':'page'}}});
+      const text = [parsed.title,...(!manifest.company?[company]:[]),parsed.jd,closed?.[0]].filter(Boolean).join('\n');
+      return gate('PASS',closed?'CLOSED':'JOB_READ','',{data:{external_id:id,title:parsed.title,company,url,location:parsed.location || ref.location || null,jd:parsed.jd || null,jd_complete:!!parsed.complete && !(d.clipped_fields || []).includes('jd') && !Object.values(d.lists || {}).flat().some(b=>b.clipped),status:closed?'closed':parsed.jd?'open':'unknown',...(closed?{closed_reason:closed[0]}:{}),observed_at:d.observed_at,evidence:{url,observed_at:d.observed_at,text,kind:closed?'closed':'page'}}});
     }
   };
 }

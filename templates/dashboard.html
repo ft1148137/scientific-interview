@@ -40,7 +40,8 @@ const kind={new:'新增收录',jd_changed:'JD 修改',closed:'已核实下线',r
 const shared=data.report_mode==='share', jobs=Object.values(data.jobs), generatedAt='__GENERATED_AT__';
 const appliedKeys=new Set(statistics(data).rows.map(r=>r.key));
 const effectiveDecision=j=>appliedKeys.has(j.current.key)?'applied':(j.decision||'undecided');
-let page=1,filtered=[],tagBusy=false,sessionToken=null;
+let page=1,filtered=[],tagBusy=false,tagBlocked=false,sessionToken=null;
+const tagQueue=[],pendingTags=new Map();
 const writable=!shared&&location.protocol==='http:'&&location.hostname==='127.0.0.1';
 const latest=j=>j.review_stale?null:(j.reviews.at(-1)||j.imported_reviews?.at(-1)||null);
 const needsCheck=j=>j.verification.startsWith('needs');
@@ -55,29 +56,59 @@ if(shared){$('decision').classList.add('hidden');$('sort').value='recent';docume
 
 function tagButtons(j) {
   if(shared||appliedKeys.has(j.current.key))return '';
-  return '<div class="tag-actions">'+[['shortlist','投递候选'],['excluded','不感兴趣']].map(([value,label])=>`<button class="tag-button" data-tag-key="${esc(j.current.key)}" data-tag="${value}" aria-pressed="${j.decision===value}" aria-label="${esc(j.current.title)}：${j.decision===value?'取消':'标记为'}${label}" ${tagBusy||!writable?'disabled':''}>${j.decision===value?'✓ ':''}${label}</button>`).join('')+'</div>';
+  return '<div class="tag-actions">'+[['shortlist','投递候选'],['excluded','不感兴趣']].map(([value,label])=>`<button class="tag-button" data-tag-key="${esc(j.current.key)}" data-tag="${value}" aria-pressed="${j.decision===value}" aria-label="${esc(j.current.title)}：${j.decision===value?'取消':'标记为'}${label}" ${pendingTags.has(j.current.key)||tagBlocked||!writable?'disabled':''}>${j.decision===value?'✓ ':''}${label}</button>`).join('')+'</div>';
 }
-async function saveTag(key,value) {
-  if(tagBusy||!writable||appliedKeys.has(key))return;
+function tagMessage(text) {
+  $('tag-message').textContent=text;$('detail-tag-message').textContent=text;
+}
+function refreshTagViews() {
+  const focused=document.activeElement?.dataset,focusKey=focused?.tagKey,focusTag=focused?.tag;
+  renderJobs();
+  if($('detail').open)showDetail($('detail').dataset.detailKey);
+  if(focusKey){
+    const scope=$('detail').open?$('detail'):$('job-list');
+    const buttons=[...scope.querySelectorAll('[data-tag-key]')];
+    const target=buttons.find(b=>b.dataset.tagKey===focusKey&&b.dataset.tag===focusTag&&!b.disabled)||buttons.find(b=>!b.disabled);
+    (target||($('detail').open?$('detail').querySelector('.close'):$('decision'))).focus({preventScroll:true});
+  }
+}
+function saveTag(key,value) {
+  if(!writable||tagBlocked||pendingTags.has(key)||appliedKeys.has(key))return;
   const j=data.jobs[key],next=j.decision===value?'undecided':value;
+  pendingTags.set(key,j.decision);tagQueue.push({key,next});
+  j.decision=next;
+  tagMessage(`正在保存 ${pendingTags.size} 个标签…`);
+  refreshTagViews();
+  return flushTags();
+}
+async function flushTags() {
+  if(tagBusy)return;
   tagBusy=true;
-  const message=text=>{$('tag-message').textContent=text;$('detail-tag-message').textContent=text;};
-  message('正在保存标签…');
-  document.querySelectorAll('[data-tag]').forEach(b=>b.disabled=true);
   try {
     if(!sessionToken){const session=await fetch('/api/session',{cache:'no-store'});if(!session.ok)throw new Error('请通过更新后的本地工作台服务打开页面。');sessionToken=(await session.json()).token;}
-    const response=await fetch('/api/decision',{method:'POST',headers:{'Content-Type':'application/json','X-Workbench-Token':sessionToken},body:JSON.stringify({key,decision:next,revision:data.revision})});
-    const result=await response.json();if(!response.ok)throw new Error(result.error||'标签保存失败');
-    j.decision=result.decision;j.decision_history=result.history;data.revision=result.revision;
-    message(result.warning||`${j.current.title}：${result.decision==='undecided'?'已取消标签':'已保存为'+decision[result.decision]}`);
-  } catch(error) {message(error instanceof SyntaxError||error instanceof TypeError?'无法连接本地工作台，标签未在页面中更改。请确认服务已启动；若上次响应中断，请刷新核对保存结果。':error.message);}
-  finally {tagBusy=false;renderJobs();if($('detail').open)showDetail(key);const scope=$('detail').open?$('detail'):$('job-list');const button=[...scope.querySelectorAll('[data-tag-key]')].find(b=>b.dataset.tagKey===key&&b.dataset.tag===value);(button||$('decision')).focus({preventScroll:true});}
+    while(tagQueue.length){
+      const {key,next}=tagQueue[0],j=data.jobs[key];
+      const response=await fetch('/api/decision',{method:'POST',headers:{'Content-Type':'application/json','X-Workbench-Token':sessionToken},body:JSON.stringify({key,decision:next,revision:data.revision})});
+      const result=await response.json();if(!response.ok)throw new Error(result.error||'标签保存失败');
+      j.decision=result.decision;j.decision_history=result.history;data.revision=result.revision;
+      tagQueue.shift();pendingTags.delete(key);
+      tagMessage(result.warning||(pendingTags.size?`正在保存 ${pendingTags.size} 个标签…`:`${j.current.title}：${result.decision==='undecided'?'已取消标签':'已保存为'+decision[result.decision]}`));
+      refreshTagViews();
+    }
+  } catch(error) {
+    for(const [key,previous] of pendingTags)data.jobs[key].decision=previous;
+    pendingTags.clear();tagQueue.length=0;tagBlocked=true;
+    const reason=error instanceof SyntaxError||error instanceof TypeError?'无法确认本地工作台的保存结果。':error.message;
+    tagMessage(reason+' 未确认的标签已在页面回退，后续排队操作已取消。请刷新核对后再试。');
+    refreshTagViews();
+  } finally {tagBusy=false;}
 }
+window.addEventListener('beforeunload',event=>{if(pendingTags.size){event.preventDefault();event.returnValue='';}});
 if(!shared&&!writable)$('tag-message').textContent='当前是只读 HTML 快照。通过本地工作台服务打开后可点击保存标签。';
 function renderJobs(){
-  const q=$('search').value.toLowerCase();
-  filtered=jobs.filter(j=>(!q||[j.current.title,j.current.company,j.current.jd,j.current.location].join(' ').toLowerCase().includes(q))&&(!$('decision').value||effectiveDecision(j)===$('decision').value)&&(!$('status').value||j.current.status===$('status').value)&&(!$('activity').value||inactiveJob(j)===($('activity').value==='inactive'))&&(!$('verification').value||($('verification').value==='needs'?needsCheck(j):!needsCheck(j))));
-  filtered.sort((a,b)=>$('sort').value==='score'?((latest(b)?.score||0)-(latest(a)?.score||0)):$('sort').value==='company'?a.current.company.localeCompare(b.current.company):new Date(b.current.observed_at)-new Date(a.current.observed_at));
+  const q=$('search').value.toLowerCase(),label=$('decision').value,state=$('status').value,activity=$('activity').value,verification=$('verification').value,sort=$('sort').value;
+  filtered=jobs.filter(j=>(!q||[j.current.title,j.current.company,j.current.jd,j.current.location].join(' ').toLowerCase().includes(q))&&(!label||effectiveDecision(j)===label)&&(!state||j.current.status===state)&&(!activity||inactiveJob(j)===(activity==='inactive'))&&(!verification||(verification==='needs'?needsCheck(j):!needsCheck(j))));
+  filtered.sort((a,b)=>sort==='score'?((latest(b)?.score||0)-(latest(a)?.score||0)):sort==='company'?a.current.company.localeCompare(b.current.company):new Date(b.current.observed_at)-new Date(a.current.observed_at));
   const pages=Math.max(1,Math.ceil(filtered.length/20));page=Math.min(page,pages);
   $('count').textContent=`${filtered.length} 个岗位 · ${jobs.length} 个已收录`;
   $('clear-filters').disabled=!['search','decision','status','verification','activity'].some(id=>$(id).value);
@@ -87,7 +118,7 @@ function renderJobs(){
 function jdChange(key){for(const s of scansByTime()){const c=s.changes.find(c=>c.key===key&&c.type==='jd_changed');if(c)return c;}return null;}
 function changeText(c){return `<div class="split"><div><span class="small">修改前</span><pre>${esc(c.before)}</pre></div><div><span class="small">修改后</span><pre>${esc(c.after)}</pre></div></div>`;}
 function showDetail(key){
-  const j=data.jobs[key];if(!j)return;const c=j.current,r=latest(j),change=jdChange(key);
+  const j=data.jobs[key];if(!j)return;$('detail').dataset.detailKey=key;const c=j.current,r=latest(j),change=jdChange(key);
   $('detail-title').textContent=c.title;
   let analysis='';
   if(!shared){
@@ -208,7 +239,7 @@ tabs.forEach((b,i)=>{
 document.addEventListener('click',e=>{
   const tag=e.target.closest('[data-tag-key]');if(tag)saveTag(tag.dataset.tagKey,tag.dataset.tag);
   const stat=e.target.closest('[data-statistic]');if(stat)showStatistic(Number(stat.dataset.statistic));
-  const job=e.target.closest('[data-job-key]');if(job)showDetail(job.dataset.jobKey);
+  const job=e.target.closest('button[data-job-key]');if(job)showDetail(job.dataset.jobKey);
   const db=e.target.closest('[data-debrief-id]');if(db){if($('detail').open)$('detail').close();activateTab(tabs.find(b=>b.dataset.view==='library'));const card=$('debrief-'+db.dataset.debriefId);const version=$('debrief-version-'+db.dataset.debriefId+'-'+db.dataset.debriefVersion);if(version){version.open=true;version.parentElement.open=true;}if(card){card.scrollIntoView({block:'start'});card.focus();}}
   const r=e.target.closest('[data-resume-id]');if(r){if($('detail').open)$('detail').close();activateTab(tabs.find(b=>b.dataset.view==='resumes'));const card=$('resume-card-'+r.dataset.resumeId);if(card){card.scrollIntoView({block:'center'});card.focus();}}
 });

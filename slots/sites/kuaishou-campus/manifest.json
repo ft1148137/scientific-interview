@@ -1,0 +1,22 @@
+{
+  "id": "kuaishou-campus",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "company": "快手",
+  "domains": [
+    "campus.kuaishou.cn"
+  ],
+  "entry_url": "https://campus.kuaishou.cn/recruit/campus/e/#/campus/jobs?recruitSubProjectCodes=20271779425607",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ],
+  "path_prefix": "/recruit/campus/e"
+}
