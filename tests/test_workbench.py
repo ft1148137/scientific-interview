@@ -8,7 +8,7 @@ import unittest
 from job_workbench.store import Store, WorkbenchError, read_json
 from job_workbench.registry import ROOT, registry
 from job_workbench.contracts import negotiate, jd_hash
-from job_workbench.jobs import ingest_scan, decide, review_job, record_application, classify_job
+from job_workbench.jobs import ingest_scan, decide, review_job, record_application, classify_job, set_activity, import_review, has_application
 from job_workbench.library import put_entry, restore_entry, find_answer, interview
 from job_workbench.resumes import draft_resume, save_resume, export_resume, import_resume, resume_diff, source_updates
 from job_workbench.render import render_dashboard
@@ -19,6 +19,101 @@ class WorkbenchTests(unittest.TestCase):
   self.temp=tempfile.TemporaryDirectory(dir=ROOT/"data/tmp");self.addCleanup(self.temp.cleanup)
   self.store=Store(self.temp.name);self.store.init()
   self.first=read_json(ROOT/'examples/scan-first.json');self.second=read_json(ROOT/'examples/scan-second.json')
+ def test_manual_activity_preserves_job_evidence_and_is_private_and_reversible(self):
+  self.store.update(lambda s:ingest_scan(s,self.first));key='demo-company:id:101'
+  before=self.store.read()
+  with self.assertRaises(WorkbenchError):self.store.update(lambda s:set_activity(s,key,'inactive'))
+  self.store.update(lambda s:set_activity(s,key,'inactive','用户决定暂不跟进'))
+  marked=self.store.read();self.assertEqual(marked['applications'],before['applications'])
+  self.assertEqual(marked['jobs'][key]['current'],before['jobs'][key]['current'])
+  self.assertEqual(marked['jobs'][key]['snapshots'],before['jobs'][key]['snapshots'])
+  self.store.update(lambda s:ingest_scan(s,self.second))
+  self.assertEqual(self.store.read()['jobs'][key]['activity_override']['mode'],'inactive')
+  def payload(share):
+   html=Path(render_dashboard(self.store,share=share)['output']).read_text()
+   return json.loads(html.split('<script type="application/json" id="data">')[1].split('</script>')[0])
+  self.assertEqual(payload(False)['jobs'][key]['activity_override']['mode'],'inactive')
+  self.assertNotIn('activity_override',payload(True)['jobs'][key])
+  self.assertNotIn('activity_history',payload(True)['jobs'][key])
+  self.store.update(lambda s:set_activity(s,key,'auto'))
+  j=self.store.read()['jobs'][key];self.assertEqual(j['activity_override']['mode'],'auto')
+  self.assertEqual(len(j['activity_history']),2)
+
+ def test_imported_review_display_precedence_staleness_and_sharing(self):
+  self.store.update(lambda s:ingest_scan(s,self.first));key='demo-company:id:101'
+  j=self.store.read()['jobs'][key]
+  r={'score':4,'reasons':['已有匹配依据'],'gaps':['已有差距'],'quotes':['已有引文'],'jd_hash':jd_hash(j['current']['jd']),'source':{'original':'originals/synthetic.json','record_id':'old-1'},'assessed_at':'2026-10-01'}
+  with self.assertRaises(WorkbenchError):self.store.update(lambda s:import_review(s,key,{**r,'score':None}))
+  with self.assertRaises(WorkbenchError):self.store.update(lambda s:import_review(s,key,{**r,'source':{}}))
+  self.store.update(lambda s:import_review(s,key,r))
+  self.store.update(lambda s:import_review(s,key,r))
+  self.assertEqual(len(self.store.read()['jobs'][key]['imported_reviews']),1)
+  def payload(share=False):
+   html=Path(render_dashboard(self.store,share=share)['output']).read_text()
+   return json.loads(html.split('<script type="application/json" id="data">')[1].split('</script>')[0])['jobs'][key]
+  rendered=payload();self.assertFalse(rendered['review_stale']);self.assertEqual(rendered['imported_reviews'][-1]['score'],4)
+  self.assertEqual(rendered['reviews'],[])
+  self.assertNotIn('imported_reviews',payload(True))
+  self.store.update(lambda s:ingest_scan(s,self.second))
+  self.assertTrue(payload()['review_stale'])
+  j=self.store.read()['jobs'][key]
+  # A new review owns validity; never fall back to the import after it becomes stale.
+  self.library()
+  rnew={'score':5,'reasons':['新的匹配依据'],'gaps':[],'quotes':[j['current']['jd']],'jd_hash':jd_hash(j['current']['jd']),'experience_refs':[{'id':'knowledge-assistant','version':1}]}
+  self.store.update(lambda s:review_job(s,key,rnew))
+  self.assertEqual(payload()['reviews'][-1]['score'],5)
+  self.assertFalse(payload()['review_stale'])
+  third=copy.deepcopy(self.second);third['id']='changed-after-review'
+  for record in third['records']:
+   if str(record.get('external_id'))=='101':record['jd']+=' 新增要求'
+  self.store.update(lambda s:ingest_scan(s,third))
+  self.assertTrue(payload()['review_stale'])
+
+ def test_application_terminal_categories_preserve_meaning_and_count_as_applications(self):
+  self.store.update(lambda s:ingest_scan(s,self.first));key='demo-company:id:101'
+  for status,text in [('ended','流程结束'),('talent_pool','已移入人才库'),('position_closed','岗位已停招')]:
+   ev={'url':'https://jobs.example.com/applications','observed_at':'2026-10-22T10:00:00+08:00','text':text,'kind':'application'}
+   self.store.update(lambda s:record_application(s,key,status,ev))
+   self.assertEqual(self.store.read()['applications'][-1]['status'],status)
+   self.assertTrue(has_application(self.store.read(),key))
+  self.assertEqual([e['status'] for e in self.store.read()['applications']],['ended','talent_pool','position_closed'])
+
+ def test_imported_resume_original_is_visible_downloadable_deduplicated_and_private(self):
+  source=self.pdf_file('sample.PDF')
+  first=import_resume(self.store,source);second=import_resume(self.store,source)
+  self.assertEqual(first,second);self.assertEqual(len(self.store.read()['imports']),1)
+  private=Path(render_dashboard(self.store)['output'])
+  payload=json.loads(private.read_text().split('<script type="application/json" id="data">')[1].split('</script>')[0])
+  entry=payload['resume_imports'][0]
+  self.assertEqual(entry['filename'],'sample.PDF')
+  self.assertEqual((private.parent/entry['file']).read_bytes(),source.read_bytes())
+  self.assertNotIn('text',entry)
+  public=Path(render_dashboard(self.store,share=True)['output'])
+  shared=json.loads(public.read_text().split('<script type="application/json" id="data">')[1].split('</script>')[0])
+  self.assertNotIn('resume_imports',shared)
+  self.assertFalse((public.parent/'resume-originals').exists())
+
+ def pdf_file(self,name):
+  from pypdf import PdfWriter
+  source=self.store.root/name;writer=PdfWriter();writer.add_blank_page(width=595,height=842)
+  with source.open('wb') as stream:writer.write(stream)
+  return source
+
+ def test_resume_import_rejects_non_pdf_and_hides_legacy_non_pdf_without_deleting(self):
+  before=self.store.read()
+  for suffix in ('.docx','.md','.txt','.png'):
+   source=self.store.root/('unsupported'+suffix);source.write_bytes(b'synthetic')
+   with self.assertRaisesRegex(WorkbenchError,'仅支持 PDF'):import_resume(self.store,source)
+  self.assertEqual(self.store.read(),before)
+  original=self.store.blob(b'legacy synthetic resume','.md')
+  legacy={'id':'legacy','original':original,'at':'2026-10-01','text':'legacy synthetic resume'}
+  self.store.update(lambda s:s['imports'].update({'legacy':legacy}))
+  output=Path(render_dashboard(self.store)['output'])
+  payload=json.loads(output.read_text().split('<script type="application/json" id="data">')[1].split('</script>')[0])
+  self.assertEqual(payload['resume_imports'],[])
+  self.assertEqual(self.store.read()['imports']['legacy'],legacy)
+  self.assertTrue((self.store.root/original).is_file())
+
  def library(self):
   def fn(s):
    put_entry(s,'profiles','personal',read_json(ROOT/'examples/profile.json'),True)
@@ -79,7 +174,7 @@ class WorkbenchTests(unittest.TestCase):
   with self.assertRaises(WorkbenchError):self.store.update(lambda s:save_resume(s,bad,True))
   with self.assertRaises(WorkbenchError):self.store.update(lambda s:save_resume(s,draft,False))
   result=export_resume(self.store,r['id']);self.assertTrue((Path(result['directory'])/'resume.pdf').exists())
-  imported=import_resume(self.store,Path(result['directory'])/'resume.docx');self.assertIn('知识检索助手',imported['text']);self.assertEqual(imported['status'],'needs_review')
+  imported=import_resume(self.store,Path(result['directory'])/'resume.pdf');self.assertIn('知识检索助手',imported['text']);self.assertEqual(imported['status'],'needs_review')
  def test_missing_jd_cannot_score(self):
   self.store.update(lambda s:ingest_scan(s,self.first))
   with self.assertRaises(WorkbenchError):self.store.update(lambda s:review_job(s,'demo-company:id:103',{'score':5}))
@@ -116,7 +211,7 @@ class WorkbenchTests(unittest.TestCase):
   self.assertEqual(self.store.update(lambda s:ingest_scan(s,tail))['changes'],[])
 
  def test_import_source_and_saved_parent_are_distinct(self):
-  self.library();source=self.store.root/'old.txt';source.write_text('合成旧简历')
+  self.library();source=self.pdf_file('old.pdf')
   imported=import_resume(self.store,source)
   with self.assertRaisesRegex(WorkbenchError,'--source-import'):
    draft_resume(self.store.read(),'AI 应用',parent_id=imported['id'])

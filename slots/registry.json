@@ -13,6 +13,8 @@
     "slots/sites/xiaohongshu/manifest.json",
     "slots/sites/kuaishou/manifest.json",
     "slots/sites/didi/manifest.json",
-    "slots/sites/jd/manifest.json"
+    "slots/sites/jd/manifest.json",
+    "slots/sites/bytedance-campus/manifest.json",
+    "slots/sites/xiaohongshu-campus/manifest.json"
   ]
 }

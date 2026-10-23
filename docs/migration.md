@@ -18,6 +18,10 @@
 
 ## 旧版兼容
 
+外部旧档案先保留原始文件与校验清单，再通过业务校验接口导入；不手写 state.json 绕过校验。当前范围与已筛掉的历史岗位可分别使用 data/main 和 data/history 下的独立档案，避免恢复已排除的搜索范围；主档案需要保留全部相关历史申请。已有评分通过 `review-import <key> <file.json>` 保留分数、评语和原件记录引用，直接参与展示和排序，不加“历史评分”标签。它与新生成的评分分开存储，不补造已确认经历引用；新复评结果优先，JD 变化后提示复评，不能退回旧结果规避失效检查。原记录没有分数时保持未评分。导入简历保留原件，不推断旧申请使用了后来选定的版本；复习题库不转换为本人面经。
+
+无 URL 的历史岗位采用 manual 来源和稳定 external_id，url 与证据 url 保持 null。历史批次使用 historical=true，保留真实 first_seen/observed_at；状态原文与无法对应的分类继续保留，“流程结束/终止”“转人才库”“岗位停招”分别映射 ended、talent_pool、position_closed，不猜成明确拒绝；重新核验后追加证据，不覆盖原记录。没有投递日期的接收记录可标记 submission_date_unknown。全部数量、证据、日期和统计核对通过后，才按用户明确指定的范围清理副本；必要原件与证据应先保存在新档案 originals 中。
+
 - 项目名称为Scientific Interview，Skill 标识为 `scientific-interview`。Python 模块 `job_workbench` 和旧命令 `job-workbench` 保留兼容。
 - `SCIENTIFIC_INTERVIEW_DATA` / `SCIENTIFIC_INTERVIEW_ROOT` 优先于对应 `JOB_WORKBENCH_*` 变量；档案写入仍限制在当前项目 `data/` 下。
 - schema v1 档案继续支持。旧档案缺少复盘或分类字段时，不补造记录，不重写历史；新增信息时再保存。

@@ -83,7 +83,10 @@
             "minLength": 1
           },
           "url": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "jd": {
@@ -116,7 +119,10 @@
             ],
             "properties": {
               "url": {
-                "type": "string",
+                "type": [
+                  "string",
+                  "null"
+                ],
                 "format": "uri"
               },
               "observed_at": {
@@ -177,6 +183,9 @@
         "type": "string",
         "format": "uri"
       }
+    },
+    "historical": {
+      "type": "boolean"
     }
   }
 }

@@ -6,16 +6,16 @@ import {createBrowserPort,manifest as browserManifest} from '../slots/browsers/c
 import {completeMokaJD} from '../slots/sites/shared/moka.mjs';
 
 // All observations in this file are synthetic; no network or personal data.
-const ids=['meituan','amap','bytedance','moka-kimi','moka-zhipu','moka-step','xiaohongshu','kuaishou','didi'];
+const ids=['bytedance-campus','xiaohongshu-campus','meituan','amap','bytedance','moka-kimi','moka-zhipu','moka-step','xiaohongshu','kuaishou','didi'];
 const modules=Object.fromEntries(await Promise.all(ids.map(async id=>[id,await import(`../slots/sites/${id}/adapter.mjs`)])));
 function fixture(id, options={}) {
   const module=modules[id],m=module.manifest;
-  const url=id==='xiaohongshu'?'https://job.xiaohongshu.com/social/position/123':id==='kuaishou'?'https://zhaopin.kuaishou.cn/#/official/social/job-info/123':id==='didi'?'https://talent.didiglobal.com/social/jobDetail?jdId=123':id==='meituan'?'https://zhaopin.meituan.com/web/position/detail?jobUnionId=123':id==='amap'?'https://talent.amap.com/off-campus/position-detail?lang=zh&positionId=123':id==='bytedance'?'https://jobs.bytedance.com/experienced/position/123/detail':m.entry_url.replace('#/jobs','#/job/synthetic-123');
+  const url=id==='bytedance-campus'?'https://jobs.bytedance.com/campus/position/123/detail':id==='xiaohongshu-campus'?'https://job.xiaohongshu.com/campus/position/123':id==='xiaohongshu'?'https://job.xiaohongshu.com/social/position/123':id==='kuaishou'?'https://zhaopin.kuaishou.cn/#/official/social/job-info/123':id==='didi'?'https://talent.didiglobal.com/social/jobDetail?jdId=123':id==='meituan'?'https://zhaopin.meituan.com/web/position/detail?jobUnionId=123':id==='amap'?'https://talent.amap.com/off-campus/position-detail?lang=zh&positionId=123':id==='bytedance'?'https://jobs.bytedance.com/experienced/position/123/detail':m.entry_url.replace('#/jobs','#/job/synthetic-123');
   const title='合成工程师',jd='岗位职责\n负责合成示例系统的设计、开发、测试和交付，维护质量并改进文档。\n任职要求\n理解软件工程，能够独立分析问题、验证方案并与团队协作。';
   let current=m.entry_url,page=1,sequence=0;
   const log=[];
   function observation(detail=false) {
-    return gate('PASS','OBSERVED','',{data:{url:current,text:'合成账户页眉，请勿写入证据',observed_at:'2026-10-22T00:00:00Z',snapshot_id:++sequence,fields:detail?{title:options.title || title,jd,location:'合成城市'}:{},lists:detail?{sections:[{heading:'岗位职责',text:'岗位职责\n合成职责'},{heading:'任职要求',text:'任职要求\n合成要求'}],headings:[{text:'职位描述'},{text:'职位要求'}],blocks:[{text:'合成职责'},{text:'合成要求'}]}:{jobs:[{index:0,text:page===1?'合成卡片一':'合成卡片二',title,location:'合成城市',meta:'全职 | 合成城市',...(id.startsWith('moka')||['bytedance','xiaohongshu'].includes(id)?{href:options.href || url}:{})}],pages:options.noPagination?[]:[{text:'1'},{text:'2'}]},clipped_fields:options.clipped?['jd']:[],controls:{}}});
+    return gate('PASS','OBSERVED','',{data:{url:current,text:'合成账户页眉，请勿写入证据',observed_at:'2026-10-22T00:00:00Z',snapshot_id:++sequence,fields:detail?{title:options.title || title,jd,location:'合成城市',meta:'正式 · 合成届校园招聘'}:{},lists:detail?{sections:[{heading:'岗位职责',text:'岗位职责\n合成职责'},{heading:'任职要求',text:'任职要求\n合成要求'}],headings:[{text:'职位描述'},{text:'职位要求'}],blocks:[{text:'合成职责'},{text:'合成要求'}]}:{jobs:[{index:0,text:page===1?'合成卡片一':'合成卡片二',title,location:'合成城市',meta:'全职 | 合成城市',...(id.startsWith('moka')||['bytedance','xiaohongshu','bytedance-campus','xiaohongshu-campus'].includes(id)?{href:options.href || url}:{})}],pages:options.noPagination?[]:[{text:'1'},{text:'2'}]},clipped_fields:options.clipped?['jd']:[],controls:{}}});
   }
   const port={manifest:browserManifest,
     observe:async()=>observation(),
@@ -81,4 +81,15 @@ test('browser wait timeout rechecks login and rate-limit gates',async()=>{
  for(const [text,code] of [['请先登录','LOGIN_OR_CHALLENGE'],['访问过于频繁','RATE_LIMIT'],['页面加载中','BROWSER_ERROR']]){
   const f=browserFixture({},text);await f.port.connect();await f.port.navigate('https://example.com/jobs');assert.equal((await f.port.wait({selector:'article'})).code,code);
  }
+});
+
+for(const id of ['bytedance-campus','xiaohongshu-campus'])test(`${id}: reject social paths, keep recruitment labels and handle incomplete evidence`,async()=>{
+ const f=fixture(id);const social=f.url.replace('/campus/',id.startsWith('bytedance')?'/experienced/':'/social/');
+ assert.equal((await f.site.readJob({url:social})).code,'SITE_SCOPE_REJECTED');assert.equal(f.log.length,0);
+ assert.equal((await fixture(id,{href:social}).site.discover({})).code,'SITE_SCOPE_REJECTED');
+ assert.equal((await fixture(id,{redirect:social}).site.discover({})).code,'SITE_SCOPE_REJECTED');
+ const read=await f.site.readJob({url:f.url,title:f.title});assert.match(read.data.jd,/正式 · 合成届校园招聘/);
+ assert.equal((await fixture(id,{challenge:true}).site.discover({})).gate,'WAIT_USER');
+ assert.equal((await fixture(id,{noPagination:true}).site.discover({})).data.coverage,'partial');
+ assert.equal((await fixture(id,{title:'另一职位'}).site.readJob({url:f.url,title:f.title})).code,'IDENTITY_CHANGED');
 });

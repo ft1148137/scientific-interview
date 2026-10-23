@@ -24,15 +24,18 @@ def save_search(state, key, query):
     return append_version(state["searches"], key, query, True)
 
 
-def normalize_job(raw, source, domains):
+def normalize_job(raw, source, domains, allow_missing_url=False):
     require(isinstance(raw, dict), "岗位必须是对象")
-    web_url(raw.get("url"), domains)
+    if allow_missing_url and raw.get("url") is None:
+        require(raw.get("external_id"), "无来源 URL 的本地岗位必须提供稳定 ID")
+    else:
+        web_url(raw.get("url"), domains)
     require(isinstance(raw.get("title"), str) and raw["title"].strip(), "岗位缺少标题")
     require(isinstance(raw.get("company"), str) and raw["company"].strip(), "岗位缺少企业")
     require(raw.get("external_id") is None or (isinstance(raw["external_id"], (str, int)) and not isinstance(raw["external_id"], bool) and len(str(raw["external_id"])) <= 200), "岗位 ID 格式无效")
     require(raw.get("location") is None or isinstance(raw["location"], str), "地点必须为文本或 null")
     require(type(raw.get("jd_complete")) is bool, "必须显式声明 JD 完整性")
-    ev = evidence(raw.get("evidence"), domains)
+    ev = evidence(raw.get("evidence"), domains, allow_missing_url=allow_missing_url)
     require(ev["url"] == raw["url"], "岗位证据 URL 与详情 URL 不一致")
     timestamp(raw.get("observed_at"))
     status = raw.get("status", "unknown")
@@ -56,6 +59,8 @@ def ingest_scan(state, scan):
     scan_id = identifier(scan.get("id"))
     source = scan.get("source")
     site = site_config(source)
+    require(type(scan.get("historical", False)) is bool, "historical 必须为布尔值")
+    require(not scan.get("historical") or site.get("user_supplied"), "历史导入必须使用用户提供来源")
     require(scan.get("slot_version") == site["version"], "网站版本不匹配，请重新核验")
     browser = scan.get("browser_id")
     require(browser == "fixture" or registry().get(browser, {}).get("kind") == "browser", "未知浏览器记录来源")
@@ -78,7 +83,10 @@ def ingest_scan(state, scan):
         try:
             if site.get("user_supplied"):
                 require(raw.get("evidence", {}).get("kind") == "user_supplied" and raw.get("status") == "unknown", "粘贴 JD 必须标记用户提供，招聘状态保持未知")
-            item = normalize_job(raw, source, None if site.get("user_supplied") else site["domains"])
+            item = normalize_job(raw, source, None if site.get("user_supplied") else site["domains"], allow_missing_url=bool(site.get("user_supplied")))
+            if scan.get("historical") and raw.get("first_seen"):
+                timestamp(raw["first_seen"])
+                require(datetime.fromisoformat(raw["first_seen"].replace("Z", "+00:00")) <= datetime.fromisoformat(item["observed_at"].replace("Z", "+00:00")), "首次收录不能晚于岗位观测")
             if site.get("shared_detail_url"):
                 require(item["external_id"], "共用页面 URL 的岗位必须提供稳定 ID")
             if site.get("company"):
@@ -124,7 +132,7 @@ def ingest_scan(state, scan):
             old["last_attempt_at"] = scan["observed_at"]
             old["verification"] = "verified" if raw.get("jd") or raw.get("status") == "closed" else "needs_recheck"
         else:
-            state["jobs"][key] = {"current": item, "snapshots": [deepcopy(item)], "first_seen": scan["observed_at"], "last_attempt_at": scan["observed_at"], "verification": "verified" if item["jd"] else "needs_jd", "decision": "undecided", "decision_history": [], "reviews": [], "selected_resume": None}
+            state["jobs"][key] = {"current": item, "snapshots": [deepcopy(item)], "first_seen": raw.get("first_seen", scan["observed_at"]) if scan.get("historical") else scan["observed_at"], "last_attempt_at": scan["observed_at"], "verification": "verified" if item["jd"] else "needs_jd", "decision": "undecided", "decision_history": [], "reviews": [], "selected_resume": None}
             changes.append({"type": "new", "key": key, "after": item["title"]})
         scope = {}
         if query.get("city"):
@@ -133,6 +141,8 @@ def ingest_scan(state, scan):
         if query.get("direction"):
             scope["direction"] = "unknown"  # Requires semantic review, never infer from a missing field.
         state["jobs"][key].setdefault("search_scopes", {})[condition_hash] = {"query": deepcopy(query), "checks": scope}
+        if scan.get("historical") or item["url"] is None:
+            state["jobs"][key]["verification"] = "needs_recheck"
     # A missing list entry is never evidence of closure. Only compare identical search scopes.
     seen_urls = scan.get("seen_urls", [])
     require(isinstance(seen_urls, list) and all(isinstance(u, str) for u in seen_urls), "seen_urls 必须为 URL 数组")
@@ -147,7 +157,7 @@ def ingest_scan(state, scan):
             state["jobs"][key]["verification"] = "needs_recheck"
             changes.append({"type": "needs_recheck", "key": key, "after": "本次列表未发现，尚不能判定下线"})
     scoped = {k for k, j in state["jobs"].items() if condition_hash in j.get("search_scopes", {})}
-    record = {k: deepcopy(scan.get(k)) for k in ("id", "source", "slot_version", "browser_id", "query", "gate", "coverage", "observed_at", "checkpoint", "message", "seen_urls", "seen_ids", "rejected_refs", "code", "retryAfter", "retry_attempts", "next_action")}
+    record = {k: deepcopy(scan.get(k)) for k in ("id", "source", "slot_version", "browser_id", "query", "gate", "coverage", "observed_at", "checkpoint", "message", "seen_urls", "seen_ids", "rejected_refs", "code", "retryAfter", "retry_attempts", "next_action", "historical")}
     record.update(fingerprint=fingerprint, condition_hash=condition_hash, seen=sorted(seen), changes=changes, rejected=rejected,
                   scope_summary={"observed_keys": sorted(seen), "known_keys": sorted(scoped), "unobserved_keys": sorted(scoped - seen)})
     state["scans"][scan_id] = record
@@ -162,7 +172,7 @@ def ingest_scan(state, scan):
 
 def has_application(state, key):
     cutoff = datetime.fromisoformat(now().replace("Z", "+00:00"))
-    return any(a["key"] == key and a["status"] in {"submitted", "in_review", "interview", "offer", "rejected", "withdrawn"}
+    return any(a["key"] == key and a["status"] in {"submitted", "in_review", "interview", "offer", "rejected", "withdrawn", "ended", "talent_pool", "position_closed"}
                and datetime.fromisoformat(a["evidence"]["observed_at"].replace("Z", "+00:00")) <= cutoff
                for a in state["applications"])
 
@@ -174,6 +184,22 @@ def decide(state, key, decision, note=""):
     job["decision"] = decision
     job["decision_history"].append({"decision": decision, "note": note, "at": now()})
     add_event(state, "decision", key=key, decision=decision)
+
+
+def set_activity(state, key, mode, note=""):
+    require(key in state["jobs"], "岗位不存在")
+    require(mode in {"inactive", "auto"}, "活跃度模式必须为 inactive 或 auto")
+    require(isinstance(note, str) and len(note) <= 1000, "标记原因应为不超过 1000 字的文本")
+    require(mode != "inactive" or note.strip(), "人工标记不活跃需要原因")
+    job = state["jobs"][key]
+    previous = job.get("activity_override") or {}
+    if previous.get("mode", "auto") == mode and previous.get("note", "") == note.strip():
+        return previous
+    item = {"mode": mode, "note": note.strip(), "at": now()}
+    job["activity_override"] = item
+    job.setdefault("activity_history", []).append(deepcopy(item))
+    add_event(state, "job_activity", key=key, **item)
+    return item
 
 
 def classify_job(state, key, direction=None, industry=None):
@@ -189,6 +215,29 @@ def classify_job(state, key, direction=None, industry=None):
     job.setdefault("classification_history", []).append({**labels, "at": now()})
     add_event(state, "job_classified", key=key, **labels)
     return labels
+
+
+def import_review(state, key, review):
+    """Restore an existing assessment without fabricating confirmed experience references."""
+    require(key in state["jobs"], "岗位不存在")
+    require(isinstance(review, dict), "导入评分必须为对象")
+    require(type(review.get("score")) is int and 1 <= review["score"] <= 5, "匹配分应为 1—5 的整数")
+    for field in ("reasons", "gaps", "quotes"):
+        require(isinstance(review.get(field), list) and all(isinstance(x, str) for x in review[field]), "评分依据、差距和引文应为文本数组")
+    require(any(x.strip() for x in review["reasons"]), "导入评分需要原评语")
+    source = review.get("source")
+    require(isinstance(source, dict) and isinstance(source.get("original"), str) and source["original"].startswith("originals/") and ".." not in source["original"].split("/") and isinstance(source.get("record_id"), str) and source["record_id"].strip(), "导入评分需要本地原件及原记录编号")
+    job = state["jobs"][key]
+    require(review.get("jd_hash") == jd_hash(job["current"].get("jd")), "导入期间 JD 已变化，请重新核对")
+    saved = {field: deepcopy(review[field]) for field in ("score", "reasons", "gaps", "quotes", "source", "jd_hash")}
+    saved["assessed_at"] = review.get("assessed_at")
+    history = job.setdefault("imported_reviews", [])
+    if history and all(history[-1].get(k) == v for k, v in saved.items()):
+        return history[-1]
+    saved["at"] = now()
+    history.append(saved)
+    add_event(state, "review_imported", key=key)
+    return saved
 
 
 def review_job(state, key, review):
@@ -220,7 +269,7 @@ def review_job(state, key, review):
 
 def record_application(state, key, status, ev, resume_id=None):
     require(key in state["jobs"], "岗位不存在")
-    require(status in {"submitted", "in_review", "interview", "offer", "rejected", "withdrawn", "unknown"}, "未知申请状态")
+    require(status in {"submitted", "in_review", "interview", "offer", "rejected", "withdrawn", "ended", "talent_pool", "position_closed", "unknown"}, "未知申请状态")
     evidence(ev)
     require(ev["kind"] == "application", "申请更新需要申请状态证据")
     selected = resume_id or state["jobs"][key].get("selected_resume")

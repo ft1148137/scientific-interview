@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scientific-interview"
-version = "0.8.0"
+version = "0.9.0"
 description = "Scientific Interview：有依据的岗位匹配、简历优化与面经复盘"
 requires-python = ">=3.10"
 license = {text = "MIT"}

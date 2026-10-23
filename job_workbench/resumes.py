@@ -15,29 +15,22 @@ from .store import current, digest, now, add_event, WorkbenchError, atomic_json,
 def import_resume(store, path):
     path = Path(path)
     suffix = path.suffix.lower()
-    require(suffix in {".pdf", ".docx", ".txt", ".md"}, "支持 PDF、DOCX、TXT、Markdown")
+    require(suffix == ".pdf", "简历导入仅支持 PDF；请先将文件导出为 PDF。")
     raw = path.read_bytes()
     require(len(raw) <= 25 * 1024 * 1024, "简历超过 25 MiB")
-    if suffix == ".pdf":
-        try:
-            from pypdf import PdfReader
-        except ImportError as exc:
-            raise WorkbenchError('请安装简历依赖: pip install -e ".[resume]"') from exc
-        reader = PdfReader(path)
-        text = "\n".join(page.extract_text() or "" for page in reader.pages)
-    elif suffix == ".docx":
-        try:
-            from docx import Document
-        except ImportError as exc:
-            raise WorkbenchError('请安装简历依赖: pip install -e ".[resume]"') from exc
-        doc = Document(path)
-        text = "\n".join([p.text for p in doc.paragraphs] + [" | ".join(c.text for c in r.cells) for t in doc.tables for r in t.rows])
-    else:
-        text = raw.decode("utf-8-sig")
+    try:
+        from pypdf import PdfReader
+    except ImportError as exc:
+        raise WorkbenchError('请安装简历依赖: pip install -e ".[resume]"') from exc
+    reader = PdfReader(path)
+    text = "\n".join(page.extract_text() or "" for page in reader.pages)
     original = store.blob(raw, suffix)
-    imported = {"id": digest(raw.hex())[:20], "original": original, "text": text, "at": now(), "status": "needs_review" if text.strip() else "needs_transcription", "note": "这是导入原件 ID，用 resume-draft --source-import 引用；--parent 只接受已保存的 resume-… 版本。先由 AI 从原文整理 profiles/personal 和 experiences，用户核对后再确认，不要求用户重复提供已有事实。"}
-    store.update(lambda state: state["imports"].setdefault(imported["id"], imported))
-    return imported
+    imported = {"id": digest(raw.hex())[:20], "original": original, "filename": path.name, "text": text, "at": now(), "status": "needs_review" if text.strip() else "needs_transcription", "note": "这是导入原件 ID，用 resume-draft --source-import 引用；--parent 只接受已保存的 resume-… 版本。先由 AI 从原文整理 profiles/personal 和 experiences，用户核对后再确认，不要求用户重复提供已有事实。"}
+    def save(state):
+        entry = state["imports"].setdefault(imported["id"], imported)
+        entry.setdefault("filename", path.name)
+        return deepcopy(entry)
+    return store.update(save)
 
 
 def draft_resume(state, target, experience_ids=None, parent_id=None, source_import_id=None, rebuild=False):

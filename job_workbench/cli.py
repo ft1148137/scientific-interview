@@ -9,7 +9,7 @@ from .contracts import require, negotiate
 from .registry import registry
 from .resources import ROOT, DATA_DIR, missing_resources, local_python
 from .demo import demo
-from .jobs import ingest_scan, save_search, decide, review_job, record_application, classify_job
+from .jobs import ingest_scan, save_search, decide, review_job, record_application, classify_job, set_activity, import_review
 from .library import put_entry, restore_entry, find_answer, interview, select_resume, COLLECTIONS
 from .resumes import import_resume, draft_resume, save_resume, export_resume, source_updates
 from .render import render_dashboard
@@ -30,14 +30,16 @@ def parser():
     c=sub.add_parser("answer"); c.add_argument("question"); c.add_argument("--context",default=""); c.add_argument("--all-candidates",action="store_true",help="向 AI 提供全部已确认回答，由 AI 按意图判断，不表示均可复用")
     c=sub.add_parser("interview"); c.add_argument("id"); c.add_argument("--target"); c.add_argument("--skip",action="append"); c.add_argument("--industry",help="可选行业 ID，见 references/industries/index.md"); c.add_argument("--segment",choices=["campus","experienced"],help="校招/社招，按需选择")
     c=sub.add_parser("debrief-context"); c.add_argument("--target",default=""); c.add_argument("--key")
-    c=sub.add_parser("resume-import"); c.add_argument("file")
+    c=sub.add_parser("resume-import", help="导入 PDF 简历原件"); c.add_argument("file", help="PDF 文件路径")
     c=sub.add_parser("resume-draft"); c.add_argument("--target",required=True); c.add_argument("--experience",action="append"); c.add_argument("--parent",help="已保存的 resume-… 父版本 ID"); c.add_argument("--source-import",help="resume-import 返回的原件 ID，首次改写旧简历时使用"); c.add_argument("--out",required=True)
     c.add_argument("--rebuild",action="store_true",help="明确从最新经历重建，不沿用父稿文案与经历取舍")
     c=sub.add_parser("resume-save"); c.add_argument("file"); c.add_argument("--confirmed",action="store_true")
     c=sub.add_parser("resume-export"); c.add_argument("id"); c.add_argument("--out")
     c=sub.add_parser("resume-select"); c.add_argument("key"); c.add_argument("id")
     c=sub.add_parser("decide"); c.add_argument("key"); c.add_argument("decision",choices=["shortlist","excluded","undecided"]); c.add_argument("--note",default="")
+    c=sub.add_parser("job-activity"); c.add_argument("key"); c.add_argument("mode",choices=["inactive","auto"]); c.add_argument("--note",default="")
     c=sub.add_parser("job-classify"); c.add_argument("key"); c.add_argument("--direction"); c.add_argument("--industry")
+    c=sub.add_parser("review-import"); c.add_argument("key"); c.add_argument("file")
     c=sub.add_parser("review"); c.add_argument("key"); c.add_argument("file")
     c=sub.add_parser("application"); c.add_argument("key"); c.add_argument("status"); c.add_argument("evidence"); c.add_argument("--resume")
     c=sub.add_parser("add-jd"); c.add_argument("file"); c.add_argument("--title",required=True); c.add_argument("--company",required=True); c.add_argument("--url",required=True); c.add_argument("--location"); c.add_argument("--complete",action="store_true")
@@ -95,7 +97,9 @@ def run(args):
     if cmd=="resume-export":return export_resume(store,args.id,args.out)
     if cmd=="resume-select":return update(lambda s:select_resume(s,args.key,args.id))
     if cmd=="decide":return update(lambda s:decide(s,args.key,args.decision,args.note))
+    if cmd=="job-activity":return update(lambda s:set_activity(s,args.key,args.mode,args.note))
     if cmd=="job-classify":return update(lambda s:classify_job(s,args.key,args.direction,args.industry))
+    if cmd=="review-import":return update(lambda s:import_review(s,args.key,read_json(args.file)))
     if cmd=="review":return update(lambda s:review_job(s,args.key,read_json(args.file)))
     if cmd=="application":return update(lambda s:record_application(s,args.key,args.status,read_json(args.evidence),args.resume))
     if cmd=="add-jd":

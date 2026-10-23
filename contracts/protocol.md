@@ -51,6 +51,10 @@ connect、navigate、observe、act、wait、release 返回 `{gate, code, message
 
 核心保存 first_seen、current、snapshots、verification；decision、reviews、selected_resume、applications 分开维护。未知字段不冲掉旧值。扫描失败不是岗位下线。
 
+本地历史例外：仅 user_supplied 来源（当前为 manual）允许岗位及证据的 url 显式为 null，必须同时有稳定 external_id、非空原文证据、unknown 招聘状态与 user_supplied 证据类型。无链接记录保持 needs_recheck；真实网站仍必须提供通过域名检查的 URL。批次可声明 historical=true，此时全部岗位保持待核验；可提供原 first_seen，必须不晚于 observed_at，不把迁移时间当作原收录时间。
+
+申请证据可附 submission_date_unknown=true，表示只知道申请已被接收、不知道实际投递日期。它仍可使用 submitted 状态，但统计不将该条核验时间当成投递日期；已有明确投递日期的其他记录不受影响。
+
 ## 门禁与断点
 
 PASS 继续；WAIT_USER 保存断点并交接；RETRY 按 retryAfter 有限重试；REJECT 记录原因，停止受影响步骤或隔离单条记录。门禁不等于重复请求用户批准。

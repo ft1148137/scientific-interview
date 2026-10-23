@@ -4,7 +4,7 @@ English | [简体中文](README.zh-CN.md)
 
 Use AI to find jobs, refine your resume, and review interviews. Keep job sources, application progress, and personal records in a local HTML dashboard.
 
-An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.8.0** is available for trial use from the complete source tree. Supported job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access currently uses **Codex's Chrome extension**; you handle login and verification challenges.
+An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.9.0** is available for trial use from the complete source tree. Supported job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access currently uses **Codex's Chrome extension**; you handle login and verification challenges.
 
 ![Job search dashboard with synthetic statistics](docs/assets/compact-charts.jpg)
 
@@ -13,10 +13,11 @@ An open-source **Skill + local toolkit**: your AI host handles conversation and 
 ## What it does
 
 - **Incremental job search**: save search criteria and compare newly discovered jobs, JD changes, and closures supported by evidence. Preserve sources, snapshots, and verification timestamps.
-- **Resume creation and revision**: import an existing resume or build one through an experience interview. Ask up to three questions per round, confirm facts, save versions, and export Word, PDF, and Markdown.
+- **Resume creation and revision**: import an existing PDF resume or build one through an experience interview. Ask up to three questions per round, confirm facts, save versions, and export Word, PDF, and Markdown. Imported originals are available to open from the private resume tab.
 - **Interview debriefs**: recount an interview to the AI and record questions, answers, strengths, gaps, and supporting evidence. Reviewed debriefs can inform resume revisions and job matching.
-- **Job selection and tracking**: mark jobs you have not applied to as shortlisted or not interested. The default undecided state is available as a filter without a visible badge. Track submitted applications by their latest status.
-- **Job search statistics**: an application overview, status rings, application and feedback line charts, company distribution, and role/industry breakdowns. Jobs become inactive after 30 days without a substantive change.
+- **Job matching**: display 1–5 scores, matching reasons, and gaps; sort jobs by fit. Existing assessments can be imported directly without an extra score badge, and newer reviews take precedence.
+- **Job selection and tracking**: mark jobs you have not applied to as shortlisted or not interested. The default undecided state is available as a filter without a visible badge. Track submitted applications by their latest status, preserving ended processes, talent-pool transfers, and closed positions as distinct categories.
+- **Job search statistics**: an application overview, status rings, application and feedback line charts, company distribution, and role/industry breakdowns with independently scrollable charts. Industry labels are based on documented company or business-unit activities. Jobs become inactive after 30 days without a substantive change, or can be marked inactive by the user with a recorded reason; application statuses are preserved. Inactive unfinished applications leave the in-progress count and appear in a separate ring segment.
 - **Extensible slots**: add website and browser adapters independently through defined protocols, capability declarations, and access checks.
 
 Semantic analysis happens in your AI host; the HTML dashboard displays your local records. No additional model API key is required by this project, but model access depends on your host account. There is no built-in scheduled search service. Submitting an application requires user authorization and verification of the result.
@@ -158,21 +159,25 @@ Use `--complete` only when the original JD is complete; it does not prove the jo
 
 ## Supported websites
 
+For existing local archives, follow the [migration guide](docs/migration.md). Historical imports retain their observation dates and remain unverified. Missing source URLs stay empty with a stable record ID; receipt without a submission date counts as an application without inventing a date for the trend chart.
+
 | Website | Slot ID | Current entry point |
 |---|---|---|
 | Tencent | `tencent` | Existing careers site adapter |
 | Meituan | `meituan` | Job list; may include experienced roles and internships |
 | Amap | `amap` | Experienced hiring |
 | ByteDance | `bytedance` | Experienced hiring |
+| ByteDance campus | `bytedance-campus` | Campus portal; graduate and internship roles, with original project labels |
 | JD | `jd` | Experienced hiring; details expand within the list |
 | DiDi | `didi` | Experienced hiring |
 | Xiaohongshu | `xiaohongshu` | Experienced hiring |
+| Xiaohongshu campus | `xiaohongshu-campus` | Current graduate recruitment list; separate internship/REDstar portals excluded |
 | Kuaishou | `kuaishou` | Domestic experienced hiring |
 | Kimi (Moonshot AI) | `moka-kimi` | Moka experienced-hiring tenant |
 | Zhipu | `moka-zhipu` | Moka experienced-hiring tenant |
 | StepFun | `moka-step` | Moka experienced-hiring tenant |
 
-For example: “Use Scientific Interview to search Meituan, ByteDance, and Kimi for my target roles. Read a batch of JDs and save them to my current archive.” The added slots support keyword search; city and role criteria are checked after collection. Separate campus-recruiting entry points are not yet supported. Moka uses a shared parser, but each employer needs an independent tenant declaration; the adapter does not scan the entire platform.
+For example: “Use Scientific Interview to search Meituan, ByteDance, and Kimi for my target roles. Read a batch of JDs and save them to my current archive.” The added slots support keyword search; city and role criteria are checked after collection. For campus hiring, explicitly choose `bytedance-campus` or `xiaohongshu-campus`. These have separate source identities and path checks; graduation eligibility and internship requirements must be checked against the saved JD. Other campus channels are not yet supported. Moka uses a shared parser, but each employer needs an independent tenant declaration; the adapter does not scan the entire platform.
 
 Baidu's recruitment page became blank during both integration attempts on 2026-10-22, so it is not registered as supported. Automotive, manufacturing, and other non-internet employers remain deferred. JD jobs can share a list URL and are distinguished by job ID; opening a source link requires locating the job by title. Live verification used small samples, not exhaustive scans. See [support and verification records](docs/site-support.md).
 

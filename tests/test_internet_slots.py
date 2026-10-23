@@ -79,3 +79,20 @@ class InternetSlots(unittest.TestCase):
             bad.update(records=[], seen_ids=value)
             with self.assertRaises(WorkbenchError):
                 ingest_scan(empty_state(), bad)
+
+    def test_campus_sources_are_separate_and_reject_social_urls(self):
+        for source in ['bytedance', 'xiaohongshu']:
+            state = empty_state()
+            self.assertFalse(ingest_scan(state, self.scan(source))['rejected'])
+            self.assertFalse(ingest_scan(state, self.scan(source + '-campus'))['rejected'])
+            self.assertEqual(len(state['jobs']), 2)
+            bad = self.scan(source + '-campus')
+            bad['id'] += '-bad'
+            bad['records'][0]['url'] = registry()[source]['entry_url']
+            bad['records'][0]['evidence']['url'] = bad['records'][0]['url']
+            self.assertEqual(len(ingest_scan(state, bad)['rejected']), 1)
+            reverse = self.scan(source)
+            reverse['id'] += '-campus-url'
+            reverse['records'][0]['url'] = registry()[source + '-campus']['entry_url']
+            reverse['records'][0]['evidence']['url'] = reverse['records'][0]['url']
+            self.assertEqual(len(ingest_scan(state, reverse)['rejected']), 1)

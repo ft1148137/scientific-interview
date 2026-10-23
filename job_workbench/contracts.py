@@ -55,9 +55,10 @@ def jd_hash(text):
     return digest(re.sub(r"\s+", " ", text or "").strip())
 
 
-def evidence(value, domains=None):
+def evidence(value, domains=None, allow_missing_url=False):
     require(isinstance(value, dict), "需要证据对象")
-    web_url(value.get("url"), domains)
+    if not (allow_missing_url and value.get("url") is None and value.get("kind") == "user_supplied"):
+        web_url(value.get("url"), domains)
     timestamp(value.get("observed_at"))
     require(isinstance(value.get("text"), str) and value["text"].strip(), "证据需要页面文本")
     require(value.get("kind") in {"page", "closed", "application", "user_supplied"}, "未知证据类型")

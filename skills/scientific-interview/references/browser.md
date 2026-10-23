@@ -8,7 +8,7 @@
 
 ```js
 var browserModule = await import('file://<项目绝对路径>/slots/browsers/codex-chrome/adapter.mjs');
-// 根据支持列表选取 Slot ID；本例保留腾讯，亦可替换为 meituan、amap、bytedance、jd、didi、xiaohongshu、kuaishou 或已注册的 moka-*。
+// 根据支持列表选取 Slot ID；本例保留腾讯，亦可替换为 meituan、amap、bytedance、jd、didi、xiaohongshu、kuaishou 或已注册的 moka-*、bytedance-campus、xiaohongshu-campus。
 var siteModule = await import('file://<项目绝对路径>/slots/sites/tencent/adapter.mjs');
 var runnerModule = await import('file://<项目绝对路径>/slots/runner.mjs');
 var port = browserModule.createBrowserPort(cua, siteModule.manifest.domains);
@@ -38,3 +38,5 @@ nodeRepl.write(connection);
 腾讯适配器只支持声明的招聘域名；国际岗位可能跳到独立 ATS，未适配时记录拒绝而不是扩大域名权限。列表与详情布局变化应明确失败。缺完整 JD 以待补状态保留。
 
 新增网站和浏览器分别参考项目 `contracts/protocol.md` 与 `docs/contributing.md`。添加插槽后运行 `doctor` 和契约测试，再做真实插件验证。模拟样例通过不等于真实站点验证通过。
+
+校招使用独立的 bytedance-campus / xiaohongshu-campus，不能把校招 URL 放进社招来源或扩大原来源路径。两者沿用 keyword 搜索、分页和断点协议。字节校园入口包含正式与实习；招聘项目、正式/实习和届别信息保存在 JD 开头的官网原文中，毕业资格和截止日期未写明时保持未知，不硬编码当年的届别。小红书仅支持校园职位列表，独立实习、REDstar 页面不在当前路径门禁内。工程实测使用 data/dev 下的隔离档案，不能把校招样本加入用户现有社招档案。

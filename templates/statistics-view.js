@@ -28,7 +28,7 @@ function renderStatistics() {
   const s=statistics(data,new Date(),Number($('stats-period').value)), allKeys=s.rows.map(r=>r.key);
   const inactiveKeys=Object.entries(data.jobs).filter(([,j])=>inactiveJob(j)).map(([key])=>key);
   const cards=[['累计投递',s.total,allKeys],['投递公司',s.companies.length,allKeys],['本周投递',s.thisWeek.length,s.thisWeek],['进行中',s.inProgress.length,s.inProgress],['明确拒绝',s.rejected.length,s.rejected],['不活跃岗位',inactiveKeys.length,inactiveKeys]];
-  $('stats-metrics').innerHTML=cards.map(([label,value,keys],i)=>statisticButton(label,keys,`<span>${label}</span><b>${value}<small>${i===1?'家':i===5?'个':'份'}</small></b><small>${i===5?'全库 · 连续 30 天无变化':'所选投递批次'}</small>`,'stat-metric')).join('');
+  $('stats-metrics').innerHTML=cards.map(([label,value,keys],i)=>statisticButton(label,keys,`<span>${label}</span><b>${value}<small>${i===1?'家':i===5?'个':'份'}</small></b><small>${i===5?'全库 · 自动或人工标记':'所选投递批次'}</small>`,'stat-metric')).join('');
   $('status-chart').innerHTML=ringChart(s.statuses,s.total,'申请');
   let companies=s.companies;
   if(companies.length>6){const rest=companies.slice(5);companies=[...companies.slice(0,5),{label:'其他公司',count:rest.reduce((n,g)=>n+g.count,0),keys:rest.flatMap(g=>g.keys)}];}

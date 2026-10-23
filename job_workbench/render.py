@@ -35,10 +35,20 @@ def render_dashboard(store, output=None, share=False):
                    "experiences": {}, "answers": {}, "debriefs": {}, "resumes": {}, "scans": {}, "searches": {}, "applications": []}
     for job in payload["jobs"].values():
         job["jd_hash"] = jd_hash(job["current"].get("jd"))
-        latest = job["reviews"][-1] if job["reviews"] else None
+        latest = (job["reviews"] or job.get("imported_reviews", []) or [None])[-1]
         stale_refs = latest and any(state["experiences"].get(ref["id"], [{}])[-1].get("version") != ref["version"] for ref in latest.get("experience_refs", []))
         stale_debriefs = latest and any(state.get("debriefs", {}).get(ref["id"], [{}])[-1].get("version") != ref["version"] for ref in latest.get("debrief_refs", []))
         job["review_stale"] = bool(latest and (latest["jd_hash"] != job["jd_hash"] or stale_refs or stale_debriefs))
+    if not share:
+        payload["resume_imports"] = []
+        for item in state.get("imports", {}).values():
+            source = (store.root / item["original"]).resolve()
+            if source.suffix.lower() != ".pdf" or not source.is_relative_to((store.root / "originals").resolve()) or not source.is_file():
+                continue
+            dest = data_path(target.parent / "resume-originals" / source.name)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, dest)
+            payload["resume_imports"].append({"id": item["id"], "filename": item.get("filename") or ("导入简历 " + item["id"][:8] + source.suffix), "at": item["at"], "file": str(dest.relative_to(target.parent))})
     for key, resume in payload["resumes"].items():
         resume["diff"] = resume_diff(state, resume)
         source = store.root / "exports" / key
