@@ -23,9 +23,15 @@ export function createDOMSite(port, config) {
     return u.href;
   }
   async function list(query, page) {
+    let beforeSearch;
     let result = checked(await port.navigate(config.searchURL(query),{reload:true}));
     if (result.gate !== 'PASS') return result;
     if (config.search && query.keyword) {
+      if (config.search.waitForChange) {
+        result=checked(await port.wait({selector:listSpec.lists.jobs.selector,observe:listSpec}));
+        if(result.gate!=='PASS') return result;
+        beforeSearch=result.data.lists.jobs[0]?.text;
+      }
       const controls=[config.search.input,...(config.search.button?[config.search.button]:[])];
       result=checked(await port.wait({selector:config.search.input,observe:{controls}}));
       if(result.gate!=='PASS') return result;
@@ -36,8 +42,9 @@ export function createDOMSite(port, config) {
       result=checked(await port.act({kind:config.search.button?'click':'press',selector:config.search.button || config.search.input,key:'Enter',snapshot_id:result.data.snapshot_id}));
       if(result.gate!=='PASS') return result;
     }
-    result = checked(await port.wait({selector:listSpec.lists.jobs.selector,observe:listSpec}));
+    result = checked(await port.wait({selector:listSpec.lists.jobs.selector,...(beforeSearch?{previousText:beforeSearch}:{}),observe:listSpec}));
     if (result.gate !== 'PASS') return result;
+    if (beforeSearch && result.data.lists.jobs[0]?.text === beforeSearch) return gate('RETRY','SEARCH_NOT_CHANGED','搜索结果尚未更新，不能按已筛选列表采集。',{retryAfter:2});
     for (let nextPage = 2; nextPage <= page; nextPage++) {
       const previous = result.data.lists.jobs[0]?.text;
       const control = config.next ? {selector:config.next} : {selector:config.pages,text:String(nextPage)};

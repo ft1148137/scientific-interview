@@ -1,0 +1,1 @@
+{"id":"tabbit","kind":"browser","version":"1.0.0","protocol_version":1,"capabilities":["navigate","observe","click","fill","wait","scroll","screenshot"],"entry":"adapter.mjs","runtime":"Tabbit official tabbit-cli nodejs task","connection_hint":"Start Tabbit, use its stable tabbit-cli launcher and inject the documented task globals; see references/tabbit.md."}

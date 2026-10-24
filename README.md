@@ -4,7 +4,7 @@ English | [简体中文](README.zh-CN.md)
 
 Use AI to find jobs, refine your resume, and review interviews. Keep job sources, application progress, and personal records in a local HTML dashboard.
 
-An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.11.0** is available for trial use from the complete source tree. Supported job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access currently uses **Codex's Chrome extension**; you handle login and verification challenges.
+An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.12.0** is available for trial use from the complete source tree. Supported job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access supports **Tabbit's official CLI** and **Codex's Chrome extension** as separate slots; you handle login and verification challenges. See the [Tabbit setup and validation guide](skills/scientific-interview/references/tabbit.md).
 
 ![Job search dashboard with synthetic statistics](docs/assets/compact-charts.jpg)
 
@@ -37,7 +37,7 @@ cd scientific-interview
 
 Open a terminal in the project directory and confirm that it contains `pyproject.toml`, `skills/`, and `job_workbench/`.
 
-You need **Python 3.10+**. Live job collection also requires a Codex environment with Chrome extension access. The demo, manual JD import, and dashboard work without the browser extension. Node.js 18+ is only needed for slot examples and development tests.
+You need **Python 3.10+**. Live job collection requires either Tabbit with its official `tabbit-cli` launcher, or a Codex environment with Chrome extension access. The demo, manual JD import, and dashboard work without the browser extension. Node.js 18+ is only needed for slot examples and development tests.
 
 Install from the complete source tree. Copying only `SKILL.md` is insufficient; a similarly named PyPI package is not an installation source for this project. The commands below have been verified in an isolated macOS environment. Windows has not completed full validation.
 
@@ -61,7 +61,7 @@ python -m pip install -e ".[resume]"
 python -m job_workbench doctor
 ```
 
-`[resume]` installs Word/PDF dependencies. For the core tools and HTML only, use `python -m pip install -e .`; the core uses Python's standard library. `doctor` checks source resources, dependencies, and slot declarations, and shows the current and suggested Python paths. Passing this check does not mean Chrome is connected.
+`[resume]` installs Word/PDF dependencies. For the core tools and HTML only, use `python -m pip install -e .`; the core uses Python's standard library. `doctor` checks source resources, dependencies, and slot declarations, and shows the current and suggested Python paths. Passing this check does not mean a browser is connected.
 
 ### 3. Enable the Skill
 
@@ -81,9 +81,28 @@ After moving the project, recreate its virtual environment and install dependenc
 
 Start a new Codex conversation and invoke **`$scientific-interview`**. Keep the source directory and virtual environment, and have Codex use the Python environment you created. If dependencies cannot be found, tell it: “Use the Python interpreter in this project's `data/dev/venv`.”
 
-You can also use the Skill without installing a link: open this project in Codex and ask it to “Read and use `skills/scientific-interview/SKILL.md`.” This also works when Windows does not permit symlink creation. Terminal commands do not replace Chrome extension access; see the [browser collection guide](skills/scientific-interview/references/browser.md).
+You can also use the Skill without installing a link: open this project in Codex and ask it to “Read and use `skills/scientific-interview/SKILL.md`.” This also works when Windows does not permit symlink creation. Use the selected browser’s documented host: Tabbit CLI for `tabbit`, or Codex Chrome tools for `codex-chrome`; see the [browser collection guide](skills/scientific-interview/references/browser.md).
 
-### 4. Open the synthetic demo
+### 4. Connect a browser for live collection
+
+Skip this step for the demo or manual JD import. Choose a browser explicitly; continuing a task keeps the browser you already selected, and connection failures do not switch it automatically.
+
+| Browser slot | Setup | Verified scope |
+|---|---|---|
+| `tabbit` | Install [Tabbit](https://www.tabbit.com/), finish its setup, then use its official CLI and bundled Skill. No Codex Chrome extension is needed. | macOS, Tabbit 1.16.27: Tencent, Kimi (Moka), ByteDance campus and DiDi; Tencent/Kimi pagination and resumption |
+| `codex-chrome` | Connect the Chrome extension in a supported Codex host. | Existing site checks listed in the [support record](docs/site-support.md); results do not automatically carry over to Tabbit |
+
+On macOS, check that Tabbit's stable launcher is available:
+
+```bash
+"$HOME/.local/bin/tabbit-cli" diagnose
+```
+
+If the launcher or bundled Skill is missing, follow the [Tabbit setup guide](skills/scientific-interview/references/tabbit.md). Importing Chrome passwords or login data is optional. Login and CAPTCHA challenges remain manual. Browser profiles and host-managed runtime files stay in the browser's own directories; this project's scans, checkpoints and saved screenshots go under `data/`.
+
+The Tabbit sample collected seven complete JDs into an isolated archive. JD experienced hiring needs login; JD campus search can leave the unfiltered list visible, so the adapter waits for changed results and returns a retry instead of collecting that list. Windows and login-handoff recovery have not been verified. See the [full validation record](docs/site-support.md).
+
+### 5. Open the synthetic demo
 
 ```bash
 python -m job_workbench --data data/demo demo
@@ -106,7 +125,7 @@ python -m job_workbench serve --port 8877
 
 The default archive is `data/main/`; it does not reuse demo records. Example prompts for Codex:
 
-> Use $scientific-interview with data/main. Find AI application engineering jobs on Tencent's careers site. Hand over to me if login is required.
+> Use $scientific-interview with data/main and the tabbit browser slot. Find AI application engineering jobs on Tencent's careers site. Hand over to me if login is required.
 
 > Revise my resume for data analysis roles. Check the facts first, then ask questions that help me recall relevant experience. Do not invent achievements.
 
@@ -159,6 +178,8 @@ Use `--complete` only when the original JD is complete; it does not prove the jo
 
 ## Supported websites
 
+These are registered website adapters. Earlier site validation used Codex Chrome; Tabbit has only the scope listed above. A capability check is not a live test of every browser/site pair.
+
 For existing local archives, follow the [migration guide](docs/migration.md). Historical imports retain their observation dates and remain unverified. Missing source URLs stay empty with a stable record ID; receipt without a submission date counts as an application without inventing a date for the trend chart.
 
 | Website | Slot ID | Current entry point |
@@ -168,7 +189,7 @@ For existing local archives, follow the [migration guide](docs/migration.md). Hi
 | Amap | `amap` | Experienced hiring |
 | ByteDance | `bytedance` | Experienced hiring |
 | Tencent campus | `tencent-campus` | Graduate project; keyword, JD, pagination and checkpoint resumption |
-| JD campus | `jd-campus` | Campus portal; keyword, JD and checkpoint resumption; pagination not yet reliable |
+| JD campus | `jd-campus` | Chrome keyword/JD/resumption checks exist; pagination remains limited. Tabbit initial search is unstable and may return RETRY. |
 | DiDi campus | `didi-campus` | Separate Moka campus tenant; keyword, JD and checkpoint resumption; paging encountered a load timeout |
 | Kuaishou campus | `kuaishou-campus` | Current 2027 graduate project; keyword, JD, pagination and checkpoint resumption |
 | ByteDance campus | `bytedance-campus` | Campus portal; graduate and internship roles, with original project labels |
@@ -201,10 +222,10 @@ Baidu's recruitment page became blank during both integration attempts on 2026-1
 | Missing dependency or module | Activate the project's virtual environment, reinstall, and run `doctor`. The AI must use the same Python environment. |
 | Skill does not appear | Start a new Codex conversation, or ask it to read the project's `SKILL.md` directly. |
 | Installer says the destination exists | Regular files and directories are never overwritten. Use `--repair` after confirming that an old symlink should point to this checkout. |
-| Chrome disconnected or login required | Follow the browser guide to connect the extension or log in yourself. Keep the checkpoint; the workflow will not switch to a crawler. |
+| Browser disconnected or login required | Follow the selected browser guide to connect Tabbit/Chrome or log in yourself. Keep the checkpoint; the workflow will not switch to a crawler. |
 | Port already in use | Use `serve --port 8878` and change the browser URL's port too. |
 | Labels cannot be saved | Access the page through `serve`. Opening HTML directly gives a read-only snapshot. |
-| Scanned PDF has no extractable text | OCR is not included. Provide a text-extractable PDF, Word document, or describe your experience. |
+| Scanned PDF has no extractable text | OCR is not included. Provide a text-extractable PDF or describe your experience; resume-file import accepts PDF only. |
 | Updating the source | Preserve `data/`, update the source, then repeat the editable install and `doctor`. Do not overwrite private records with a fresh checkout. |
 
 ## Extend and develop
@@ -213,7 +234,7 @@ Baidu's recruitment page became blank during both integration attempts on 2026-1
 skills/scientific-interview/   Skill and on-demand workflow references
 contracts/                    Protocol, data formats, and access checks
 slots/sites/                  Website adapters, Moka tenants, shared parsers
-slots/browsers/               codex-chrome
+slots/browsers/               codex-chrome, tabbit
 job_workbench/                Validation, versioned records, resumes, local server
 templates/                    HTML dashboard
 examples/                     Public synthetic fixtures
@@ -234,6 +255,6 @@ python scripts/package_source.py
 
 The last command must run inside this project's Git repository; ZIP users can run `git init` first. It checks release candidates for common personal paths and secret patterns, then writes a source archive and checksum manifest to `data/releases/`. It excludes private data and development environments, but new fixtures and screenshots still require review. It does not replace a privacy audit. Do not publish a ZIP of the entire local working directory.
 
-See the [release-readiness record](docs/release-readiness.md) for completed checks and the [website support list](docs/site-support.md) for entry points, search scopes, and live verification limits. Only Codex Chrome is currently supported. Other websites, Windows, complex multi-page resumes, and trials with three new real users have not completed full acceptance testing.
+See the [release-readiness record](docs/release-readiness.md) for completed checks and the [website support list](docs/site-support.md) for entry points, search scopes, and live verification limits. Codex Chrome and Tabbit are registered browser slots. Tabbit 1.16.27 was sampled on macOS; see the browser guide for verified sites and limits. Other websites, Windows, complex multi-page resumes, and trials with three new real users have not completed full acceptance testing.
 
 Source code is licensed under [MIT](LICENSE). The bundled Noto Sans SC font uses [SIL OFL](assets/fonts/OFL.txt); see its [source notes](assets/fonts/README.md). This project's license does not grant rights to third-party website content, brands, or runtime environments.

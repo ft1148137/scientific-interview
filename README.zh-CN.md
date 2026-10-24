@@ -4,7 +4,7 @@
 
 用 AI 搜岗、整理简历和复盘面试，把有来源的岗位信息、投递进度与个人资料持续保存在本地 HTML 工作台。
 
-这是一个开源 **Skill + 本地工具**，通过你自己的 AI 宿主完成对话与分析，脚本负责校验和保存。当前版本 **v0.11.0**，适合源码安装试用。真实网站支持腾讯、美团、高德、字节跳动、京东、滴滴、小红书、快手，以及 Moka 上的 Kimi、智谱、阶跃星辰，浏览器接入使用 **Codex 的 Chrome 插件**，登录和验证码由人完成。
+这是一个开源 **Skill + 本地工具**，通过你自己的 AI 宿主完成对话与分析，脚本负责校验和保存。当前版本 **v0.12.0**，适合源码安装试用。真实网站支持腾讯、美团、高德、字节跳动、京东、滴滴、小红书、快手，以及 Moka 上的 Kimi、智谱、阶跃星辰，浏览器支持 **Tabbit 官方 CLI** 和 **Codex Chrome 插件** 两个独立插槽，登录和验证码由人完成。见 [Tabbit 安装与验证说明](skills/scientific-interview/references/tabbit.md)。
 
 ![合成数据的统计工作台](docs/assets/compact-charts.jpg)
 
@@ -37,7 +37,7 @@ cd scientific-interview
 
 在项目目录打开终端，确认能看到 `pyproject.toml`、`skills/` 和 `job_workbench/`。
 
-需要 **Python 3.10+**。真实搜岗还需要可访问 Chrome 插件的 Codex 环境；单独体验演示、导入手工 JD 和查看工作台不需要浏览器插件。Node.js 18+ 仅用于插槽示例和开发测试。
+需要 **Python 3.10+**。真实搜岗需要 Tabbit 及其官方 `tabbit-cli`，或可访问 Chrome 插件的 Codex 环境；单独体验演示、导入手工 JD 和查看工作台不需要浏览器插件。Node.js 18+ 仅用于插槽示例和开发测试。
 
 本项目目前按完整源码安装使用；不要只复制 `SKILL.md`，也不要将同名 PyPI 包当作本项目的安装来源。下列命令已在 macOS 的独立环境验证；Windows 尚未做完整验证。
 
@@ -61,7 +61,7 @@ python -m pip install -e ".[resume]"
 python -m job_workbench doctor
 ```
 
-`[resume]` 安装 Word/PDF 所需依赖；只体验核心和 HTML 可改为 `python -m pip install -e .`。核心使用 Python 标准库。`doctor` 检查源码资源、依赖与插槽声明，并显示当前和建议 Python 路径；通过不代表 Chrome 已连接。
+`[resume]` 安装 Word/PDF 所需依赖；只体验核心和 HTML 可改为 `python -m pip install -e .`。核心使用 Python 标准库。`doctor` 检查源码资源、依赖与插槽声明，并显示当前和建议 Python 路径；通过不代表浏览器已连接。
 
 ### 3. 启用 Skill
 
@@ -81,9 +81,28 @@ python scripts/install_skill.py --check
 
 重新打开 Codex 对话，调用 **`$scientific-interview`**。保留源码目录与虚拟环境，并让 Codex 使用上一步创建的 Python 环境。若宿主找不到依赖，可以明确告诉它：“使用本项目 `data/dev/venv` 中的 Python。”
 
-不安装链接也能使用：在 Codex 中打开本项目，要求“读取并使用 `skills/scientific-interview/SKILL.md`”。Windows 不允许创建符号链接时也可采用此方式。普通终端命令不会替代 Chrome 插件，连接方法见 [浏览器采集说明](skills/scientific-interview/references/browser.md)。
+不安装链接也能使用：在 Codex 中打开本项目，要求“读取并使用 `skills/scientific-interview/SKILL.md`”。Windows 不允许创建符号链接时也可采用此方式。按所选插槽使用官方宿主（Tabbit CLI 或 Codex Chrome 工具），连接方法见 [浏览器采集说明](skills/scientific-interview/references/browser.md)。
 
-### 4. 打开合成演示
+### 4. 连接浏览器（真实搜岗时需要）
+
+仅体验演示或手工导入 JD 可跳过这一步。明确选择浏览器；继续任务时沿用已选择的浏览器，连接失败不会自动切换。
+
+| 浏览器插槽 | 准备方式 | 已验证范围 |
+|---|---|---|
+| `tabbit` | 安装 [Tabbit](https://www.tabbit.com/)，完成首次引导，使用其官方 CLI 和随附 Skill；不需要 Codex Chrome 插件 | macOS、Tabbit 1.16.27：腾讯、Kimi（Moka）、字节校招、滴滴；腾讯/Kimi 的分页与续扫 |
+| `codex-chrome` | 在支持的 Codex 宿主中连接 Chrome 插件 | [支持记录](docs/site-support.md) 中的既有网站验证；这些结果不自动代表 Tabbit 也已通过 |
+
+macOS 可检查 Tabbit 的稳定启动器：
+
+```bash
+"$HOME/.local/bin/tabbit-cli" diagnose
+```
+
+找不到启动器或随附 Skill 时，按 [Tabbit 接入说明](skills/scientific-interview/references/tabbit.md) 检查。是否导入 Chrome 密码和登录资料由你决定，并非必需步骤。登录和验证码仍由人完成。浏览器配置及宿主管理的运行文件保留在浏览器自己的目录；本项目扫描结果、断点和归档截图写入 `data/`。
+
+Tabbit 抽样读取了 7 份完整 JD，并在隔离档案验证入档。京东社招需要登录；京东校招首次搜索可能仍显示未筛选列表，插槽会等待结果变化，失败时返回重试，不采集该列表。Windows 与登录交接恢复尚未验证，见 [完整实测记录](docs/site-support.md)。
+
+### 5. 打开合成演示
 
 ```bash
 python -m job_workbench --data data/demo demo
@@ -106,7 +125,7 @@ python -m job_workbench serve --port 8877
 
 默认使用 `data/main/`，不会复用演示资料。在 Codex 中可以这样说：
 
-> 使用 $scientific-interview，档案用 data/main。帮我搜索腾讯招聘中的 AI 应用开发岗位，需要登录时让我接手。
+> 使用 $scientific-interview，档案用 data/main，浏览器选择 tabbit 插槽。帮我搜索腾讯招聘中的 AI 应用开发岗位，需要登录时让我接手。
 
 > 修改我提供的简历，目标是数据分析。先核对事实，再用问题引导我补充已有经历，不要编造成果。
 
@@ -159,6 +178,8 @@ python -m job_workbench add-jd data/main/inbox/jd.txt --title '工程师' --comp
 
 ## 已接入的网站
 
+以下为已注册的网站插槽。既有网站验证使用 Codex Chrome；Tabbit 目前仅验证上文列出的范围。能力检查通过，不等于每个“浏览器 × 网站”组合均已实测。
+
 已有本地档案按 [迁移指南](docs/migration.md) 转换。历史导入保留原观测日期并保持待核验；缺来源 URL 时以稳定 ID 保留空链接。只有接收状态、没有投递日期的申请计入总数，但不补造投递趋势日期。
 
 | 网站 | Slot ID | 当前入口 |
@@ -168,7 +189,7 @@ python -m job_workbench add-jd data/main/inbox/jd.txt --title '工程师' --comp
 | 高德 | `amap` | 社会招聘 |
 | 字节跳动 | `bytedance` | 社会招聘 |
 | 腾讯校园招聘 | `tencent-campus` | 应届项目；关键词、详情、分页与续扫 |
-| 京东校园招聘 | `jd-campus` | 校园入口；关键词、详情与续扫，分页仍待稳定验证 |
+| 京东校园招聘 | `jd-campus` | Chrome 已有关键词、详情和续扫验证，分页仍受限；Tabbit 首次搜索不稳定，可能返回 RETRY |
 | 滴滴校园招聘 | `didi-campus` | 独立 Moka 校招租户；关键词、详情与续扫，翻页曾加载超时 |
 | 快手校园招聘 | `kuaishou-campus` | 当前 2027 应届项目；关键词、详情、分页与续扫 |
 | 字节校园招聘 | `bytedance-campus` | 校园入口含正式与实习，保留招聘项目原文 |
@@ -201,10 +222,10 @@ BOSS 直聘与猎聘正在接入验证，尚未注册为可用来源。2026-10-2
 | 提示缺少依赖 / 找不到模块 | 激活本项目虚拟环境，重新执行安装命令和 `doctor`；AI 也需使用同一个 Python |
 | Skill 没出现 | 重新打开 Codex 对话，或直接要求读取项目内的 `SKILL.md` |
 | 安装器提示目标存在 | 普通文件或目录不会覆盖；确认旧符号链接应改用当前项目后执行 `--repair` |
-| Chrome 无法连接 / 遇到登录 | 按采集说明连接插件或由人登录；保存断点后继续，不会自动换爬虫 |
+| 浏览器无法连接 / 遇到登录 | 按采集说明连接所选 Tabbit/Chrome 或由人登录；保存断点后继续，不会自动换爬虫 |
 | 端口被占用 | 改为 `serve --port 8878`，同时更换访问地址的端口 |
 | 标签不能保存 | 使用 `serve` 提供的页面；直接双击 HTML 是只读快照 |
-| 扫描版 PDF 无法读取文字 | 当前不提供 OCR；提供可提取文字的 PDF、Word 或直接复述经历 |
+| 扫描版 PDF 无法读取文字 | 当前不提供 OCR；提供可提取文字的 PDF 或直接复述经历；简历文件仅支持 PDF 导入 |
 | 修改代码后更新 | 保留 `data/`，更新源码后重新执行 editable 安装及 `doctor`；不要把新仓库覆盖到私人数据上 |
 
 ## 扩展与开发
@@ -213,7 +234,7 @@ BOSS 直聘与猎聘正在接入验证，尚未注册为可用来源。2026-10-2
 skills/scientific-interview/   Skill 与按需加载的流程说明
 contracts/                    protocol、数据格式与门禁
 slots/sites/                  企业插槽、Moka 租户与共享解析器
-slots/browsers/               codex-chrome
+slots/browsers/               codex-chrome, tabbit
 job_workbench/                校验、版本库、简历与本地服务
 templates/                    HTML 工作台
 examples/                     可公开的合成样例
@@ -234,6 +255,6 @@ python scripts/package_source.py
 
 最后一条命令须在本项目 Git 仓库中运行（ZIP 下载者可先 `git init`），检查发布候选文件中的常见路径与密钥残留，并将源码包和校验清单写入 `data/releases/`。它排除私人数据与开发环境，仍需人工审阅新增样例和截图；不能替代隐私审查。不要直接压缩整个本地工作目录作为发布包。
 
-当前已完成的检查见 [开源检查记录](docs/release-readiness.md)。网站入口、搜索范围与实测边界见 [网站支持列表](docs/site-support.md)。当前仅使用 Codex Chrome；其他网站、Windows、复杂多页简历和三位全新用户试用尚未完成完整验收。
+当前已完成的检查见 [开源检查记录](docs/release-readiness.md)。网站入口、搜索范围与实测边界见 [网站支持列表](docs/site-support.md)。当前提供 Codex Chrome 与 Tabbit；Tabbit 1.16.27 已完成 macOS 抽样验证，具体范围见支持列表。其他网站、Windows、复杂多页简历和三位全新用户试用尚未完成完整验收。
 
 源码采用 [MIT](LICENSE)；随附 Noto Sans SC 字体采用 [SIL OFL](assets/fonts/OFL.txt)，来源见 [字体说明](assets/fonts/README.md)。第三方网站内容、品牌和运行环境不随本项目源码获得授权。

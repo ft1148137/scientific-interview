@@ -1,6 +1,7 @@
 {
   "slots": [
     "slots/browsers/codex-chrome/manifest.json",
+    "slots/browsers/tabbit/manifest.json",
     "slots/sites/tencent/manifest.json",
     "slots/sites/demo-company/manifest.json",
     "slots/sites/manual/manifest.json",

@@ -8,7 +8,7 @@
 2. 导出 manifest 和 createSiteSlot(port)，实现 probe、discover、readJob。网站只使用 BrowserPort，禁止直接依赖 cua、CDP、网络请求或本机路径。
 3. 在 `slots/registry.json` 注册。不提供链接的列表先核对可见标题/地点再点击；不能从隐藏应用状态猜岗位 ID。
 4. 添加脱敏/合成样例，覆盖列表、详情、分页重复、缺 JD、布局变化、登录中断、明确停招和访问失败。
-5. 跑全部验证；再在 Chrome 插件中做只读实测，记录网址、日期、覆盖范围和失败场景。托管 ATS 需要单独适配和声明，不能自动放开所有子域名。
+5. 跑全部验证；再在所声明支持的浏览器插槽中做只读实测，记录网址、日期、覆盖范围和失败场景。托管 ATS 需要单独适配和声明，不能自动放开所有子域名。
 
 Moka 的共用解析器位于 `slots/sites/shared/moka.mjs`，通用列表/详情流程在 `shared/dom-site.mjs`。新租户仍需独立的 manifest 和薄 adapter，声明 company、domains、entry_url、path_prefix，再注册并做真实验证。不能只改企业名字就把任意 Moka 模板标为支持；标题、正文、分页和租户路径都要核对。独立企业网站可复用 DOM 流程或自行实现 SiteSlot，不需要改 BrowserPort 或核心。
 

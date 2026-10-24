@@ -1,6 +1,10 @@
-# Chrome 插件采集
+# 浏览器采集
 
 扫描 JSON、断点文件和临时截图统一保存到当前 data 档案的 inbox/ 或 data/dev/，遵循 [数据存储约定](storage.md)。
+
+沿用用户最近明确选择的浏览器，不重复确认：Tabbit 使用 [Tabbit 接入流程](tabbit.md)，Codex Chrome 使用下文。不得自动切换。两者共用 SiteSlot、runner 与入档门禁。
+
+## Codex Chrome
 
 先阅读宿主 `cua_repl` 文档并按其要求取得浏览器状态。所有浏览器操作由该工具执行，终端只负责本地 JSON、校验与 HTML。不能从终端启动 Playwright/CDP 或请求招聘网站接口替代插件访问。
 
@@ -39,7 +43,7 @@ BOSS 直聘与猎聘仍在接入验证，尚未注册，不得声明可自动搜
 
 腾讯适配器只支持声明的招聘域名；国际岗位可能跳到独立 ATS，未适配时记录拒绝而不是扩大域名权限。列表与详情布局变化应明确失败。缺完整 JD 以待补状态保留。
 
-新增网站和浏览器分别参考项目 `contracts/protocol.md` 与 `docs/contributing.md`。添加插槽后运行 `doctor` 和契约测试，再做真实插件验证。模拟样例通过不等于真实站点验证通过。
+新增网站和浏览器分别参考项目 `contracts/protocol.md` 与 `docs/contributing.md`。添加插槽后运行 `doctor` 和契约测试，再做对应浏览器的真实验证。模拟样例通过不等于真实站点验证通过。
 
 校招使用独立的 bytedance-campus / xiaohongshu-campus / tencent-campus / jd-campus / didi-campus / kuaishou-campus / moka-kimi-campus / moka-zhipu-campus / moka-step-campus，不能把校招 URL 放进社招来源或扩大原来源路径。这些插槽沿用 keyword 搜索和断点协议。腾讯、快手已验证第二页；京东分页出现 PAGE_NOT_CHANGED，滴滴无关键词分页出现加载超时，必须保留 partial 并按门禁重试。京东校园搜索使用 Enter，不能把仅点击按钮当作筛选生效。快手入口固定当前 2027 应届项目代码，届别切换后需重新核验；独立实习项目尚未注册。腾讯默认应届项目，滴滴限定 campus_apply/didiglobal/96064，不能扩大到日常实习租户。字节校园入口包含正式与实习；招聘项目、正式/实习和届别信息保存在 JD 开头的官网原文中，毕业资格和截止日期未写明时保持未知，不硬编码当年的届别。小红书仅支持校园职位列表，独立实习、REDstar 页面不在当前路径门禁内。工程实测使用 data/dev 下的隔离档案，不能把校招样本加入用户现有社招档案。
 

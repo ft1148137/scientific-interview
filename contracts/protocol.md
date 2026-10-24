@@ -3,7 +3,7 @@
 核心、网站和浏览器各自承担一件事。网站依赖 BrowserPort，不导入宿主工具；浏览器只访问页面，不解释岗位。核心校验、版本写入、去重与渲染共用一条入口。
 
 ```text
-主 Skill → SiteSlot → BrowserPort → codex-chrome → Chrome 插件
+主 Skill → SiteSlot → BrowserPort → tabbit / codex-chrome → 对应浏览器宿主
              ↓
        标准 ScanBatch → 数据门禁 → 版本库 → HTML
 ```
@@ -12,7 +12,7 @@
 
 `slots/registry.json` 列出 manifest.json。字段：id、kind(site/browser)、version、protocol_version(1)、entry。网站还需 domains（精确主机名）、entry_url、requires、search_fields；可选 company 固定企业名，path_prefix 限定共享 ATS 的租户路径（精确路径或其子路径，不接受相似前缀）。声明后由采集和入档两层检查，租户岗位必须提供 external_id，避免 hash 路由去重冲突；shared_detail_url=true 用于列表内展开详情且共用 URL 的来源，此类岗位也必须提供 ID，入档不能按 seen_urls 推断整页岗位均已核验；浏览器需 capabilities。JSON 清单用于 Python 校验，JS 导出的 manifest 用于运行；测试保持两者一致。
 
-注册只加载声明，不执行任意第三方代码。安装新源码需按用户环境的信任规则执行。当前只提供 codex-chrome；fixture 是测试记录来源，不是可用浏览器。
+注册只加载声明，不执行任意第三方代码。安装新源码需按用户环境的信任规则执行。当前提供 codex-chrome 和 tabbit；fixture 是测试记录来源，不是可用浏览器。
 
 ## BrowserPort
 
