@@ -4,7 +4,7 @@
 
 用 AI 搜岗、整理简历和复盘面试，把有来源的岗位信息、投递进度与个人资料持续保存在本地 HTML 工作台。
 
-这是一个开源 **Skill + 本地工具**，通过你自己的 AI 宿主完成对话与分析，脚本负责校验和保存。当前版本 **v0.12.0**，适合源码安装试用。真实网站支持腾讯、美团、高德、字节跳动、京东、滴滴、小红书、快手，以及 Moka 上的 Kimi、智谱、阶跃星辰，浏览器支持 **Tabbit 官方 CLI** 和 **Codex Chrome 插件** 两个独立插槽，登录和验证码由人完成。见 [Tabbit 安装与验证说明](skills/scientific-interview/references/tabbit.md)。
+这是一个开源 **Skill + 本地工具**，通过你自己的 AI 宿主完成对话与分析，脚本负责校验和保存。当前版本 **v0.13.0**，适合源码安装试用。新增 LinkedIn、Indeed、OpenAI、Google、Amazon 等 17 个海外实验性来源（搜索范围见下文）；既有网站支持腾讯、美团、高德、字节跳动、京东、滴滴、小红书、快手，以及 Moka 上的 Kimi、智谱、阶跃星辰，浏览器支持 **Tabbit 官方 CLI** 和 **Codex Chrome 插件** 两个独立插槽，登录和验证码由人完成。见 [Tabbit 安装与验证说明](skills/scientific-interview/references/tabbit.md)。
 
 ![合成数据的统计工作台](docs/assets/compact-charts.jpg)
 
@@ -89,8 +89,8 @@ python scripts/install_skill.py --check
 
 | 浏览器插槽 | 准备方式 | 已验证范围 |
 |---|---|---|
-| `tabbit` | 安装 [Tabbit](https://www.tabbit.com/)，完成首次引导，使用其官方 CLI 和随附 Skill；不需要 Codex Chrome 插件 | macOS、Tabbit 1.16.27：腾讯、Kimi（Moka）、字节校招、滴滴；腾讯/Kimi 的分页与续扫 |
-| `codex-chrome` | 在支持的 Codex 宿主中连接 Chrome 插件 | [支持记录](docs/site-support.md) 中的既有网站验证；这些结果不自动代表 Tabbit 也已通过 |
+| `tabbit` | 安装 [Tabbit](https://www.tabbit.com/)，完成首次引导，使用其官方 CLI 和随附 Skill；不需要 Codex Chrome 插件 | macOS、Tabbit 1.16.27：腾讯、Kimi（Moka）、字节校招、滴滴；腾讯/Kimi 的分页与续扫；1.18.21 新增 17 个海外来源抽样，限制见下文 |
+| `codex-chrome` | 在支持的 Codex 宿主中连接 Chrome 插件 | 既有网站及 17 个海外来源有可读样本；LinkedIn 已登录搜索已补测美国地区、前两页及续扫。见 [支持记录](docs/site-support.md#overseas-chrome)，不自动代表 Tabbit 也已通过 |
 
 macOS 可检查 Tabbit 的稳定启动器：
 
@@ -211,6 +211,22 @@ python -m job_workbench add-jd data/main/inbox/jd.txt --title '工程师' --comp
 
 校招示例：“在 Kimi、智谱、阶跃星辰搜索 Agent 校招岗位，使用三个 `moka-*-campus` 插槽，保留实习及毕业要求，先读取一小批并保存到我的档案。”
 
+
+### 海外来源（实验性）
+
+v0.13.0 新增 17 个来源，于 2026-10-26 使用 **macOS Tabbit 1.18.21** 各读取两条岗位记录。这是有界抽样，不代表全量抓取；原有 20 个来源保持注册。
+
+| 搜索方式 | 来源 / 插槽 ID | 范围 |
+|---|---|---|
+| 网站原生关键词 | LinkedIn (`linkedin`)、Indeed (`indeed`)、Anthropic (`anthropic`)、Google (`google`)、Microsoft (`microsoft`)、Amazon (`amazon`)、NVIDIA (`nvidia`)、Apple (`apple`)、Stripe (`stripe`)、Airbnb (`airbnb`)、Uber (`uber`)、Netflix (`netflix`)、Meta (`meta`) | Indeed 使用美国站；Apple 默认美国地点；通常接受 `keyword`；LinkedIn 另接受 `city`，可填国家、地区或城市。 |
+| 已加载标题筛选 | OpenAI (`openai`)、Databricks (`databricks`)、YC Work at a Startup (`yc`)、Wellfound (`wellfound`) | 关键词分词、不区分大小写，筛选当前已加载标题；Wellfound 仅限 **Software Engineer 分类**，不等于全站全文搜索。 |
+
+LinkedIn 可将默认条件保存为本地 `linkedin-default`：关键词 `Engineer`、用户填写的明确地区，不额外限制其他条件。首次使用时 Skill 提示填写关键词与目标国家/地区或城市，可选填方向，地区必须补齐；后续复用已保存版本。见 [通用模板](examples/linkedin-search.json) 和 [设置流程](skills/scientific-interview/references/international.md#linkedin-默认条件与首次使用)。已登录布局通过地点候选设置并核验地区，已通过 Chrome 美国地区、详情、前两页及续扫测试。此布局不支持默认全球搜索；有歧义的地区需选择页面完整名称。
+
+Google、Amazon、Anthropic、Microsoft 第二页实测通过，Amazon 断点续扫通过。其他分页限制、待核对 JD 和入口见 [支持矩阵](docs/site-support.md#overseas)。新增来源均不声明全量覆盖。后续 Codex Chrome 复核中，17 个来源均有列表与详情样本（包含 LinkedIn 已登录布局后续补测）；5 个来源加载重试后通过，Google 翻页第二次通过，见 [Chrome 验证记录](docs/site-support.md#overseas-chrome)。国家、远程范围、签证与毕业资格按原文核对；没有写明就保持未知。列表可能包含实习，本次未新增海外独立校招通道或申请状态同步。
+
+示例：“使用 Scientific Interview 和 Tabbit，在 `google`、`amazon`、`openai` 搜索 Machine Learning Engineer，保存一小批岗位，保留地点和申请资格依据，并说明覆盖范围。”沿用 Tabbit 接入指南，替换导入的网站 ID；采集不会自动跟随外部申请链接。
+
 BOSS 直聘与猎聘正在接入验证，尚未注册为可用来源。2026-10-23 登录后页面读取仍不稳定，搜索、分页和断点续扫尚未通过实测。
 
 百度招聘页在 2026-10-22 的两次接入尝试中均变为空白，尚未完成接入；美团已确认校园列表，但详情与综合入口共用 URL，独立校招插槽仍需采集及入档两层岗位类型校验；汽车、制造等非互联网企业暂缓。京东多个岗位共用列表 URL，通过岗位 ID 区分；打开来源链接后需按标题定位。真实验证采用小批次抽样，不代表已经扫描全部岗位。见 [支持与验证记录](docs/site-support.md)。
@@ -255,6 +271,6 @@ python scripts/package_source.py
 
 最后一条命令须在本项目 Git 仓库中运行（ZIP 下载者可先 `git init`），检查发布候选文件中的常见路径与密钥残留，并将源码包和校验清单写入 `data/releases/`。它排除私人数据与开发环境，仍需人工审阅新增样例和截图；不能替代隐私审查。不要直接压缩整个本地工作目录作为发布包。
 
-当前已完成的检查见 [开源检查记录](docs/release-readiness.md)。网站入口、搜索范围与实测边界见 [网站支持列表](docs/site-support.md)。当前提供 Codex Chrome 与 Tabbit；Tabbit 1.16.27 已完成 macOS 抽样验证，具体范围见支持列表。其他网站、Windows、复杂多页简历和三位全新用户试用尚未完成完整验收。
+当前已完成的检查见 [开源检查记录](docs/release-readiness.md)。网站入口、搜索范围与实测边界见 [网站支持列表](docs/site-support.md)。当前提供 Codex Chrome 与 Tabbit；Tabbit 1.16.27 和 1.18.21 已完成 macOS 抽样验证，具体范围见支持列表。其他网站、Windows、复杂多页简历和三位全新用户试用尚未完成完整验收。
 
 源码采用 [MIT](LICENSE)；随附 Noto Sans SC 字体采用 [SIL OFL](assets/fonts/OFL.txt)，来源见 [字体说明](assets/fonts/README.md)。第三方网站内容、品牌和运行环境不随本项目源码获得授权。

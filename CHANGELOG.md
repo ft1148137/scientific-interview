@@ -1,5 +1,18 @@
 # 变更记录
 
+## 0.13.0
+
+- LinkedIn 1.1.0 新增当前已登录搜索布局，支持可见地点候选选择、地区核验、详情展开、翻页与续扫；Chrome 美国前两页和 4 条详情通过隔离验证。关键词默认 Engineer，已登录搜索需填写明确地区，Skill 保存并复用条件；全球选项与歧义地区不静默通过。
+
+- 补充 Codex Chrome 扩展实测：16/17 个海外来源可读取，33 条含续扫样本入档通过；LinkedIn 初测登录布局失败后已补齐（见上），Google 翻页及部分首屏加载存在重试情况，详见支持列表。初测记录保留在支持列表。
+
+- 新增 17 个海外实验性 SiteSlot：LinkedIn、Indeed、Wellfound、YC、OpenAI、Anthropic、Google、Microsoft、Amazon、NVIDIA、Apple、Stripe、Databricks、Airbnb、Uber、Netflix、Meta；沿用浏览器和扫描协议。
+- 共用 Ashby、Greenhouse、Eightfold 适配，保持企业租户隔离；明确原生关键词与已加载标题筛选的差异，Wellfound 限 Software Engineer 分类，Indeed/Apple 限当前美国入口。
+- DOM 链接按浏览器实际 href 解析，支持带 base 的页面；Indeed 广告卡片使用可见 ID，LinkedIn 保留精确国家域名门禁，Stripe 同 ID 多地点合并为一条记录。
+- Netflix 点击后重载详情，修复标题已变化而 JD 仍属于上一职位的问题；增加英文登录/验证码提示识别，JD 未通过完整性检查时保持待核对。
+- Tabbit 1.18.21 抽样读取每站两条记录；Google、Amazon、Anthropic、Microsoft 第二页通过，Amazon 续扫通过。全部为 partial，不代表全量扫描或 Chrome 逐站通过。
+- 同步双语 README、Skill、协议和逐站支持记录；验证数据仅写入 data/dev/，未修改个人档案。
+
 ## 0.12.0
 
 - 新增 `tabbit` 浏览器插槽，使用官方 CLI 的可见浏览器任务；沿用网站、runner、断点和入档协议，无需改写网站插槽。

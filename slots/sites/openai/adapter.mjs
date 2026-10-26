@@ -1,0 +1,3 @@
+export const manifest = {"id": "openai", "kind": "site", "version": "1.0.0", "protocol_version": 1, "entry": "adapter.mjs", "domains": ["jobs.ashbyhq.com"], "entry_url": "https://jobs.ashbyhq.com/openai", "requires": ["navigate", "observe", "click", "wait"], "search_fields": ["keyword"], "keyword_mode": "visible-title", "company": "OpenAI", "path_prefix": "/openai"};
+import {createAshbySite} from '../shared/international.mjs';
+export const createSiteSlot = port => createAshbySite(port,manifest);

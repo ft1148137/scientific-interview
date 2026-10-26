@@ -1,0 +1,22 @@
+{
+  "id": "yc",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "domains": [
+    "www.workatastartup.com"
+  ],
+  "entry_url": "https://www.workatastartup.com/jobs",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ],
+  "keyword_mode": "visible-title",
+  "path_prefix": "/jobs"
+}

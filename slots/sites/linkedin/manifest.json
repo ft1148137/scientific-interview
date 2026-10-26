@@ -1,0 +1,34 @@
+{
+  "id": "linkedin",
+  "kind": "site",
+  "version": "1.1.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "domains": [
+    "www.linkedin.com",
+    "sg.linkedin.com",
+    "kr.linkedin.com",
+    "id.linkedin.com",
+    "ae.linkedin.com",
+    "in.linkedin.com",
+    "uk.linkedin.com",
+    "cn.linkedin.com",
+    "au.linkedin.com",
+    "ie.linkedin.com",
+    "ca.linkedin.com"
+  ],
+  "entry_url": "https://www.linkedin.com/jobs/search/",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait",
+    "fill"
+  ],
+  "search_fields": [
+    "keyword",
+    "city"
+  ],
+  "keyword_mode": "native",
+  "path_prefix": "/jobs"
+}

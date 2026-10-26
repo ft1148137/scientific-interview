@@ -1,0 +1,23 @@
+{
+  "id": "apple",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "domains": [
+    "jobs.apple.com"
+  ],
+  "entry_url": "https://jobs.apple.com/en-us/search",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ],
+  "keyword_mode": "native",
+  "company": "Apple",
+  "path_prefix": "/en-us"
+}

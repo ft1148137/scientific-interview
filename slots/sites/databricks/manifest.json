@@ -1,0 +1,23 @@
+{
+  "id": "databricks",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "domains": [
+    "www.databricks.com"
+  ],
+  "entry_url": "https://www.databricks.com/company/careers/open-positions",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ],
+  "keyword_mode": "visible-title",
+  "company": "Databricks",
+  "path_prefix": "/company/careers"
+}

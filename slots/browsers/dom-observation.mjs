@@ -11,15 +11,16 @@ export const readDOM = ({fields, lists, controls}) => {
         };
         const readField = (root, config) => {
           if (typeof config==='string') return text(firstVisible(root,config));
-          const element=firstVisible(root,config.selector);
-          if (!/^(?:href|title|[\w-]*id)$/i.test(config.attribute || '')) throw new Error('UNSUPPORTED_ATTRIBUTE');
-          return element ? element.getAttribute(config.attribute) : null;
+          const element=config.selector === ':scope' ? root : Array.from(root.querySelectorAll(config.selector)).filter(visible)[config.index || 0];
+          if (!config.attribute) return text(element);
+          if (!/^(?:href|title|componentkey|value|[\w-]*id)$/i.test(config.attribute || '')) throw new Error('UNSUPPORTED_ATTRIBUTE');
+          return element ? (config.attribute === 'href' && element.href ? element.href : element.getAttribute(config.attribute)) : null;
         };
         const readFields = (root, config) => Object.fromEntries(Object.entries(config).map(([key, selector]) => [key,readField(root,selector)]));
         return {
           text:document.body.innerText, fields:readFields(document,fields),
           clipped_fields:Object.entries(fields).filter(([,selector])=>clipped(firstVisible(document,typeof selector==='string'?selector:selector.selector))).map(([key])=>key),
-          lists:Object.fromEntries(Object.entries(lists).map(([key, config]) => [key, Array.from(document.querySelectorAll(config.selector)).map((e,index)=>visible(e)?({index,text:text(e),href:e.getAttribute('href'),clipped:clipped(e),...readFields(e,config.fields || {})}):null).filter(Boolean)])),
+          lists:Object.fromEntries(Object.entries(lists).map(([key, config]) => [key, Array.from(document.querySelectorAll(config.selector)).map((e,index)=>visible(e)?({index,text:text(e),href:e.getAttribute('href') ? e.href || e.getAttribute('href') : null,clipped:clipped(e),...readFields(e,config.fields || {})}):null).filter(Boolean)])),
           controls:Object.fromEntries(controls.map(selector=>[selector,Array.from(document.querySelectorAll(selector)).map((e,index)=>({index,text:text(e),label:e.getAttribute('aria-label') || e.getAttribute('title') || e.parentElement?.getAttribute('title') || '',tag:e.tagName,type:e.getAttribute('type'),visible:visible(e),disabled:e.hasAttribute('disabled') || e.getAttribute('aria-disabled')==='true'}))]))
         };
       };

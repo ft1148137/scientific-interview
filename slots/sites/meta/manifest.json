@@ -1,0 +1,22 @@
+{
+  "id": "meta",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "domains": [
+    "www.metacareers.com"
+  ],
+  "entry_url": "https://www.metacareers.com/jobsearch/",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ],
+  "keyword_mode": "native",
+  "company": "Meta"
+}

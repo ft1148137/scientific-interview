@@ -1,6 +1,6 @@
 # 网站支持与验证范围
 
-v0.12.0；社招抽样实测日期：2026-10-22，九个校招来源抽样实测日期：2026-10-23。当前注册 20 个真实网站来源（11 个既有来源和 9 个独立校招来源），另有手工录入、合成演示和 2 个浏览器插槽，共 24 份声明。文档复核不代表重新访问了网站。既有网站实测使用 Codex Chrome 插件；2026-10-24 新增 Tabbit 抽样实测（见文末），登录和验证码由人完成。每个网站均是可独立注册的 SiteSlot，Moka 平台解析与企业租户配置分开维护。
+v0.13.0；社招抽样实测日期：2026-10-22，九个校招来源抽样实测日期：2026-10-23。当前注册 37 个真实网站来源（11 个既有来源、9 个独立校招来源和 17 个海外实验性来源），另有手工录入、合成演示和 2 个浏览器插槽，共 41 份声明。文档复核不代表重新访问了网站。既有网站实测使用 Codex Chrome 插件；2026-10-24 新增 Tabbit 抽样实测（见文末），登录和验证码由人完成。每个网站均是可独立注册的 SiteSlot，Moka 平台解析与企业租户配置分开维护。
 
 | 企业 | Slot ID / 官方入口 | 关键词与详情 | 已有翻页验证 |
 |---|---|---|---|
@@ -98,3 +98,66 @@ Agent 查询均不足两页；无关键词目录中 Kimi、阶跃星辰第二页
 Tabbit 端口复核每次操作的快照、控件及目标域名；点击时汇总页面变化后识别新标签，避免提前将列表误作详情。等待替换内容直接比较可见 DOM 文本，不能仅凭 locator 存在判断搜索或翻页成功。京东校招 SiteSlot 升为 1.0.1，补充 fill 能力声明及搜索结果变化检查；旧版本断点不能直接复用。
 
 真实样本、失败回执和开发日志仅放在 `data/dev/tabbit/`，成功样本使用隔离档案入档与去重验证。主档案不变。未逐站重测其他企业、BOSS/猎聘、Windows、登录交接恢复和验证码；不能将这些项目列为本轮已通过。安装与续扫见 [Tabbit 接入说明](../skills/scientific-interview/references/tabbit.md)。
+
+<a id="overseas"></a>
+## 海外来源（2026-10-26，v0.13.0）
+
+本轮通过 macOS Tabbit 1.18.21 的官方 CLI 访问可见页面。17 个来源各读取 2 条岗位，Amazon 断点续读 1 条，共 35 条；30 条通过职责/要求完整性检查，5 条保留原文及 `jd_complete=false`。35 条通过正式 `ingest_scan` 边界及 CLI 入档、HTML 渲染检查；在隔离内存档案重复导入仍为 35 条。CLI 档案与报告位于 `data/dev/`，未改用户主档案。工程原文、批次与日志仅存 `data/dev/`；发布源码只含合成测试。后续 Codex Chrome 验证见下节；Windows 与申请状态同步仍未实测。
+
+所有批次均为 partial。原生搜索仅声明 `keyword`；“标题筛选”指当前已加载列表中，不区分大小写地匹配全部空格分词，不能当作全站全文搜索。无匹配或未读到的岗位不自动判为下线。以下“2/2”表示两条样本通过完整性规则，不代表该来源其他 JD 一定完整。
+
+| 来源 / Slot ID | 已验证入口 | 关键词与详情样本 | 分页范围 |
+|---|---|---|---|
+| LinkedIn / `linkedin` | [入口](https://www.linkedin.com/jobs/search/) | 原生关键词，Worldwide；完整性 0/2，保留正文待核对 | 首批可见列表；无限滚动未接入 |
+| Indeed / `indeed` | [入口](https://www.indeed.com/jobs) | 原生关键词，美国站；完整性 1/2，另一条正文短 | 有下一页适配，未实测第二页 |
+| Wellfound / `wellfound` | [入口](https://wellfound.com/role/software-engineer) | Software Engineer 分类内标题筛选；完整性 2/2 | 首批可见列表；其他角色和分页未接入 |
+| YC Work at a Startup / `yc` | [入口](https://www.workatastartup.com/jobs) | 标题筛选；真实企业及薪资/签证等可见字段；完整性 1/2 | 首批可见列表；更多加载未接入 |
+| OpenAI / `openai` | [入口](https://jobs.ashbyhq.com/openai) | Ashby 独立租户；标题筛选；完整性 2/2 | 当前已加载列表；不声明全量 |
+| Anthropic / `anthropic` | [入口](https://job-boards.greenhouse.io/anthropic) | Greenhouse 独立租户；原生关键词；完整性 2/2 | 第二页 50 条，仍有后续 |
+| Google / `google` | [入口](https://www.google.com/about/careers/applications/jobs/results/) | 原生关键词；完整性 2/2 | 第二页 20 条，仍有后续 |
+| Microsoft / `microsoft` | [入口](https://apply.careers.microsoft.com/careers) | Eightfold 现站入口；原生关键词；完整性 2/2 | 第二页 10 条，仍有后续 |
+| Amazon / `amazon` | [入口](https://www.amazon.jobs/en/search) | 原生关键词；完整性 2/2；续扫新增 1 条完整 JD，无重复 | 第二页 10 条，仍有后续 |
+| NVIDIA / `nvidia` | [入口](https://jobs.nvidia.com/careers) | Eightfold 现站入口；原生关键词；完整性 2/2 | 共用分页适配，未单独实测第二页 |
+| Apple / `apple` | [入口](https://jobs.apple.com/en-us/search) | 原生关键词，默认美国地点；完整性 2/2 | 有下一页适配，未实测第二页 |
+| Stripe / `stripe` | [入口](https://stripe.com/careers/search) | 原生关键词；同 ID 多地点保留一条；完整性 2/2 | 有下一页适配，未实测第二页 |
+| Databricks / `databricks` | [入口](https://www.databricks.com/company/careers/open-positions) | 标题筛选；排除站点导航；完整性 2/2 | 当前已加载目录；不声明全量 |
+| Airbnb / `airbnb` | [入口](https://careers.airbnb.com/positions/) | 原生关键词；完整性 2/2 | 有下一页适配，未实测第二页 |
+| Uber / `uber` | [入口](https://jobs.uber.com/en/jobs/) | 原生关键词；完整性 2/2 | 有下一页适配，未实测第二页 |
+| Netflix / `netflix` | [入口](https://explore.jobs.netflix.net/careers) | 原生关键词；点击后重载详情防止旧正文；完整性 1/2 | 首批 10 张可见卡片；“显示更多职位”未接入 |
+| Meta / `meta` | [入口](https://www.metacareers.com/jobsearch/) | 原生关键词；保留简介、职责、要求等详情区域；完整性 2/2 | 首批可见列表；翻页未接入 |
+
+入口重定向已按实际页面核验：OpenAI 使用 Ashby 的 `/openai`，Anthropic 使用 Greenhouse 的 `/anthropic`，Microsoft 使用 `apply.careers.microsoft.com`，Netflix 使用 `explore.jobs.netflix.net`。这些是独立声明的租户/入口，不能扩大为整个平台任意企业。
+
+LinkedIn 本轮列表返回 www、sg、kr、id、ae、in、uk、cn、au、ie、ca 等精确国家主机；列表与详情核验岗位 ID、标题和招聘企业，入档统一为 www 的岗位 ID 链接。未声明的国家主机保持域名拒绝，不偷偷放开整个域名后缀。没有自动点击外部申请链接。
+
+Indeed 的普通/广告卡片均从可见链接 ID 提取岗位键，规范为 `/viewjob?jk=…`，不保存广告跟踪跳转。Wellfound 目前仅覆盖已验证 Software Engineer 分类，不能把其他角色关键词传入后声称全站搜索。Stripe 保留多个办公/远程地点，不将同一 ID 拆成多次岗位。Google 使用浏览器解析后的 href，正确处理页面 base。
+
+Netflix 的动态详情曾出现标题和 URL 已更新但正文仍属于前一岗位；适配器现会重载实际详情 URL，再核验标题、ID 和 JD。两个最终样本正文已经区分，第二条的非标准标题仍保持待核对。Uber 卡片/详情的“Job removed”包含收藏反馈语义，不能仅凭这句判为岗位停招。
+
+海外列表可能包含学生/实习职位，本轮不宣称覆盖独立校招入口、所有国家或所有岗位。保留原文中的签证、薪资、地点和远程限制；未明示的资格保持未知。页内认证/人机验证由页面门禁停止，登录入口存在本身不等于必须登录；未实施绕过或接口抓取。
+
+<a id="overseas-chrome"></a>
+## Codex Chrome 扩展复核（2026-10-26，v0.13.0）
+
+使用现有 `codex-chrome` BrowserPort、相同的 17 个 SiteSlot 和 runner，经已连接的 Chrome 扩展实测；没有切回 Tabbit、访问招聘接口或修改插槽代码。工程关键词为 `Engineer`，只按每个来源既有的关键词模式和地区/分类范围验证。
+
+| 结果 | 来源 | 样本与限制 |
+|---|---|---|
+| 首次读取通过 | OpenAI、Anthropic、Google、Microsoft、Amazon、Stripe、Apple、Airbnb、Meta、Wellfound、YC | 每站 2 条岗位；YC 其中 1 条 JD 待核对 |
+| 首次加载超时，断点重试通过 | NVIDIA、Databricks、Uber、Netflix、Indeed | 每站 2 条岗位；Netflix、Indeed 各 1 条 JD 待核对。Netflix 两条记录的 ID 与正文不同 |
+| 初测失败，后续已修复（见下文） | LinkedIn | 当前 Chrome 已登录，搜索跳到 `/jobs/search-results`，页面使用不同列表结构并带入账号地区。现有匿名列表选择器无匹配，最终为 RETRY/BROWSER_ERROR，0 条入档；不能把该页面当成已执行 Worldwide 检索，也不要求用户退出账号来绕过差异 |
+
+16 个来源共读取 32 条岗位，Amazon 续扫新增 1 条且无重复。33 条通过正式入档边界及隔离 CLI/HTML 流程，重复导入仍为 33 条；30 条通过 JD 完整性检查、3 条待核对。失败批次、断点、样本与测试档案仅存 `data/dev/overseas-chrome/`，不写用户主档案。
+
+分页抽查：Amazon 第二页 10 条、Anthropic 50 条、Microsoft 10 条；Google 首次返回 PAGE_NOT_CHANGED，随后观察页面已切换，重新执行发现第二页通过、20 条。四站均仍有后续页，coverage 保持 partial。这是一次小样本兼容性测试，首次加载与 Google 翻页存在时序波动，不能承诺每次无需重试。其余来源分页未在 Chrome 逐站验证。
+
+此结果补充前一节 Tabbit 的抽样记录：Tabbit 未登录环境的 LinkedIn 成功不代表 Chrome 已登录界面已适配。LinkedIn 的后续修复与当前边界见下一节。
+
+## LinkedIn 已登录页面补测（2026-10-26，插槽 1.1.0）
+
+- 保留匿名入口；新增当前 `/jobs/search-results` 布局。通过可见地点候选设置并核验国家/地区，先前的 location URL 参数被忽略问题不再静默通过。
+- Chrome 当前德语界面下，美国与中国地区自动切换通过。美国前两页各 25 条岗位引用，详情采集 3 条、断点续扫新增 1 条且无重复。4 条均通过隔离入档；2 条 JD 完整、2 条保留待核对。没有提交申请或上传简历。
+- 岗位 ID 来自可见卡片 componentkey，详情再次核验 URL ID、正文区域 ID、标题和企业；只保存岗位正文证据。展开正文后仍不满足完整性检查的记录不评分。
+- 保留 partial；只验证前两页和有界续扫，不声明全量。新版登录分支未在 Tabbit 上复测，其他登录布局和语言组合也未穷尽验证。
+- 地区需完整匹配候选，美国支持常用中英文名称及实测德语名称；同名城市不自动挑第一项。已登录页面没有可核验的 Worldwide 选项，缺少地区时返回 REGION_REQUIRED；用户在 Skill 中补齐条件后保存默认。见 [填写流程](../skills/scientific-interview/references/international.md#linkedin-默认条件与首次使用)。
+- 验证文件位于被忽略的 `data/dev/linkedin-signed-in/`，未进入个人岗位档案。旧版本断点需按版本不兼容处理，不能直接改版本号冒充已核验。

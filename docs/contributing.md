@@ -16,6 +16,8 @@ Moka 的共用解析器位于 `slots/sites/shared/moka.mjs`，通用列表/详�
 
 对于列表内展开详情的站点，参考 `slots/sites/jd/adapter.mjs`：从可见控件取得稳定 ID，点击实际展开控件后才读取正文，不读取隐藏详情代替操作。共用 URL 的网站声明 shared_detail_url，并验证多岗位去重、断点续扫与核心 seen_ids 的范围；保留真实列表 URL，不合成不存在的岗位链接。
 
+海外来源可复用 `slots/sites/shared/international.mjs` 中的 Ashby、Greenhouse 和 Eightfold 工厂。必须为真实企业声明精确域名和租户路径，逐站验证列表、详情、身份和分页；声明 `keyword_mode` 并说明地区/分类范围。不能因为 ATS 模板相同就默认注册全部租户；全文未读完则保留 `jd_complete=false`。
+
 ## 添加浏览器
 
 在 `slots/browsers/<id>/` 实现相同 BrowserPort。声明实际支持的能力；浏览器只做页面访问，不加入网站特例或评分。遵守宿主的权限、人工登录和交接机制。插件断连不能悄悄切到另一个访问方式。

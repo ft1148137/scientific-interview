@@ -4,7 +4,7 @@ English | [简体中文](README.zh-CN.md)
 
 Use AI to find jobs, refine your resume, and review interviews. Keep job sources, application progress, and personal records in a local HTML dashboard.
 
-An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.12.0** is available for trial use from the complete source tree. Supported job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access supports **Tabbit's official CLI** and **Codex's Chrome extension** as separate slots; you handle login and verification challenges. See the [Tabbit setup and validation guide](skills/scientific-interview/references/tabbit.md).
+An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.13.0** is available for trial use from the complete source tree. Seventeen international sources are now available experimentally, including LinkedIn, Indeed, OpenAI, Google and Amazon (see search scopes below). Existing job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access supports **Tabbit's official CLI** and **Codex's Chrome extension** as separate slots; you handle login and verification challenges. See the [Tabbit setup and validation guide](skills/scientific-interview/references/tabbit.md).
 
 ![Job search dashboard with synthetic statistics](docs/assets/compact-charts.jpg)
 
@@ -89,8 +89,8 @@ Skip this step for the demo or manual JD import. Choose a browser explicitly; co
 
 | Browser slot | Setup | Verified scope |
 |---|---|---|
-| `tabbit` | Install [Tabbit](https://www.tabbit.com/), finish its setup, then use its official CLI and bundled Skill. No Codex Chrome extension is needed. | macOS, Tabbit 1.16.27: Tencent, Kimi (Moka), ByteDance campus and DiDi; Tencent/Kimi pagination and resumption |
-| `codex-chrome` | Connect the Chrome extension in a supported Codex host. | Existing site checks listed in the [support record](docs/site-support.md); results do not automatically carry over to Tabbit |
+| `tabbit` | Install [Tabbit](https://www.tabbit.com/), finish its setup, then use its official CLI and bundled Skill. No Codex Chrome extension is needed. | macOS, Tabbit 1.16.27: Tencent, Kimi (Moka), ByteDance campus and DiDi; Tencent/Kimi pagination and resumption; 1.18.21: 17 international sources, with limits below |
+| `codex-chrome` | Connect the Chrome extension in a supported Codex host. | Existing site checks plus samples from 17 international sources; signed-in LinkedIn passed US scope, two pages and resumption. See the [support record](docs/site-support.md#overseas-chrome); results do not automatically carry over to Tabbit |
 
 On macOS, check that Tabbit's stable launcher is available:
 
@@ -211,6 +211,22 @@ The three new Moka campus slots were checked on 2026-10-23 with 9 sample JDs and
 
 Try: “Search Kimi, Zhipu, and StepFun campus roles for Agent. Use the three `moka-*-campus` slots, retain internship and graduation requirements, and save a small batch to my archive.”
 
+
+### International sources (experimental)
+
+v0.13.0 adds 17 sources, sampled through **Tabbit 1.18.21 on macOS** on 2026-10-26. Each produced two job records; this is bounded verification, not full-catalog coverage. The existing 20 sources remain registered.
+
+| Search mode | Sources / slot IDs | Scope |
+|---|---|---|
+| Native keyword search | LinkedIn (`linkedin`), Indeed (`indeed`), Anthropic (`anthropic`), Google (`google`), Microsoft (`microsoft`), Amazon (`amazon`), NVIDIA (`nvidia`), Apple (`apple`), Stripe (`stripe`), Airbnb (`airbnb`), Uber (`uber`), Netflix (`netflix`), Meta (`meta`) | Indeed uses the US site; Apple defaults to US locations. These accept `keyword`; LinkedIn also accepts `city` as country, region or city text. |
+| Filter rendered titles | OpenAI (`openai`), Databricks (`databricks`), YC Work at a Startup (`yc`), Wellfound (`wellfound`) | Case-insensitive title tokens on the loaded list. Wellfound currently uses only its **Software Engineer** category; these are not global full-text searches. |
+
+LinkedIn defaults can be saved locally as `linkedin-default`: `Engineer`, a user-supplied country/region/city, no additional filters. On first use, the Skill asks for keywords and a country/region/city (optionally a career direction), with an explicit region required; later runs reuse the saved version. See the [template](examples/linkedin-search.json) and [setup workflow](skills/scientific-interview/references/international.md#linkedin-默认条件与首次使用). The signed-in layout selects visible location suggestions and verifies the applied region. Chrome checks passed US search, details, two pages and resumption. This layout has no verified global option; ambiguous locations require a full suggestion label.
+
+Google, Amazon, Anthropic and Microsoft passed second-page checks; Amazon also passed checkpoint resumption. Other pagination limits, incomplete descriptions, and entry URLs are documented in the [support matrix](docs/site-support.md#overseas). No full catalog is claimed. Codex Chrome checks now include list/detail samples from all 17 sources, including the later signed-in LinkedIn fix. Five sources needed a loading retry; Google pagination passed on a second attempt. See the [Chrome validation record](docs/site-support.md#overseas-chrome). Country, remote eligibility, visa sponsorship and graduation requirements must be checked in the original JD; missing information stays unknown. Listings can include internships, but this release does not add dedicated international campus channels or application-status synchronization.
+
+Example: “Use Scientific Interview with Tabbit to search `google`, `amazon` and `openai` for Machine Learning Engineer. Save a small batch, preserve location and eligibility evidence, and report search coverage.” Follow the existing Tabbit guide, replacing the imported site ID. Collection never follows an external application link automatically.
+
 BOSS Zhipin and Liepin are under integration testing and are not registered sources yet. Logged-in page access remained unstable on 2026-10-23; search, pagination, and checkpoint scans have not passed live verification.
 
 Baidu's recruitment page became blank during both integration attempts on 2026-10-22, so it is not registered as supported. Meituan has a campus list, but shares detail URLs with the general portal; a dedicated campus slot still needs job-type validation at collection and import. Automotive, manufacturing, and other non-internet employers remain deferred. JD jobs can share a list URL and are distinguished by job ID; opening a source link requires locating the job by title. Live verification used small samples, not exhaustive scans. See [support and verification records](docs/site-support.md).
@@ -255,6 +271,6 @@ python scripts/package_source.py
 
 The last command must run inside this project's Git repository; ZIP users can run `git init` first. It checks release candidates for common personal paths and secret patterns, then writes a source archive and checksum manifest to `data/releases/`. It excludes private data and development environments, but new fixtures and screenshots still require review. It does not replace a privacy audit. Do not publish a ZIP of the entire local working directory.
 
-See the [release-readiness record](docs/release-readiness.md) for completed checks and the [website support list](docs/site-support.md) for entry points, search scopes, and live verification limits. Codex Chrome and Tabbit are registered browser slots. Tabbit 1.16.27 was sampled on macOS; see the browser guide for verified sites and limits. Other websites, Windows, complex multi-page resumes, and trials with three new real users have not completed full acceptance testing.
+See the [release-readiness record](docs/release-readiness.md) for completed checks and the [website support list](docs/site-support.md) for entry points, search scopes, and live verification limits. Codex Chrome and Tabbit are registered browser slots. Tabbit 1.16.27 and 1.18.21 were sampled on macOS; see the browser guide for verified sites and limits. Other websites, Windows, complex multi-page resumes, and trials with three new real users have not completed full acceptance testing.
 
 Source code is licensed under [MIT](LICENSE). The bundled Noto Sans SC font uses [SIL OFL](assets/fonts/OFL.txt); see its [source notes](assets/fonts/README.md). This project's license does not grant rights to third-party website content, brands, or runtime environments.

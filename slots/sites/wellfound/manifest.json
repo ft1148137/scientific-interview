@@ -1,0 +1,21 @@
+{
+  "id": "wellfound",
+  "kind": "site",
+  "version": "1.0.0",
+  "protocol_version": 1,
+  "entry": "adapter.mjs",
+  "domains": [
+    "wellfound.com"
+  ],
+  "entry_url": "https://wellfound.com/role/software-engineer",
+  "requires": [
+    "navigate",
+    "observe",
+    "click",
+    "wait"
+  ],
+  "search_fields": [
+    "keyword"
+  ],
+  "keyword_mode": "visible-title"
+}

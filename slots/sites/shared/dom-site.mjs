@@ -17,6 +17,7 @@ export function createDOMSite(port, config) {
   }
   function canonical(url) {
     const u = new URL(url);
+    if (config.canonical) return config.canonical(u);
     for (const key of ['track_id','highlightType','from','source']) u.searchParams.delete(key);
     if (config.hashJobs) { u.search = ''; u.hash = '#/job/' + config.id(u); }
     u.searchParams.sort();
@@ -71,8 +72,10 @@ export function createDOMSite(port, config) {
       for (const card of data.lists.jobs) {
         if (!card.title) return gate('REJECT','LAYOUT_CHANGED','岗位标题字段缺失。');
         const ref = {...(card.external_id?{external_id:card.external_id}:{}),...(card.company?{company:card.company}:{}),title:card.title,location:config.location ? config.location(card) : card.location || null,index:card.index,card_text:card.text,page,query};
-        if (card.href && !card.href.startsWith('javascript:')) {
-          const url = new URL(card.href, data.url).href;
+        const href = config.refURL ? config.refURL(card, data) : card.href;
+        if (config.refURL && !href) return gate('REJECT','DETAIL_ID_MISSING');
+        if (href && !href.startsWith('javascript:')) {
+          const url = new URL(href, data.url).href;
           if (!scope(url, true)) return gate('REJECT','SITE_SCOPE_REJECTED','列表包含非本租户的详情链接。');
           ref.url = canonical(url);
           ref.external_id = config.id(new URL(url));
@@ -100,6 +103,12 @@ export function createDOMSite(port, config) {
       }
       if (result.gate !== 'PASS') return result;
       if (!scope(result.data.url,true)) return gate('REJECT','DETAIL_ID_MISSING','未进入有稳定岗位 ID 的详情页。');
+      // Some inline portals update the title before replacing the previous JD.
+      if (config.reloadDetail && !ref.url) {
+        result = checked(await port.navigate(result.data.url,{reload:true}));
+        if (result.gate !== 'PASS') return result;
+        if (!scope(result.data.url,true)) return gate('REJECT','DETAIL_ID_MISSING');
+      }
       const closed = result.data.text.match(/该(?:职位|岗位)已(?:下线|停止招聘)|职位已失效/);
       const expected = ref.external_id || (ref.url ? config.id(new URL(ref.url)) : null);
       if (expected && config.id(new URL(result.data.url)) !== expected) return gate('REJECT','IDENTITY_CHANGED');

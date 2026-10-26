@@ -23,6 +23,23 @@
     "slots/sites/jd-campus/manifest.json",
     "slots/sites/moka-kimi-campus/manifest.json",
     "slots/sites/moka-zhipu-campus/manifest.json",
-    "slots/sites/moka-step-campus/manifest.json"
+    "slots/sites/moka-step-campus/manifest.json",
+    "slots/sites/linkedin/manifest.json",
+    "slots/sites/indeed/manifest.json",
+    "slots/sites/wellfound/manifest.json",
+    "slots/sites/yc/manifest.json",
+    "slots/sites/openai/manifest.json",
+    "slots/sites/anthropic/manifest.json",
+    "slots/sites/google/manifest.json",
+    "slots/sites/microsoft/manifest.json",
+    "slots/sites/amazon/manifest.json",
+    "slots/sites/nvidia/manifest.json",
+    "slots/sites/apple/manifest.json",
+    "slots/sites/stripe/manifest.json",
+    "slots/sites/databricks/manifest.json",
+    "slots/sites/airbnb/manifest.json",
+    "slots/sites/uber/manifest.json",
+    "slots/sites/netflix/manifest.json",
+    "slots/sites/meta/manifest.json"
   ]
 }

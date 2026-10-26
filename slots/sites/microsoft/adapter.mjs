@@ -1,0 +1,3 @@
+export const manifest = {"id": "microsoft", "kind": "site", "version": "1.0.0", "protocol_version": 1, "entry": "adapter.mjs", "domains": ["apply.careers.microsoft.com"], "entry_url": "https://apply.careers.microsoft.com/careers", "requires": ["navigate", "observe", "click", "wait"], "search_fields": ["keyword"], "keyword_mode": "native", "company": "Microsoft", "path_prefix": "/careers"};
+import {createEightfoldSite} from '../shared/international.mjs';
+export const createSiteSlot = port => createEightfoldSite(port,manifest);
