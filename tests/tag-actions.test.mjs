@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {loadI18n} from './i18n-helper.mjs';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
@@ -14,6 +15,7 @@ function fixture({writable=true,applied=[]}={}){
     $:id=>nodes[id],document:{activeElement:null},window:{addEventListener:(name,fn)=>events[name]=fn},
     renderJobs:()=>views.push(Object.values(data.jobs).filter(j=>j.decision==='undecided').map(j=>j.current.key)),showDetail:key=>details.push(key),
     fetch:(url,options)=>new Promise((resolve,reject)=>requests.push({url,body:options?JSON.parse(options.body):null,resolve,reject}))});
+  loadI18n(context);
   vm.runInContext('let tagBusy=false,tagBlocked=false,sessionToken="synthetic-token";const tagQueue=[],pendingTags=new Map();'+handlers,context);
   const call=(key,value)=>context.saveTag(key,value);
   const respond=(i,status,body)=>requests[i].resolve({ok:status===200,json:async()=>body});
@@ -75,4 +77,12 @@ test('close clicks bubbling through a job container do not reopen details; job b
   close.onclick();events.click({target:close});assert.equal(dialog.open,false);assert.deepEqual(opened,[]);
   events.click({target:element('span',{},element('button',{jobKey:'b'}))});
   assert.equal(dialog.open,true);assert.deepEqual(opened,['b']);
+});
+test('changing language while a save is pending preserves the queued decision and localizes its result',async()=>{
+  const f=fixture();const done=f.call('a','shortlist');
+  vm.runInContext("language='en'",f.context);
+  f.respond(0,200,{decision:'shortlist',history:[{decision:'shortlist'}],revision:11});await done;
+  assert.equal(f.data.jobs.a.decision,'shortlist');assert.equal(f.data.revision,11);
+  assert.match(f.nodes['tag-message'].textContent,/Saved as/);
+  assert.match(f.nodes['tag-message'].textContent,/合成岗位 a/);
 });

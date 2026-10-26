@@ -19,6 +19,21 @@ class WorkbenchTests(unittest.TestCase):
   self.temp=tempfile.TemporaryDirectory(dir=ROOT/"data/tmp");self.addCleanup(self.temp.cleanup)
   self.store=Store(self.temp.name);self.store.init()
   self.first=read_json(ROOT/'examples/scan-first.json');self.second=read_json(ROOT/'examples/scan-second.json')
+ def test_bilingual_render_is_standalone_and_preserves_the_archive(self):
+  self.store.update(lambda state:ingest_scan(state,self.first))
+  before=self.store.path.read_bytes()
+  for share in (False,True):
+   html=Path(render_dashboard(self.store,share=share)['output']).read_text()
+   self.assertIn('<html lang="en">',html)
+   self.assertIn('id="language"',html)
+   self.assertIn('const ENGLISH_UI = {',html)
+   self.assertNotIn('__I18N_',html)
+   self.assertNotIn('__STATISTICS_SCRIPT__',html)
+   script=html.split("<script>\n'use strict';",1)[1].split('</script>',1)[0]
+   # Compile the actual assembled script, including inline dictionary and chart code.
+   checked=subprocess.run(['node','--check','--input-type=commonjs'],input=script,text=True,capture_output=True)
+   self.assertEqual(checked.returncode,0,checked.stderr)
+  self.assertEqual(self.store.path.read_bytes(),before)
  def test_manual_activity_preserves_job_evidence_and_is_private_and_reversible(self):
   self.store.update(lambda s:ingest_scan(s,self.first));key='demo-company:id:101'
   before=self.store.read()

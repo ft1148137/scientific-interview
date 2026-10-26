@@ -5,7 +5,7 @@ description: 用企业招聘网站搜岗并维护本地 HTML 求职档案；支�
 
 # Scientific Interview
 
-当前功能版本：v0.13.0（与项目 README 和 pyproject.toml 同步）。
+当前功能版本：v0.14.0（与项目 README 和 pyproject.toml 同步）。
 
 使用用户自己的 AI 环境完成判断，用随项目提供的确定性脚本保存资料。先定位项目根目录：本文件上三级目录应包含 `job_workbench/`；安装时使用符号链接保留这一关系，或设置 `SCIENTIFIC_INTERVIEW_ROOT`。运行 `python3 <本目录>/scripts/workbench.py doctor` 检查环境。若已按 README 安装，优先使用 `<项目根目录>/data/dev/venv/bin/python`（Windows 为 `data/dev/venv/Scripts/python.exe`），确保能读取简历依赖；否则使用宿主提供的 Python 并按 doctor 结果补齐环境。
 
@@ -23,7 +23,8 @@ description: 用企业招聘网站搜岗并维护本地 HTML 求职档案；支�
 3. LinkedIn 首次使用按 [默认搜索条件](references/international.md#linkedin-默认条件与首次使用) 提示填写关键词、目标国家/地区或城市，可补充方向；关键词默认 Engineer，已登录搜索必须填写明确地区。通过 `search-save linkedin-default` 保存在当前 data 档案，后续复用最新版本。URL 不证明实际地区已生效，需核对可见页面；当前已登录布局已通过 Chrome 美国地区、详情、翻页与续扫抽样；其他布局仍按门禁处理。
 4. 保持用户的方向与范围。缺少信息时先整理已知部分，每轮只问 1—3 个有价值的问题；不把默认示例当成用户偏好。
 5. 修改简历或评分前读取 [面经复盘](references/debrief.md) 的上下文流程，选择相关已核对复盘并保留版本引用；复盘不替代真实经历。
-6. 通过 CLI 更新档案，写入后 `render`。交付 HTML 路径与本次实际变化；分别说明完成、待补充和需用户接手的部分。
+6. HTML 工作台默认英文，顶部可切换中文并在浏览器内记住选择；界面、图表与 CSV 列名跟随语言，岗位及个人资料保持原文。不要为了切换界面语言改写档案。
+7. 通过 CLI 更新档案，写入后 `render`。交付 HTML 路径与本次实际变化；分别说明完成、待补充和需用户接手的部分。
 
 ## 必须保留的规则
 

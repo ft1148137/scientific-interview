@@ -48,7 +48,7 @@ def render_dashboard(store, output=None, share=False):
             dest = data_path(target.parent / "resume-originals" / source.name)
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, dest)
-            payload["resume_imports"].append({"id": item["id"], "filename": item.get("filename") or ("导入简历 " + item["id"][:8] + source.suffix), "at": item["at"], "file": str(dest.relative_to(target.parent))})
+            payload["resume_imports"].append({"id": item["id"], "filename": item.get("filename") or ("Imported resume " + item["id"][:8] + source.suffix), "at": item["at"], "file": str(dest.relative_to(target.parent))})
     for key, resume in payload["resumes"].items():
         resume["diff"] = resume_diff(state, resume)
         source = store.root / "exports" / key
@@ -61,6 +61,8 @@ def render_dashboard(store, output=None, share=False):
                 resume["files"][filename] = str(dest.relative_to(target.parent))
     serialized = json.dumps(payload, ensure_ascii=False).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
     template = (TEMPLATES_DIR / "dashboard.html").read_text(encoding="utf-8")
+    translations = (TEMPLATES_DIR / "i18n-en.json").read_text(encoding="utf-8").replace("<", "\\u003c")
+    i18n = (TEMPLATES_DIR / "i18n.js").read_text(encoding="utf-8").replace("__I18N_EN__", translations)
     statistics = "\n".join((TEMPLATES_DIR / name).read_text(encoding="utf-8") for name in ("statistics.js", "statistics-view.js"))
-    target.write_text(template.replace("__STATISTICS_SCRIPT__", statistics).replace("__WORKBENCH_DATA__", serialized).replace("__GENERATED_AT__", now()), encoding="utf-8")
+    target.write_text(template.replace("__I18N_SCRIPT__", i18n).replace("__STATISTICS_SCRIPT__", statistics).replace("__WORKBENCH_DATA__", serialized).replace("__GENERATED_AT__", now()), encoding="utf-8")
     return {"output": str(target.resolve()), "jobs": len(state["jobs"]), "revision": state["revision"]}

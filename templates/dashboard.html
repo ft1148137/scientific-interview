@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>Scientific Interview</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>Scientific Interview</title>
 <style>
 :root{--paper:#f5f3ed;--ink:#20342d;--muted:#66746b;--line:#d4d9ce;--accent:#c66d43;--green:#315847;--pale:#e5ecdf;--white:#fffefa}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 "Avenir Next","PingFang SC","Microsoft YaHei",sans-serif}button,input,select{font:inherit}button,a,input,select{outline-offset:4px}button{cursor:pointer}a{color:var(--green)}header{border-bottom:1px solid var(--line);padding:24px 5vw;display:flex;align-items:center;gap:16px}header .mark{width:38px;height:38px;background:var(--green);color:white;display:grid;place-items:center;font:26px Georgia,serif;border-radius:50%}header strong{font-size:17px;letter-spacing:1px}header small{color:var(--muted);margin-left:auto}main{max-width:1400px;margin:auto;padding:34px 5vw 70px}.intro{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:32px}.eyebrow{font:12px/1.4 "Courier New",monospace;letter-spacing:2px;color:var(--accent);text-transform:uppercase}h1{font-family:"Songti SC","Noto Serif CJK SC",serif;font-weight:500;font-size:44px;line-height:1.2;margin:12px 0}p{margin:8px 0}.sub{color:var(--muted)}.metrics{display:flex;gap:34px}.metric b{display:block;font:34px Georgia,serif}.metric span{font-size:12px;color:var(--muted)}nav{display:flex;gap:28px;border-bottom:1px solid var(--line);margin-bottom:23px;overflow:auto}nav button{border:0;background:none;padding:12px 0;color:var(--muted);white-space:nowrap}nav button[aria-selected=true]{color:var(--green);border-bottom:3px solid var(--green);font-weight:600}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}.toolbar input{flex:1;min-width:210px}input,select{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:10px 12px;color:var(--ink)}.btn{border:1px solid var(--green);background:transparent;color:var(--green);border-radius:4px;padding:9px 15px}.btn.primary{background:var(--green);color:white}.list-head{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:8px}.job{display:grid;grid-template-columns:64px 1fr 150px;gap:20px;background:var(--white);padding:23px 25px;border-top:1px solid var(--line);transition:background .15s}.job:last-child{border-bottom:1px solid var(--line)}.job:hover{background:#f0f3e9}.rank{font:28px Georgia,serif;padding-top:3px;color:var(--green)}.rank small{font:11px "PingFang SC",sans-serif;display:block;color:var(--muted)}.job-title{background:none;border:0;padding:0;color:var(--ink);font-size:18px;text-align:left;font-weight:600}.job-title:hover{text-decoration:underline}.meta{font-size:13px;color:var(--muted);margin-top:5px}.reason{font-size:13px;margin-top:10px;max-width:720px}.right{text-align:right}.badge{display:inline-block;border-radius:3px;padding:3px 7px;background:var(--pale);font-size:11px;margin:3px 3px 3px 0;color:var(--green)}.badge.warn{background:#f6e6da;color:#8b4c2d}.badge.gray{background:#ecece6;color:#68716b}.small{font-size:12px;color:var(--muted)}.section-title{font:27px "Songti SC",serif;margin:24px 0 10px}.empty{padding:70px 20px;text-align:center;border:1px dashed var(--line);color:var(--muted)}.changes{border-left:2px solid var(--green);margin:20px 0 25px 8px;padding-left:25px}.change{padding:10px 0 22px;border-bottom:1px solid var(--line);margin-bottom:14px}.change h3{font-size:16px;margin:6px 0}.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}.split pre{font:13px/1.7 "PingFang SC",sans-serif;white-space:pre-wrap;background:var(--white);padding:14px;margin:5px 0;max-height:230px;overflow:auto;border:1px solid var(--line)}.library-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.card{background:var(--white);border:1px solid var(--line);padding:24px}.card h3{margin:0 0 10px}.card dl{margin-bottom:0}dt{font-size:12px;color:var(--muted);margin-top:15px}dd{margin:3px 0 0;white-space:pre-wrap}.resume-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.resume-list a{font-size:12px;padding:6px 10px;border:1px solid var(--line);text-decoration:none}dialog{border:0;border-radius:8px;max-width:850px;width:calc(100% - 40px);max-height:88vh;background:var(--paper);padding:30px;color:var(--ink)}dialog::backdrop{background:#20342dbb}.dialog-top{display:flex;align-items:start;gap:20px}.dialog-top h2{margin:0;flex:1;font-size:24px}.close{border:0;background:none;font-size:26px;color:var(--muted)}.jd{white-space:pre-wrap;font-size:14px;background:var(--white);border:1px solid var(--line);padding:20px;margin:16px 0}.fine{border-top:1px solid var(--line);padding-top:20px;margin-top:32px;display:flex;justify-content:space-between;gap:20px;font-size:12px;color:var(--muted)}.pagination{margin:20px 0;display:flex;gap:15px;align-items:center}.hidden{display:none!important}.note{padding:12px 16px;background:var(--pale);font-size:13px;margin-bottom:18px}.pill{font:12px "Courier New",monospace;color:var(--accent)}@media(max-width:760px){header{padding:18px 20px}header small{display:none}main{padding:25px 20px}h1{font-size:34px}.intro{display:block}.metrics{margin-top:24px;gap:30px}.job{grid-template-columns:40px 1fr;gap:12px;padding:18px 12px}.right{grid-column:2;text-align:left}.split,.library-grid{grid-template-columns:1fr}nav{gap:22px}.fine{display:block}dialog{padding:22px}}
 .text-link{border:0;padding:0;background:none;color:var(--green);text-align:left;text-decoration:underline;text-underline-offset:3px;font:inherit}.history{margin-top:18px}.history summary{cursor:pointer}.history .jd{padding:12px;font-size:12px}.card:focus{outline:2px solid var(--green);outline-offset:3px}.metrics{flex-wrap:wrap;gap:22px}.btn:disabled{opacity:.45;cursor:default}
@@ -12,7 +12,8 @@
 @media(min-width:1101px){.summary-charts .trend-line{height:128px}}
 @media(max-width:1100px){.summary-charts{grid-template-columns:1fr 1fr}.summary-charts .trend-card{grid-column:1/-1}.summary-charts .trend-line{min-width:580px}.ring-layout{height:142px}.ring{width:138px;height:138px;flex-basis:138px}}
 @media(max-width:500px){.summary-charts{gap:10px}.summary-charts .chart-card{padding:12px}.summary-charts .chart-card h2{font-size:14px}.summary-charts .ring-card>.small{font-size:10px}.ring-layout{height:132px}.ring{width:124px;height:124px;flex-basis:124px}.ring-tooltip{font-size:11px;padding:5px 6px}}
-.debrief-card{margin:16px 0}.debrief-card h4{margin:16px 0 8px}.debrief-analysis section{min-width:0}.debrief-point{border-left:2px solid var(--green);padding-left:12px;margin:12px 0}.debrief-point p{font-size:13px}.debrief-card .history{margin-top:12px}.debrief-card li{margin:6px 0}.debrief-card{overflow-wrap:anywhere}</style></head><body><header><span class="mark">↗</span><strong>Scientific Interview</strong><small>SCIENTIFIC INTERVIEW / LOCAL DATA</small></header><main>
+.debrief-card{margin:16px 0}.debrief-card h4{margin:16px 0 8px}.debrief-analysis section{min-width:0}.debrief-point{border-left:2px solid var(--green);padding-left:12px;margin:12px 0}.debrief-point p{font-size:13px}.debrief-card .history{margin-top:12px}.debrief-card li{margin:6px 0}.debrief-card{overflow-wrap:anywhere}html[lang="en"] .stat-metric b small{display:none}html[lang="en"] .summary-charts .ring-card>.small{min-height:3.2em}.language-control{margin-left:auto;flex-shrink:0}.language-control select{padding:6px 9px;font-size:13px}header{flex-wrap:wrap}.stat-metric small{white-space:normal}html[lang="en"] .ring-label{font-size:10px}.trend-key{white-space:nowrap}@media(max-width:500px){header{gap:10px}header strong{font-size:14px}.language-control select{max-width:110px}}
+</style></head><body><header><span class="mark">↗</span><strong>Scientific Interview</strong><small>SCIENTIFIC INTERVIEW / LOCAL DATA</small><label class="language-control" data-language-control><select id="language" aria-label="Language / 语言"><option value="en" lang="en">English</option><option value="zh-CN" lang="zh-CN">中文</option></select></label></header><main>
 <section class="intro"><h1>求职数据</h1><p class="sub">投递、反馈与岗位状态</p></section>
 <div class="note" id="report-notice" role="note"></div>
 <nav aria-label="工作台视图" role="tablist"><button role="tab" data-view="statistics" aria-selected="true">投递统计</button><button role="tab" data-view="jobs" aria-selected="false">全部岗位</button><button role="tab" data-view="changes" aria-selected="false">本次变化</button><button role="tab" data-view="library" aria-selected="false">面经复盘</button><button role="tab" data-view="resumes" aria-selected="false">简历版本</button><button role="tab" data-view="applications" aria-selected="false">申请记录</button></nav>
@@ -29,14 +30,16 @@
 <dialog id="detail"><div class="dialog-top"><h2 id="detail-title"></h2><button class="close" aria-label="关闭详情">×</button></div><p id="detail-tag-message" class="small" role="status" aria-live="polite"></p><div id="detail-body"></div></dialog>
 <script type="application/json" id="data">__WORKBENCH_DATA__</script><script>
 'use strict';
+__I18N_SCRIPT__
+const applyStaticTranslations=staticTranslations(document.body);
 __STATISTICS_SCRIPT__
 const data=JSON.parse(document.getElementById('data').textContent), $=id=>document.getElementById(id);
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const url=x=>{try{const u=new URL(x);return ['https:','http:'].includes(u.protocol)?u.href:'#'}catch{return '#'}};
-const time=x=>x?new Date(x).toLocaleString('zh-CN',{hour12:false}):'尚未核验';
-const decision={shortlist:'投递候选',excluded:'不感兴趣',undecided:'未决定',applied:'已投递'}, status={open:'在招',closed:'已核实下线',unknown:'状态未知'};
-const coverageLabels={complete:'已完成本次范围',partial:'部分完成',unknown:'覆盖范围待核验'},gateLabels={PASS:'本批处理完成',WAIT_USER:'等待用户接手',RETRY:'等待重试',REJECT:'需处理异常'};
-const kind={new:'新增收录',jd_changed:'JD 修改',closed:'已核实下线',reopened:'重新开放',field_changed:'字段变化',needs_recheck:'待核验'};
+const time=x=>x?new Date(x).toLocaleString(language,{hour12:false}):t('尚未核验');
+const decision=translatedLabels({shortlist:'投递候选',excluded:'不感兴趣',undecided:'未决定',applied:'已投递'}), status=translatedLabels({open:'在招',closed:'已核实下线',unknown:'状态未知'});
+const coverageLabels=translatedLabels({complete:'已完成本次范围',partial:'部分完成',unknown:'覆盖范围待核验'}),gateLabels=translatedLabels({PASS:'本批处理完成',WAIT_USER:'等待用户接手',RETRY:'等待重试',REJECT:'需处理异常'});
+const kind=translatedLabels({new:'新增收录',jd_changed:'JD 修改',closed:'已核实下线',reopened:'重新开放',field_changed:'字段变化',needs_recheck:'待核验'});
 const shared=data.report_mode==='share', jobs=Object.values(data.jobs), generatedAt='__GENERATED_AT__';
 const appliedKeys=new Set(statistics(data).rows.map(r=>r.key));
 const effectiveDecision=j=>appliedKeys.has(j.current.key)?'applied':(j.decision||'undecided');
@@ -46,17 +49,19 @@ const writable=!shared&&location.protocol==='http:'&&location.hostname==='127.0.
 const latest=j=>j.review_stale?null:(j.reviews.at(-1)||j.imported_reviews?.at(-1)||null);
 const needsCheck=j=>j.verification.startsWith('needs');
 const scansByTime=()=>Object.values(data.scans).reverse().sort((a,b)=>new Date(b.observed_at)-new Date(a.observed_at));
-const resumeLabel=id=>{const r=data.resumes[id];return r?`${r.draft.target} · ${time(r.at)} · ${id.slice(-6)}`:'未记录简历版本'};
-const resumeLink=id=>id&&data.resumes[id]?`<button class="text-link" data-resume-id="${esc(id)}">${esc(resumeLabel(id))}</button>`:'尚未选版';
+const resumeLabel=id=>{const r=data.resumes[id];return r?`${r.draft.target} · ${time(r.at)} · ${id.slice(-6)}`:t('未记录简历版本')};
+const resumeLink=id=>id&&data.resumes[id]?`<button class="text-link" data-resume-id="${esc(id)}">${esc(resumeLabel(id))}</button>`:t('尚未选版');
 const jobLink=key=>`<button class="text-link" data-job-key="${esc(key)}">${esc(data.jobs[key]?.current.title||key)}</button>`;
 function empty(message){return `<div class="empty">${esc(message)}</div>`}
-$('report-notice').textContent=(data.demo?'合成演示 · 岗位、经历和申请记录均为测试数据。 ':'')+(shared?'岗位分享副本 · 已排除个人资料、匹配评语、简历、申请及历史记录；分享前仍请检查岗位文本和原链接。':'私人完整档案 · 包含面经复盘、个人资料、简历和申请记录。对外分享请让 AI 生成独立的岗位分享副本。');
-$('generated').textContent='更新于 '+time(generatedAt)+' · 档案版本 '+data.revision;
+function renderNotices(){
+$('report-notice').textContent=(data.demo?t('合成演示 · 岗位、经历和申请记录均为测试数据。 '):'')+(shared?t('岗位分享副本 · 已排除个人资料、匹配评语、简历、申请及历史记录；分享前仍请检查岗位文本和原链接。'):t('私人完整档案 · 包含面经复盘、个人资料、简历和申请记录。对外分享请让 AI 生成独立的岗位分享副本。'));
+$('generated').textContent=t('更新于 ')+time(generatedAt)+t(' · 档案版本 ')+data.revision;
+}
 if(shared){$('decision').classList.add('hidden');$('sort').value='recent';document.querySelectorAll('[data-view]').forEach(b=>{if(b.dataset.view!=='jobs')b.classList.add('hidden')});}
 
 function tagButtons(j) {
   if(shared||appliedKeys.has(j.current.key))return '';
-  return '<div class="tag-actions">'+[['shortlist','投递候选'],['excluded','不感兴趣']].map(([value,label])=>`<button class="tag-button" data-tag-key="${esc(j.current.key)}" data-tag="${value}" aria-pressed="${j.decision===value}" aria-label="${esc(j.current.title)}：${j.decision===value?'取消':'标记为'}${label}" ${pendingTags.has(j.current.key)||tagBlocked||!writable?'disabled':''}>${j.decision===value?'✓ ':''}${label}</button>`).join('')+'</div>';
+  return '<div class="tag-actions">'+[['shortlist',t('投递候选')],['excluded',t('不感兴趣')]].map(([value,label])=>`<button class="tag-button" data-tag-key="${esc(j.current.key)}" data-tag="${value}" aria-pressed="${j.decision===value}" aria-label="${esc(j.current.title)}：${j.decision===value?t('取消'):t('标记为')}${label}" ${pendingTags.has(j.current.key)||tagBlocked||!writable?'disabled':''}>${j.decision===value?'✓ ':''}${label}</button>`).join('')+'</div>';
 }
 function tagMessage(text) {
   $('tag-message').textContent=text;$('detail-tag-message').textContent=text;
@@ -77,7 +82,7 @@ function saveTag(key,value) {
   const j=data.jobs[key],next=j.decision===value?'undecided':value;
   pendingTags.set(key,j.decision);tagQueue.push({key,next});
   j.decision=next;
-  tagMessage(`正在保存 ${pendingTags.size} 个标签…`);
+  tagMessage(t`正在保存 ${pendingTags.size} 个标签…`);
   refreshTagViews();
   return flushTags();
 }
@@ -85,50 +90,50 @@ async function flushTags() {
   if(tagBusy)return;
   tagBusy=true;
   try {
-    if(!sessionToken){const session=await fetch('/api/session',{cache:'no-store'});if(!session.ok)throw new Error('请通过更新后的本地工作台服务打开页面。');sessionToken=(await session.json()).token;}
+    if(!sessionToken){const session=await fetch('/api/session',{cache:'no-store'});if(!session.ok)throw new Error(t('请通过更新后的本地工作台服务打开页面。'));sessionToken=(await session.json()).token;}
     while(tagQueue.length){
       const {key,next}=tagQueue[0],j=data.jobs[key];
       const response=await fetch('/api/decision',{method:'POST',headers:{'Content-Type':'application/json','X-Workbench-Token':sessionToken},body:JSON.stringify({key,decision:next,revision:data.revision})});
-      const result=await response.json();if(!response.ok)throw new Error(result.error||'标签保存失败');
+      const result=await response.json();if(!response.ok)throw new Error((result.error?t(result.error):t('标签保存失败')));
       j.decision=result.decision;j.decision_history=result.history;data.revision=result.revision;
       tagQueue.shift();pendingTags.delete(key);
-      tagMessage(result.warning||(pendingTags.size?`正在保存 ${pendingTags.size} 个标签…`:`${j.current.title}：${result.decision==='undecided'?'已取消标签':'已保存为'+decision[result.decision]}`));
+      tagMessage((result.warning?t(result.warning):null)||(pendingTags.size?t`正在保存 ${pendingTags.size} 个标签…`:`${j.current.title}：${result.decision==='undecided'?t('已取消标签'):t('已保存为')+decision[result.decision]}`));
       refreshTagViews();
     }
   } catch(error) {
     for(const [key,previous] of pendingTags)data.jobs[key].decision=previous;
     pendingTags.clear();tagQueue.length=0;tagBlocked=true;
-    const reason=error instanceof SyntaxError||error instanceof TypeError?'无法确认本地工作台的保存结果。':error.message;
-    tagMessage(reason+' 未确认的标签已在页面回退，后续排队操作已取消。请刷新核对后再试。');
+    const reason=error instanceof SyntaxError||error instanceof TypeError?t('无法确认本地工作台的保存结果。'):error.message;
+    tagMessage(reason+t(' 未确认的标签已在页面回退，后续排队操作已取消。请刷新核对后再试。'));
     refreshTagViews();
   } finally {tagBusy=false;}
 }
 window.addEventListener('beforeunload',event=>{if(pendingTags.size){event.preventDefault();event.returnValue='';}});
-if(!shared&&!writable)$('tag-message').textContent='当前是只读 HTML 快照。通过本地工作台服务打开后可点击保存标签。';
+if(!shared&&!writable)$('tag-message').textContent=t('当前是只读 HTML 快照。通过本地工作台服务打开后可点击保存标签。');
 function renderJobs(){
   const q=$('search').value.toLowerCase(),label=$('decision').value,state=$('status').value,activity=$('activity').value,verification=$('verification').value,sort=$('sort').value;
   filtered=jobs.filter(j=>(!q||[j.current.title,j.current.company,j.current.jd,j.current.location].join(' ').toLowerCase().includes(q))&&(!label||effectiveDecision(j)===label)&&(!state||j.current.status===state)&&(!activity||inactiveJob(j)===(activity==='inactive'))&&(!verification||(verification==='needs'?needsCheck(j):!needsCheck(j))));
   filtered.sort((a,b)=>sort==='score'?((latest(b)?.score||0)-(latest(a)?.score||0)):sort==='company'?a.current.company.localeCompare(b.current.company):new Date(b.current.observed_at)-new Date(a.current.observed_at));
   const pages=Math.max(1,Math.ceil(filtered.length/20));page=Math.min(page,pages);
-  $('count').textContent=`${filtered.length} 个岗位 · ${jobs.length} 个已收录`;
+  $('count').textContent=t`${filtered.length} 个岗位 · ${jobs.length} 个已收录`;
   $('clear-filters').disabled=!['search','decision','status','verification','activity'].some(id=>$(id).value);
-  $('job-list').innerHTML=filtered.slice((page-1)*20,page*20).map(j=>{const c=j.current,r=latest(j);return `<article class="job"><div class="rank">${r?r.score:'—'}<small>${r?'匹配 / 5':j.review_stale?'待复评':'未评分'}</small></div><div><button class="job-title" data-job-key="${esc(c.key)}">${esc(c.title)}</button><div class="meta">${esc(c.company)} · ${esc(c.location||'地点待核验')}</div><div class="reason">${esc(r?r.reasons.join('；'):j.review_stale?'JD 或经历已更新，旧结论需重新核对。':!c.jd_complete?'待补完整 JD，暂不评分。':shared?'查看来源与最近观察时间。':'等待结合真实经历分析。')}</div></div><div class="right"><span class="badge ${c.status==='closed'?'gray':''}">${needsCheck(j)&&c.status==='open'?'历史在招 · 待核验':status[c.status]}</span>${shared||effectiveDecision(j)==='undecided'?'':`<span class="badge ${effectiveDecision(j)==='excluded'?'gray':''}">${decision[effectiveDecision(j)]}</span>`}${inactiveJob(j)?'<span class="badge warn">'+inactivityLabel(j)+'</span>':''}${needsCheck(j)?'<span class="badge warn">待核验</span>':''}<p class="small">${esc(time(c.observed_at))}</p>${tagButtons(j)}</div></article>`}).join('')||empty('没有匹配的岗位，可以清除筛选后重试。');
+  $('job-list').innerHTML=filtered.slice((page-1)*20,page*20).map(j=>{const c=j.current,r=latest(j);return `<article class="job"><div class="rank">${r?r.score:'—'}<small>${r?t('匹配 / 5'):j.review_stale?t('待复评'):t('未评分')}</small></div><div><button class="job-title" data-job-key="${esc(c.key)}">${esc(c.title)}</button><div class="meta">${esc(c.company)} · ${esc(c.location||t('地点待核验'))}</div><div class="reason">${esc(r?r.reasons.join('；'):j.review_stale?t('JD 或经历已更新，旧结论需重新核对。'):!c.jd_complete?t('待补完整 JD，暂不评分。'):shared?t('查看来源与最近观察时间。'):t('等待结合真实经历分析。'))}</div></div><div class="right"><span class="badge ${c.status==='closed'?'gray':''}">${needsCheck(j)&&c.status==='open'?t('历史在招 · 待核验'):status[c.status]}</span>${shared||effectiveDecision(j)==='undecided'?'':`<span class="badge ${effectiveDecision(j)==='excluded'?'gray':''}">${decision[effectiveDecision(j)]}</span>`}${inactiveJob(j)?'<span class="badge warn">'+t(inactivityLabel(j))+'</span>':''}${needsCheck(j)?t('<span class="badge warn">待核验</span>'):''}<p class="small">${esc(time(c.observed_at))}</p>${tagButtons(j)}</div></article>`}).join('')||empty(t('没有匹配的岗位，可以清除筛选后重试。'));
   $('page-label').textContent=`${page} / ${pages}`;$('prev').disabled=page<=1;$('next').disabled=page>=pages;
 }
 function jdChange(key){for(const s of scansByTime()){const c=s.changes.find(c=>c.key===key&&c.type==='jd_changed');if(c)return c;}return null;}
-function changeText(c){return `<div class="split"><div><span class="small">修改前</span><pre>${esc(c.before)}</pre></div><div><span class="small">修改后</span><pre>${esc(c.after)}</pre></div></div>`;}
+function changeText(c){return t`<div class="split"><div><span class="small">修改前</span><pre>${esc(c.before)}</pre></div><div><span class="small">修改后</span><pre>${esc(c.after)}</pre></div></div>`;}
 function showDetail(key){
   const j=data.jobs[key];if(!j)return;$('detail').dataset.detailKey=key;const c=j.current,r=latest(j),change=jdChange(key);
   $('detail-title').textContent=c.title;
   let analysis='';
   if(!shared){
-    analysis='<h3>匹配依据</h3>'+(r?`<p><strong>匹配度：${r.score} / 5</strong></p><p>${esc(r.reasons.join('；'))}</p><p>差距：${esc(r.gaps.join('；')||'未记录')}</p>`:'<p>尚无当前有效评分；补足完整 JD 或重新核对经历后，让 AI 复评。</p>');
-    if(r?.requirements?.length)analysis+='<dl>'+r.requirements.map(x=>`<dt>JD 要求：${esc(x.quote)}</dt><dd>${esc(x.assessment)}<p class="small">经历：${x.experience_refs.map(ref=>esc((data.experiences[ref.id]||[]).find(v=>v.version===ref.version)?.data.title||ref.id)+' · V'+ref.version).join('；')}<br>差距：${esc(x.gap||'未记录')}</p></dd>`).join('')+'</dl>';
-    else if(r)analysis+=`<p class="small">JD 原句：${esc(r.quotes.join(' / '))}</p><p class="small">可让 AI 复评时补充每条要求对应的经历与差距。</p>`;
-    if(j.review_stale)analysis+='<div class="note">旧评分已失效；人工决定仍保留。'+(change?'下面是最近一次 JD 变化，请结合已确认经历重新判断。':'经历或复盘版本已变化，请核对引用的新版本。')+'</div>'+(change?changeText(change):'');
+    analysis=t('<h3>匹配依据</h3>')+(r?t`<p><strong>匹配度：${r.score} / 5</strong></p><p>${esc(r.reasons.join('；'))}</p><p>差距：${esc(r.gaps.join('；')||t('未记录'))}</p>`:t('<p>尚无当前有效评分；补足完整 JD 或重新核对经历后，让 AI 复评。</p>'));
+    if(r?.requirements?.length)analysis+='<dl>'+r.requirements.map(x=>t`<dt>JD 要求：${esc(x.quote)}</dt><dd>${esc(x.assessment)}<p class="small">经历：${x.experience_refs.map(ref=>esc((data.experiences[ref.id]||[]).find(v=>v.version===ref.version)?.data.title||ref.id)+' · V'+ref.version).join('；')}<br>差距：${esc(x.gap||t('未记录'))}</p></dd>`).join('')+'</dl>';
+    else if(r)analysis+=t`<p class="small">JD 原句：${esc(r.quotes.join(' / '))}</p><p class="small">可让 AI 复评时补充每条要求对应的经历与差距。</p>`;
+    if(j.review_stale)analysis+=t('<div class="note">旧评分已失效；人工决定仍保留。')+(change?t('下面是最近一次 JD 变化，请结合已确认经历重新判断。'):t('经历或复盘版本已变化，请核对引用的新版本。'))+'</div>'+(change?changeText(change):'');
     if(r)analysis+=debriefReferences(r);
   }
-  $('detail-body').innerHTML=`<p class="sub">${esc(c.company)} · ${esc(c.location||'地点未知')}</p>${c.url?`<a href="${esc(url(c.url))}" target="_blank" rel="noopener noreferrer">打开岗位原页 ↗</a>`:'<span class="small">未保存来源链接 · 本地历史资料，需补充核验</span>'}<p class="small">最近观察 ${esc(time(c.observed_at))} · 来源 ${esc(c.source)}</p>${inactiveJob(j)?'<p class="note">'+inactivityLabel(j)+'：'+(j.activity_override?.mode==='inactive'?esc(j.activity_override.note):'连续 30 天无实质变化')+'；不代表停止招聘或明确拒绝。</p>':''}<p class="small">最近实质变化 ${esc(time(j.last_changed_at))}</p>${!shared?'<p class="small">方向：'+esc(j.classification?.direction||'未分类')+' · 行业：'+esc(j.classification?.industry||'未分类')+'</p>':''}${tagButtons(j)}${analysis}<h3>岗位原文</h3><div class="jd">${esc(c.jd||'尚未获得完整 JD')}</div>`+(shared?'':`<h3>人工决定与简历</h3>${effectiveDecision(j)==='undecided'?'':'<p>'+decision[effectiveDecision(j)]+'</p>'}<p>后续投递选用：${resumeLink(j.selected_resume)}</p><p class="small">重新选版不会修改过去申请使用的简历。</p>${j.decision_history.length?'<details><summary>历史选择记录</summary>'+j.decision_history.map(x=>`<p class="small">${time(x.at)} · ${decision[x.decision]} ${esc(x.note)}</p>`).join('')+'</details>':''}<details><summary>查看 ${j.snapshots.length} 份历史快照及证据</summary>${j.snapshots.map(x=>`<div class="jd"><strong>${esc(time(x.observed_at))} · ${status[x.status]}</strong><p>${esc(x.jd||'缺少 JD')}</p><p class="small">证据：${esc(x.evidence?.text)}</p></div>`).join('')}</details>`);
+  $('detail-body').innerHTML=t`<p class="sub">${esc(c.company)} · ${esc(c.location||t('地点未知'))}</p>${c.url?t`<a href="${esc(url(c.url))}" target="_blank" rel="noopener noreferrer">打开岗位原页 ↗</a>`:t('<span class="small">未保存来源链接 · 本地历史资料，需补充核验</span>')}<p class="small">最近观察 ${esc(time(c.observed_at))} · 来源 ${esc(c.source)}</p>${inactiveJob(j)?'<p class="note">'+t(inactivityLabel(j))+'：'+(j.activity_override?.mode==='inactive'?esc(j.activity_override.note):t('连续 30 天无实质变化'))+t('；不代表停止招聘或明确拒绝。</p>'):''}<p class="small">最近实质变化 ${esc(time(j.last_changed_at))}</p>${!shared?t('<p class="small">方向：')+esc(j.classification?.direction||t('未分类'))+t(' · 行业：')+esc(j.classification?.industry||t('未分类'))+'</p>':''}${tagButtons(j)}${analysis}<h3>岗位原文</h3><div class="jd">${esc(c.jd||t('尚未获得完整 JD'))}</div>`+(shared?'':t`<h3>人工决定与简历</h3>${effectiveDecision(j)==='undecided'?'':'<p>'+decision[effectiveDecision(j)]+'</p>'}<p>后续投递选用：${resumeLink(j.selected_resume)}</p><p class="small">重新选版不会修改过去申请使用的简历。</p>${j.decision_history.length?t('<details><summary>历史选择记录</summary>')+j.decision_history.map(x=>`<p class="small">${time(x.at)} · ${decision[x.decision]} ${esc(x.note)}</p>`).join('')+'</details>':''}<details><summary>查看 ${j.snapshots.length} 份历史快照及证据</summary>${j.snapshots.map(x=>t`<div class="jd"><strong>${esc(time(x.observed_at))} · ${status[x.status]}</strong><p>${esc(x.jd||t('缺少 JD'))}</p><p class="small">证据：${esc(x.evidence?.text)}</p></div>`).join('')}</details>`);
   if(!$('detail').open)$('detail').showModal();
 }
 $('detail').querySelector('.close').onclick=()=>$('detail').close();
@@ -138,44 +143,44 @@ $('prev').onclick=()=>{page--;renderJobs()};$('next').onclick=()=>{page++;render
 
 function renderChanges(){
   const scans=scansByTime();
-  $('changes').innerHTML='<h2 class="section-title">扫描变化</h2>'+(scans.length?`<label class="small" for="scan-picker">选择扫描</label><select id="scan-picker">${scans.map(s=>`<option value="${esc(s.id)}">${esc(time(s.observed_at))} · ${esc(s.source)} · ${s.changes.length} 处变化</option>`).join('')}</select><div id="scan-changes"></div>`:empty('还没有扫描记录。'));
+  $('changes').innerHTML=t('<h2 class="section-title">扫描变化</h2>')+(scans.length?t`<label class="small" for="scan-picker">选择扫描</label><select id="scan-picker">${scans.map(s=>t`<option value="${esc(s.id)}">${esc(time(s.observed_at))} · ${esc(s.source)} · ${s.changes.length} 处变化</option>`).join('')}</select><div id="scan-changes"></div>`:empty(t('还没有扫描记录。')));
   if(!scans.length)return;
   const draw=()=>{
     const s=data.scans[$('scan-picker').value],scope=s.scope_summary;
-    let content=`<div class="note">覆盖：${coverageLabels[s.coverage]} · ${gateLabels[s.gate]}<br>${esc(s.message||(s.coverage==='complete'?'本轮声明范围已完成。':'本批已记录；未观察到的岗位不能据此判断状态。'))}<br>搜索：${esc(Object.entries(s.query||{}).map(([k,v])=>({keyword:'关键词',city:'城市',direction:'方向',sources:'来源'}[k]||k)+'：'+v).join(' · ')||'未指定筛选条件')}`;
-    if(scope)content+=`<br>本轮累计观察 ${scope.observed_keys.length} 个 / 此搜索已收录 ${scope.known_keys.length} 个；${scope.unobserved_keys.length} 个本轮未观察。`;
-    else content+='<br>旧扫描未保存范围摘要，重新扫描后可查看。';
-    if(s.retryAfter!=null)content+=`<br>等待至少 ${esc(s.retryAfter)} 秒；已重试 ${esc(s.retry_attempts??0)}/2 次。`;
-    if(s.next_action)content+='<br>下一步：'+esc(s.next_action);
+    let content=t`<div class="note">覆盖：${coverageLabels[s.coverage]} · ${gateLabels[s.gate]}<br>${esc(s.message||(s.coverage==='complete'?t('本轮声明范围已完成。'):t('本批已记录；未观察到的岗位不能据此判断状态。')))}<br>搜索：${esc(Object.entries(s.query||{}).map(([k,v])=>({keyword:t('关键词'),city:t('城市'),direction:t('方向'),sources:t('来源')}[k]||k)+(language==='en'?': ':'：')+v).join(' · ')||t('未指定筛选条件'))}`;
+    if(scope)content+=t`<br>本轮累计观察 ${scope.observed_keys.length} 个 / 此搜索已收录 ${scope.known_keys.length} 个；${scope.unobserved_keys.length} 个本轮未观察。`;
+    else content+=t('<br>旧扫描未保存范围摘要，重新扫描后可查看。');
+    if(s.retryAfter!=null)content+=t`<br>等待至少 ${esc(s.retryAfter)} 秒；已重试 ${esc(s.retry_attempts??0)}/2 次。`;
+    if(s.next_action)content+=t('<br>下一步：')+esc(s.next_action);
     content+='</div>';
-    if(scope?.unobserved_keys.length)content+='<details><summary>查看本轮未观察岗位（不代表下线）</summary>'+scope.unobserved_keys.map(k=>`<p>${jobLink(k)} · 保留历史状态，需后续核验</p>`).join('')+'</details>';
-    content+=s.changes.length?'<div class="changes">'+s.changes.map(c=>{const j=data.jobs[c.key];return `<article class="change"><span class="pill">${kind[c.type]||esc(c.type)}</span><h3>${jobLink(c.key)}</h3><p class="small">当前决定：${j?decision[effectiveDecision(j)]:'未决定'} · 扫描不会覆盖人工决定${j?.review_stale?' · 匹配待复评':''}</p>${c.type==='jd_changed'?changeText(c):`<p>${esc(status[c.before]||c.before||'')} ${c.before!=null?'→':''} ${esc(status[c.after]||c.after||'')}</p>`}</article>`}).join('')+'</div>':empty('本次没有新增或变化；已有人工决定与申请记录保持有效。');
-    const failed=[...(s.rejected||[]).map(x=>({title:x.record?.title||'未知岗位',message:x.reason})),...(s.rejected_refs||[]).map(x=>({title:x.ref?.title||'未知岗位',message:x.code==='DOMAIN_REJECTED'?'跳转到尚未支持的招聘网站':x.message||x.code}))];
-    if(failed.length)content+='<details><summary>查看 '+failed.length+' 条未完成记录</summary>'+failed.map(x=>`<p>${esc(x.title)}：${esc(x.message)}</p>`).join('')+'</details>';
+    if(scope?.unobserved_keys.length)content+=t('<details><summary>查看本轮未观察岗位（不代表下线）</summary>')+scope.unobserved_keys.map(k=>t`<p>${jobLink(k)} · 保留历史状态，需后续核验</p>`).join('')+'</details>';
+    content+=s.changes.length?'<div class="changes">'+s.changes.map(c=>{const j=data.jobs[c.key];return t`<article class="change"><span class="pill">${kind[c.type]||esc(c.type)}</span><h3>${jobLink(c.key)}</h3><p class="small">当前决定：${j?decision[effectiveDecision(j)]:t('未决定')} · 扫描不会覆盖人工决定${j?.review_stale?t(' · 匹配待复评'):''}</p>${c.type==='jd_changed'?changeText(c):`<p>${esc(status[c.before]||c.before||'')} ${c.before!=null?'→':''} ${esc(status[c.after]||c.after||'')}</p>`}</article>`}).join('')+'</div>':empty(t('本次没有新增或变化；已有人工决定与申请记录保持有效。'));
+    const failed=[...(s.rejected||[]).map(x=>({title:x.record?.title||t('未知岗位'),message:x.reason})),...(s.rejected_refs||[]).map(x=>({title:x.ref?.title||t('未知岗位'),message:x.code==='DOMAIN_REJECTED'?t('跳转到尚未支持的招聘网站'):x.message||x.code}))];
+    if(failed.length)content+=t('<details><summary>查看 ')+failed.length+t(' 条未完成记录</summary>')+failed.map(x=>`<p>${esc(x.title)}：${esc(x.message)}</p>`).join('')+'</details>';
     const newer=scans[scans.indexOf(s)-1],until=newer?.observed_at||generatedAt;
     const updates=data.applications.filter(a=>new Date(a.evidence.observed_at)>new Date(s.observed_at)&&new Date(a.evidence.observed_at)<=new Date(until));
-    if(updates.length)content+=`<h3>此扫描之后的申请更新</h3><p class="small">${esc(time(s.observed_at))} 之后，至 ${esc(time(until))}${newer?'（下一次扫描）':'（页面生成）'}。这些是独立申请记录，不是本次抓取结果。</p>`+updates.map(a=>`<p>${jobLink(a.key)} · ${esc(a.evidence.text)} <span class="small">${esc(time(a.evidence.observed_at))}</span></p>`).join('');
+    if(updates.length)content+=t`<h3>此扫描之后的申请更新</h3><p class="small">${esc(time(s.observed_at))} 之后，至 ${esc(time(until))}${newer?t('（下一次扫描）'):t('（页面生成）')}。这些是独立申请记录，不是本次抓取结果。</p>`+updates.map(a=>`<p>${jobLink(a.key)} · ${esc(a.evidence.text)} <span class="small">${esc(time(a.evidence.observed_at))}</span></p>`).join('');
     $('scan-changes').innerHTML=content;
   };
   $('scan-picker').onchange=draw;draw();
 }
 function history(id,versions,collection){
-  return `<details class="history"><summary>版本时间线与恢复 · ${versions.length} 个版本</summary>${[...versions].reverse().map(v=>`<div class="jd"><strong>V${v.version} · ${v.confirmed?'已确认':'待核对'} · ${esc(time(v.at))}</strong><dl>${Object.entries(v.data).map(([k,value])=>`<dt>${esc(({title:'标题',organization:'单位',dates:'时间',context:'背景 / 语境',responsibility:'个人职责',actions:'行动',result:'结果',evidence:'依据',question:'问题',answer:'回答',deleted:'删除标记',facts:'事实与证据',pending_notes:'待补事项'})[k]||k)}</dt><dd>${esc(typeof value==='object'?JSON.stringify(value):value)}</dd>`).join('')}</dl><p class="small">需要恢复时，可以对 AI 说：请将${({experiences:'经历',answers:'回答'})[collection]} ${esc(id)} 恢复为 V${v.version}，保留后续历史。恢复会追加版本，不影响旧申请。</p></div>`).join('')}</details>`;
+  return t`<details class="history"><summary>版本时间线与恢复 · ${versions.length} 个版本</summary>${[...versions].reverse().map(v=>t`<div class="jd"><strong>V${v.version} · ${v.confirmed?t('已确认'):t('待核对')} · ${esc(time(v.at))}</strong><dl>${Object.entries(v.data).map(([k,value])=>`<dt>${esc(({title:t('标题'),organization:t('单位'),dates:t('时间'),context:t('背景 / 语境'),responsibility:t('个人职责'),actions:t('行动'),result:t('结果'),evidence:t('依据'),question:t('问题'),answer:t('回答'),deleted:t('删除标记'),facts:t('事实与证据'),pending_notes:t('待补事项')})[k]||k)}</dt><dd>${esc(typeof value==='object'?JSON.stringify(value):value)}</dd>`).join('')}</dl><p class="small">需要恢复时，可以对 AI 说：请将${({experiences:t('经历'),answers:t('回答')})[collection]} ${esc(id)} 恢复为 V${v.version}，保留后续历史。恢复会追加版本，不影响旧申请。</p></div>`).join('')}</details>`;
 }
-const sourceLabels={user_recollection:'用户回忆',interviewer_feedback:'面试官反馈（据用户复述）',ai_inference:'AI 推断'};
+const sourceLabels=translatedLabels({user_recollection:'用户回忆',interviewer_feedback:'面试官反馈（据用户复述）',ai_inference:'AI 推断'});
 function debriefReferences(record){
   const refs=record?.debrief_refs||[];
-  return refs.length?'<div class="note"><strong>参考面经</strong><p>'+esc(record.debrief_notes)+'</p>'+refs.map(r=>{const d=data.debriefs?.[r.id]?.find(v=>v.version===r.version)?.data;return '<button class="text-link" data-debrief-id="'+esc(r.id)+'" data-debrief-version="'+r.version+'">'+esc(d?d.company+' · '+d.role:r.id)+' · V'+r.version+'</button>';}).join(' / ')+'</div>':'';
+  return refs.length?t('<div class="note"><strong>参考面经</strong><p>')+esc(record.debrief_notes)+'</p>'+refs.map(r=>{const d=data.debriefs?.[r.id]?.find(v=>v.version===r.version)?.data;return '<button class="text-link" data-debrief-id="'+esc(r.id)+'" data-debrief-version="'+r.version+'">'+esc(d?d.company+' · '+d.role:r.id)+' · V'+r.version+'</button>';}).join(' / ')+'</div>':'';
 }
 function debriefBody(d){
-  const analysis=field=>(d[field]||[]).map(x=>'<div class="debrief-point"><strong>'+esc(x.point)+'</strong><p class="small">'+esc(sourceLabels[x.source])+'</p><p>依据：'+esc(x.basis)+'</p></div>').join('')||'<p class="small">尚无足够依据</p>';
+  const analysis=field=>(d[field]||[]).map(x=>'<div class="debrief-point"><strong>'+esc(x.point)+'</strong><p class="small">'+esc(sourceLabels[x.source])+t('</p><p>依据：')+esc(x.basis)+'</p></div>').join('')||t('<p class="small">尚无足够依据</p>');
   const list=(field,title)=>(d[field]||[]).length?'<h4>'+title+'</h4><ul>'+d[field].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'';
-  return '<div class="split debrief-analysis"><section><h4>强项</h4>'+analysis('strengths')+'</section><section><h4>不足与待验证</h4>'+analysis('gaps')+'</section></div>'+list('next_steps','下次准备')+list('resume_suggestions','简历修改参考')+list('matching_notes','岗位评分参考')+'<details class="history"><summary>面试问题与回答 · '+(d.questions||[]).length+' 题</summary>'+(d.questions||[]).map((q,i)=>'<div class="jd"><strong>'+(i+1)+'. '+esc(q.question)+'</strong><p>当时回答：'+esc(q.answer||'未回忆')+'</p><p>面试官反馈（据用户复述）：'+esc(q.feedback||'未记录明确反馈')+'</p></div>').join('')+'</details><details class="history"><summary>查看原始复述</summary><div class="jd">'+esc(d.recollection)+'</div></details>';
+  return t('<div class="split debrief-analysis"><section><h4>强项</h4>')+analysis('strengths')+t('</section><section><h4>不足与待验证</h4>')+analysis('gaps')+'</section></div>'+list('next_steps',t('下次准备'))+list('resume_suggestions',t('简历修改参考'))+list('matching_notes',t('岗位评分参考'))+t('<details class="history"><summary>面试问题与回答 · ')+(d.questions||[]).length+t(' 题</summary>')+(d.questions||[]).map((q,i)=>'<div class="jd"><strong>'+(i+1)+'. '+esc(q.question)+t('</strong><p>当时回答：')+esc(q.answer||t('未回忆'))+t('</p><p>面试官反馈（据用户复述）：')+esc(q.feedback||t('未记录明确反馈'))+'</p></div>').join('')+t('</details><details class="history"><summary>查看原始复述</summary><div class="jd">')+esc(d.recollection)+'</div></details>';
 }
 function renderLibrary(){
   const entries=Object.entries(data.debriefs||{}).sort((a,b)=>(b[1].at(-1).data.date||'').localeCompare(a[1].at(-1).data.date||'')||b[1].at(-1).at.localeCompare(a[1].at(-1).at));
   const active=entries.filter(([,vs])=>!vs.at(-1).data.deleted),confirmed=active.filter(([,vs])=>vs.at(-1).confirmed).length;
-  $('library').innerHTML='<h2 class="section-title">面经复盘</h2><p class="sub">向 AI 复述面试过程，记录问题、当时回答和反馈，分析强项与不足。</p><div class="list-head"><span>'+active.length+' 场面试 · '+confirmed+' 份已核对 · '+(active.length-confirmed)+' 份待核对</span><span id="debrief-sync" role="status">'+(writable?'本地保存后自动同步':'只读快照 · 更新后需重新生成')+'</span></div>'+entries.map(([id,vs])=>{const v=vs.at(-1),d=v.data;return '<article class="card debrief-card" id="debrief-'+esc(id)+'" tabindex="-1"><span class="pill">'+(d.deleted?'已删除 · 可恢复':v.confirmed?'已核对':'待核对')+' · V'+v.version+'</span><h3>'+esc(d.company)+' · '+esc(d.role)+'</h3><p class="sub">'+esc([d.date||'日期待补',d.round||'轮次待补',d.outcome].filter(Boolean).join(' · '))+'</p>'+(d.job_key?'<p class="small">关联岗位：'+jobLink(d.job_key)+'</p>':'')+debriefBody(d)+'<p class="small">保存于 '+esc(time(v.at))+' · 记录 '+esc(id)+'</p><details class="history"><summary>版本记录与恢复 · '+vs.length+' 个版本</summary>'+[...vs].reverse().map(h=>'<details id="debrief-version-'+esc(id)+'-'+h.version+'"><summary>V'+h.version+' · '+(h.confirmed?'已核对':'待核对')+' · '+esc(time(h.at))+'</summary>'+debriefBody(h.data)+'<p class="small">可让 AI 恢复此版本，后续历史仍会保留。</p></details>').join('')+'</details></article>';}).join('')+(!entries.length?empty('还没有面经。告诉 AI：我刚面完某公司某岗位，面试官问了什么，我怎样回答，对方有什么反馈。'):'')+'<details class="history"><summary>个人经历与常用回答资料</summary><p class="small">用于核对简历事实；面试中的判断不会自动变成项目成果。</p><div id="materials"></div></details>';
+  $('library').innerHTML=t('<h2 class="section-title">面经复盘</h2><p class="sub">向 AI 复述面试过程，记录问题、当时回答和反馈，分析强项与不足。</p><div class="list-head"><span>')+active.length+t(' 场面试 · ')+confirmed+t(' 份已核对 · ')+(active.length-confirmed)+t(' 份待核对</span><span id="debrief-sync" role="status">')+(writable?t('本地保存后自动同步'):t('只读快照 · 更新后需重新生成'))+'</span></div>'+entries.map(([id,vs])=>{const v=vs.at(-1),d=v.data;return '<article class="card debrief-card" id="debrief-'+esc(id)+'" tabindex="-1"><span class="pill">'+(d.deleted?t('已删除 · 可恢复'):v.confirmed?t('已核对'):t('待核对'))+' · V'+v.version+'</span><h3>'+esc(d.company)+' · '+esc(d.role)+'</h3><p class="sub">'+esc([d.date||t('日期待补'),d.round||t('轮次待补'),d.outcome].filter(Boolean).join(' · '))+'</p>'+(d.job_key?t('<p class="small">关联岗位：')+jobLink(d.job_key)+'</p>':'')+debriefBody(d)+t('<p class="small">保存于 ')+esc(time(v.at))+t(' · 记录 ')+esc(id)+t('</p><details class="history"><summary>版本记录与恢复 · ')+vs.length+t(' 个版本</summary>')+[...vs].reverse().map(h=>'<details id="debrief-version-'+esc(id)+'-'+h.version+'"><summary>V'+h.version+' · '+(h.confirmed?t('已核对'):t('待核对'))+' · '+esc(time(h.at))+'</summary>'+debriefBody(h.data)+t('<p class="small">可让 AI 恢复此版本，后续历史仍会保留。</p></details>')).join('')+'</details></article>';}).join('')+(!entries.length?empty(t('还没有面经。告诉 AI：我刚面完某公司某岗位，面试官问了什么，我怎样回答，对方有什么反馈。')):'')+t('<details class="history"><summary>个人经历与常用回答资料</summary><p class="small">用于核对简历事实；面试中的判断不会自动变成项目成果。</p><div id="materials"></div></details>');
   renderMaterials();
   $('library').querySelectorAll('details').forEach(d=>{
     if(!d.id){const card=d.closest('article'),version=d.closest('[id^="debrief-version-"]');d.dataset.syncKey=(version?.id||card?.id||'materials')+'|'+d.querySelector('summary').textContent;}
@@ -186,7 +191,7 @@ async function syncDebriefs(){
   if(!writable||debriefSyncBusy||document.hidden||$('library').classList.contains('hidden'))return;
   debriefSyncBusy=true;
   try{
-    const response=await fetch('/api/debriefs',{cache:'no-store'});if(!response.ok)throw new Error('同步失败');
+    const response=await fetch('/api/debriefs',{cache:'no-store'});if(!response.ok)throw new Error(t('同步失败'));
     const result=await response.json();
     if(result.revision!==debriefRevision){
       const opened=new Set([...$('library').querySelectorAll('details[open]')].map(d=>d.id||d.dataset.syncKey));
@@ -196,32 +201,32 @@ async function syncDebriefs(){
         for(const j of jobs){const r=j.reviews.at(-1);if(r?.debrief_refs?.some(ref=>data.debriefs[ref.id]?.at(-1)?.version!==ref.version))j.review_stale=true;}
       }
     }
-    $('debrief-sync').textContent='已同步 · '+new Date().toLocaleTimeString('zh-CN',{hour12:false});
-  }catch{if($('debrief-sync'))$('debrief-sync').textContent='同步中断，已显示内容仍保留；连接恢复后自动重试';}
+    $('debrief-sync').textContent=t('已同步 · ')+new Date().toLocaleTimeString(language,{hour12:false});
+  }catch{if($('debrief-sync'))$('debrief-sync').textContent=t('同步中断，已显示内容仍保留；连接恢复后自动重试');}
   finally{debriefSyncBusy=false;}
 }
 setInterval(syncDebriefs,5000);
 function renderMaterials(){
   const entries=Object.entries(data.experiences);
-  $('materials').innerHTML='<h2 class="section-title">经历库</h2><div class="library-grid">'+entries.map(([id,vs])=>{const v=vs[vs.length-1],e=v.data;return `<article class="card"><span class="pill">${e.deleted?'已删除 · 可恢复':v.confirmed?'已确认':'待核对'} · V${v.version}</span><h3>${esc(e.title)}</h3><p class="sub">${esc(e.organization||'')} ${esc(e.dates||'')}</p><dl>${[['context','背景'],['responsibility','个人职责'],['actions','行动与取舍'],['result','结果'],['evidence','依据']].map(([k,l])=>`<dt>${l}</dt><dd>${esc(e[k]||'待补充')}</dd>`).join('')}</dl>${factDetails(e.facts)}${e.pending_notes?.length?'<h4>待补事项（不写入简历）</h4><ul>'+e.pending_notes.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ul>':''}${history(id,vs,'experiences')}</article>`}).join('')+'</div><h2 class="section-title">常见问题回答</h2>'+Object.entries(data.answers).map(([id,vs])=>{const v=vs[vs.length-1];return `<article class="card"><h3>${esc(v.data.question)}</h3><p>${esc(v.data.answer)}</p><small>V${v.version} · ${v.confirmed?'已确认资料':'待核对'} · ${esc(time(v.at))} · 语境：${esc(v.data.context||'未指定')}<br>薪资、到岗时间等动态信息，使用前核对当前值。</small>${history(id,vs,'answers')}</article>`}).join('');
+  $('materials').innerHTML=t('<h2 class="section-title">经历库</h2><div class="library-grid">')+entries.map(([id,vs])=>{const v=vs[vs.length-1],e=v.data;return `<article class="card"><span class="pill">${e.deleted?t('已删除 · 可恢复'):v.confirmed?t('已确认'):t('待核对')} · V${v.version}</span><h3>${esc(e.title)}</h3><p class="sub">${esc(e.organization||'')} ${esc(e.dates||'')}</p><dl>${[['context',t('背景')],['responsibility',t('个人职责')],['actions',t('行动与取舍')],['result',t('结果')],['evidence',t('依据')]].map(([k,l])=>`<dt>${l}</dt><dd>${esc(e[k]||t('待补充'))}</dd>`).join('')}</dl>${factDetails(e.facts)}${e.pending_notes?.length?t('<h4>待补事项（不写入简历）</h4><ul>')+e.pending_notes.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ul>':''}${history(id,vs,'experiences')}</article>`}).join('')+t('</div><h2 class="section-title">常见问题回答</h2>')+Object.entries(data.answers).map(([id,vs])=>{const v=vs[vs.length-1];return t`<article class="card"><h3>${esc(v.data.question)}</h3><p>${esc(v.data.answer)}</p><small>V${v.version} · ${v.confirmed?t('已确认资料'):t('待核对')} · ${esc(time(v.at))} · 语境：${esc(v.data.context||t('未指定'))}<br>薪资、到岗时间等动态信息，使用前核对当前值。</small>${history(id,vs,'answers')}</article>`}).join('');
   const profile=data.profile;
-  if(profile?.data.credentials?.length)$('materials').innerHTML+='<h2 class="section-title">培训、证书与授权</h2><p class="small">'+(profile.confirmed?'已确认资料':'待核对资料')+' · V'+profile.version+'；持有证书不等于有效注册或现场操作授权。</p>'+profile.data.credentials.map(c=>'<article class="card"><h3>'+esc(c.name)+'</h3><p>'+esc(({training:'培训',certificate:'证书',authorization:'授权'})[c.kind])+' · '+esc(({held:'已持有',expired:'已过期',pending:'待取得',unknown:'状态待核验'})[c.status])+'</p><p>'+esc([c.issuer,c.date,c.expires_on?'有效期至 '+c.expires_on:'',c.registration?'注册状态：'+c.registration:''].filter(Boolean).join(' · '))+'</p><p class="small">'+(c.include_in_resume?'已选入新简历':'仅存私人档案')+' · 依据：'+esc(c.evidence||'待补充')+'</p></article>').join('');
-  if(!entries.length)$('materials').innerHTML+=empty('可以先提供简历，也可以从一次项目经历开始对话。');
+  if(profile?.data.credentials?.length)$('materials').innerHTML+=t('<h2 class="section-title">培训、证书与授权</h2><p class="small">')+(profile.confirmed?t('已确认资料'):t('待核对资料'))+' · V'+profile.version+t('；持有证书不等于有效注册或现场操作授权。</p>')+profile.data.credentials.map(c=>'<article class="card"><h3>'+esc(c.name)+'</h3><p>'+esc(({training:t('培训'),certificate:t('证书'),authorization:t('授权')})[c.kind])+' · '+esc(({held:t('已持有'),expired:t('已过期'),pending:t('待取得'),unknown:t('状态待核验')})[c.status])+'</p><p>'+esc([c.issuer,c.date,c.expires_on?t('有效期至 ')+c.expires_on:'',c.registration?t('注册状态：')+c.registration:''].filter(Boolean).join(' · '))+'</p><p class="small">'+(c.include_in_resume?t('已选入新简历'):t('仅存私人档案'))+t(' · 依据：')+esc(c.evidence||t('待补充'))+'</p></article>').join('');
+  if(!entries.length)$('materials').innerHTML+=empty(t('可以先提供简历，也可以从一次项目经历开始对话。'));
 }
 function factDetails(facts){
   if(!facts)return '';
-  const statuses={target:'目标值',forecast:'预测值',actual:'已实现',settled:'已结算',unknown:'状态待核验'},disclosure={public:'可用于对外简历',private:'仅私人档案',unknown:'披露范围待确认'};
-  return '<details class="history"><summary>事实范围与具体证据</summary><dl>'+[['stage','项目阶段'],['responsibility_boundary','职责范围']].filter(([k])=>facts[k]).map(([k,l])=>'<dt>'+l+'</dt><dd>'+esc(facts[k])+'</dd>').join('')+'</dl>'+(facts.metrics||[]).map(m=>'<p><strong>'+esc(m.name)+'</strong> · '+esc(statuses[m.status])+' · '+esc(disclosure[m.disclosure||'unknown'])+'<br>'+esc([m.value,m.unit,m.period,m.definition,m.owner_scope].filter(Boolean).join(' · '))+'<br><span class="small">依据：'+esc(m.evidence||'待补充')+'</span></p>').join('')+(facts.evidence_refs||[]).map(r=>'<p class="small">材料：'+esc(r.reference)+' · '+esc([r.kind,r.scope,r.version,disclosure[r.disclosure||'unknown']].filter(Boolean).join(' · '))+'</p>').join('')+'</details>';
+  const statuses={target:t('目标值'),forecast:t('预测值'),actual:t('已实现'),settled:t('已结算'),unknown:t('状态待核验')},disclosure={public:t('可用于对外简历'),private:t('仅私人档案'),unknown:t('披露范围待确认')};
+  return t('<details class="history"><summary>事实范围与具体证据</summary><dl>')+[['stage',t('项目阶段')],['responsibility_boundary',t('职责范围')]].filter(([k])=>facts[k]).map(([k,l])=>'<dt>'+l+'</dt><dd>'+esc(facts[k])+'</dd>').join('')+'</dl>'+(facts.metrics||[]).map(m=>'<p><strong>'+esc(m.name)+'</strong> · '+esc(statuses[m.status])+' · '+esc(disclosure[m.disclosure||'unknown'])+'<br>'+esc([m.value,m.unit,m.period,m.definition,m.owner_scope].filter(Boolean).join(' · '))+t('<br><span class="small">依据：')+esc(m.evidence||t('待补充'))+'</span></p>').join('')+(facts.evidence_refs||[]).map(r=>t('<p class="small">材料：')+esc(r.reference)+' · '+esc([r.kind,r.scope,r.version,disclosure[r.disclosure||'unknown']].filter(Boolean).join(' · '))+'</p>').join('')+'</details>';
 }
 function renderResumes(){
   const imports=[...(data.resume_imports||[])].reverse();
-  const originals=imports.length?'<h2 class="section-title">导入的简历原件</h2><div class="library-grid">'+imports.map(r=>`<article class="card"><h3>${esc(r.filename)}</h3><p class="small">导入于 ${esc(time(r.at))}</p><a href="${esc(r.file)}" target="_blank" rel="noopener">打开原件</a></article>`).join('')+'</div>':'';
+  const originals=imports.length?t('<h2 class="section-title">导入的简历原件</h2><div class="library-grid">')+imports.map(r=>t`<article class="card"><h3>${esc(r.filename)}</h3><p class="small">导入于 ${esc(time(r.at))}</p><a href="${esc(r.file)}" target="_blank" rel="noopener">打开原件</a></article>`).join('')+'</div>':'';
   const entries=Object.values(data.resumes).reverse();
-  $('resumes').innerHTML=originals+'<h2 class="section-title">简历版本</h2>'+(entries.length?'<div class="library-grid">'+entries.map(r=>`<article class="card" id="resume-card-${esc(r.id)}" tabindex="-1"><span class="pill">${esc(time(r.at))}</span><h3>${esc(r.draft.target)}</h3><p class="small">版本 ${esc(r.id.slice(-6))} · ${r.draft.entries.length} 段确认经历</p><p>${r.draft.parent_id?'基于：'+resumeLink(r.draft.parent_id):'首次创建'}${r.draft.source_import_id?' · 已关联导入原件':''}</p><p>${esc((r.draft.change_notes||[]).join('；'))}</p>${debriefReferences(r.draft)}${r.draft.parent_id?`<details><summary>与父版本的实际内容差异</summary><pre class="jd">${esc(r.diff||'旧页面未生成比较，请重新 render。')}</pre></details>`:''}<div class="resume-list">${Object.entries(r.files||{}).map(([name,path])=>`<a href="${esc(path)}" target="_blank" rel="noopener">${esc({'resume.pdf':'PDF 简历','resume.docx':'Word 简历','resume.md':'Markdown','changes.md':'修改说明'}[name]||name)}</a>`).join('')||'<span class="small">尚未导出；让 AI 导出此版本并更新工作台。</span>'}</div></article>`).join('')+'</div>':empty(imports.length?'已保存原件；需要修改时，可让 AI 基于原件创建新版本。':'让 AI 基于已确认经历创建简历，或导入已有简历开始修改。'));
+  $('resumes').innerHTML=originals+t('<h2 class="section-title">简历版本</h2>')+(entries.length?'<div class="library-grid">'+entries.map(r=>t`<article class="card" id="resume-card-${esc(r.id)}" tabindex="-1"><span class="pill">${esc(time(r.at))}</span><h3>${esc(r.draft.target)}</h3><p class="small">版本 ${esc(r.id.slice(-6))} · ${r.draft.entries.length} 段确认经历</p><p>${r.draft.parent_id?t('基于：')+resumeLink(r.draft.parent_id):t('首次创建')}${r.draft.source_import_id?t(' · 已关联导入原件'):''}</p><p>${esc((r.draft.change_notes||[]).join('；'))}</p>${debriefReferences(r.draft)}${r.draft.parent_id?t`<details><summary>与父版本的实际内容差异</summary><pre class="jd">${esc(r.diff||t('旧页面未生成比较，请重新 render。'))}</pre></details>`:''}<div class="resume-list">${Object.entries(r.files||{}).map(([name,path])=>`<a href="${esc(path)}" target="_blank" rel="noopener">${esc({'resume.pdf':t('PDF 简历'),'resume.docx':t('Word 简历'),'resume.md':'Markdown','changes.md':t('修改说明')}[name]||name)}</a>`).join('')||t('<span class="small">尚未导出；让 AI 导出此版本并更新工作台。</span>')}</div></article>`).join('')+'</div>':empty(imports.length?t('已保存原件；需要修改时，可让 AI 基于原件创建新版本。'):t('让 AI 基于已确认经历创建简历，或导入已有简历开始修改。')));
 }
 function renderApplications(){
-  const labels={submitted:'已投递',in_review:'筛选中',interview:'面试',offer:'Offer',rejected:'未通过',withdrawn:'已撤回',ended:'流程结束',talent_pool:'转人才库',position_closed:'岗位停招',unknown:'待核验'};
-  $('applications').innerHTML='<h2 class="section-title">申请记录</h2>'+([...data.applications].reverse().map(a=>{const j=data.jobs[a.key];return `<article class="card"><span class="badge">${labels[a.status]}</span><h3>${jobLink(a.key)}</h3><p>${esc(a.evidence.text)}</p><p class="small">核验 ${esc(time(a.evidence.observed_at))}</p><p>本次申请使用（已固定）：${resumeLink(a.resume_id)}</p>${j?.selected_resume&&j.selected_resume!==a.resume_id?`<p>后续投递选择：${resumeLink(j.selected_resume)}</p><p class="small">新选择不会改写本次申请的版本。</p>`:''}</article>`}).join('')||empty('还没有申请记录。完成实际投递并核验后，再更新申请状态。'));
+  const labels={submitted:t('已投递'),in_review:t('筛选中'),interview:t('面试'),offer:'Offer',rejected:t('未通过'),withdrawn:t('已撤回'),ended:t('流程结束'),talent_pool:t('转人才库'),position_closed:t('岗位停招'),unknown:t('待核验')};
+  $('applications').innerHTML=t('<h2 class="section-title">申请记录</h2>')+([...data.applications].reverse().map(a=>{const j=data.jobs[a.key];return t`<article class="card"><span class="badge">${labels[a.status]}</span><h3>${jobLink(a.key)}</h3><p>${esc(a.evidence.text)}</p><p class="small">核验 ${esc(time(a.evidence.observed_at))}</p><p>本次申请使用（已固定）：${resumeLink(a.resume_id)}</p>${j?.selected_resume&&j.selected_resume!==a.resume_id?t`<p>后续投递选择：${resumeLink(j.selected_resume)}</p><p class="small">新选择不会改写本次申请的版本。</p>`:''}</article>`}).join('')||empty(t('还没有申请记录。完成实际投递并核验后，再更新申请状态。')));
 }
 const tabs=[...document.querySelectorAll('[data-view]')].filter(b=>!b.classList.contains('hidden'));
 function activateTab(b){
@@ -244,12 +249,26 @@ document.addEventListener('click',e=>{
   const r=e.target.closest('[data-resume-id]');if(r){if($('detail').open)$('detail').close();activateTab(tabs.find(b=>b.dataset.view==='resumes'));const card=$('resume-card-'+r.dataset.resumeId);if(card){card.scrollIntoView({block:'center'});card.focus();}}
 });
 function csvCell(value){let s=String(value??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
-$('export').onclick=()=>{const rows=[['公司','职位','地点','状态','岗位标签','匹配分','原链接'],...filtered.map(j=>[j.current.company,j.current.title,j.current.location,status[j.current.status],decision[effectiveDecision(j)],latest(j)?.score,j.current.url])];const blob=new Blob(['\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const link=document.createElement('a'),u=URL.createObjectURL(blob);link.href=u;link.download='岗位筛选.csv';link.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+$('export').onclick=()=>{const rows=[[t('公司'),t('职位'),t('地点'),t('状态'),t('岗位标签'),t('匹配分'),t('原链接')],...filtered.map(j=>[j.current.company,j.current.title,j.current.location,status[j.current.status],decision[effectiveDecision(j)],latest(j)?.score,j.current.url])];const blob=new Blob(['\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const link=document.createElement('a'),u=URL.createObjectURL(blob);link.href=u;link.download=t('岗位筛选.csv');link.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};
 for(const event of ['pointerover','focusin'])document.addEventListener(event,e=>{const segment=e.target.closest('[data-ring-label]');if(!segment)return;const tip=segment.closest('.ring-layout').querySelector('.ring-tooltip');tip.textContent=segment.dataset.ringLabel;tip.hidden=false;});
 for(const event of ['pointerout','focusout'])document.addEventListener(event,e=>{const segment=e.target.closest('[data-ring-label]');if(segment&&!segment.contains(e.relatedTarget))segment.closest('.ring-layout').querySelector('.ring-tooltip').hidden=true;});
 document.addEventListener('keydown',e=>{if(e.target.matches('g[data-statistic]')&&['Enter',' '].includes(e.key)){e.preventDefault();showStatistic(Number(e.target.dataset.statistic));}});
 $('stats-period').onchange=renderStatistics;
-renderJobs();activateTab(tabs[0]);
+function applyLanguage(){
+  document.documentElement.lang=language;
+  $('language').value=language;
+  applyStaticTranslations();renderNotices();
+  tagMessage(tagBlocked?t('未确认的标签已在页面回退，后续排队操作已取消。请刷新核对后再试。'):pendingTags.size?t`正在保存 ${pendingTags.size} 个标签…`:!shared&&!writable?t('当前是只读 HTML 快照。通过本地工作台服务打开后可点击保存标签。'):'');
+  renderJobs();
+  activateTab(tabs.find(b=>b.getAttribute('aria-selected')==='true')||tabs[0]);
+  if($('detail').open)showDetail($('detail').dataset.detailKey);
+}
+$('language').onchange=()=>{
+  language=$('language').value==='zh-CN'?'zh-CN':'en';
+  try{localStorage.setItem(LANGUAGE_KEY,language);}catch{/* Switching still works without persistence. */}
+  applyLanguage();
+};
+applyLanguage();
 let inactiveCount=jobs.filter(j=>inactiveJob(j)).length;
 setInterval(()=>{const n=jobs.filter(j=>inactiveJob(j)).length;if(n!==inactiveCount){inactiveCount=n;renderJobs();if(!$('statistics').classList.contains('hidden'))renderStatistics();}},60000);
 </script></body></html>

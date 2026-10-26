@@ -4,7 +4,7 @@ English | [简体中文](README.zh-CN.md)
 
 Use AI to find jobs, refine your resume, and review interviews. Keep job sources, application progress, and personal records in a local HTML dashboard.
 
-An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.13.0** is available for trial use from the complete source tree. Seventeen international sources are now available experimentally, including LinkedIn, Indeed, OpenAI, Google and Amazon (see search scopes below). Existing job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access supports **Tabbit's official CLI** and **Codex's Chrome extension** as separate slots; you handle login and verification challenges. See the [Tabbit setup and validation guide](skills/scientific-interview/references/tabbit.md).
+An open-source **Skill + local toolkit**: your AI host handles conversation and analysis, while the scripts validate and save records. **v0.14.0** is available for trial use from the complete source tree. Seventeen international sources are now available experimentally, including LinkedIn, Indeed, OpenAI, Google and Amazon (see search scopes below). Existing job sites include Tencent, Meituan, Amap, ByteDance, JD, DiDi, Xiaohongshu, Kuaishou, and the Kimi, Zhipu, and StepFun tenants on Moka. Browser access supports **Tabbit's official CLI** and **Codex's Chrome extension** as separate slots; you handle login and verification challenges. See the [Tabbit setup and validation guide](skills/scientific-interview/references/tabbit.md).
 
 ![Job search dashboard with synthetic statistics](docs/assets/compact-charts.jpg)
 
@@ -22,7 +22,7 @@ An open-source **Skill + local toolkit**: your AI host handles conversation and 
 
 Semantic analysis happens in your AI host; the HTML dashboard displays your local records. No additional model API key is required by this project, but model access depends on your host account. There is no built-in scheduled search service. Submitting an application requires user authorization and verification of the result.
 
-The README is available in English and Chinese. The dashboard and most detailed workflow documents currently use Chinese.
+The README and HTML dashboard support English and Simplified Chinese. The dashboard defaults to English; use the language selector in the header to switch. Your choice is saved in this browser when local storage is available. Filters stay in place when switching. Job descriptions, company names, classifications, resumes, and interview records retain their original language. Most detailed workflow documents use Chinese.
 
 ## Install and try it
 
@@ -214,7 +214,7 @@ Try: “Search Kimi, Zhipu, and StepFun campus roles for Agent. Use the three `m
 
 ### International sources (experimental)
 
-v0.13.0 adds 17 sources, sampled through **Tabbit 1.18.21 on macOS** on 2026-10-26. Each produced two job records; this is bounded verification, not full-catalog coverage. The existing 20 sources remain registered.
+The 17 sources introduced in v0.13.0 were sampled through **Tabbit 1.18.21 on macOS** on 2026-10-26. Each produced two job records; this is bounded verification, not full-catalog coverage. The existing 20 sources remain registered.
 
 | Search mode | Sources / slot IDs | Scope |
 |---|---|---|

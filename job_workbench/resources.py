@@ -14,7 +14,7 @@ FONT_FILE = ROOT / 'assets' / 'fonts' / 'NotoSansSC-Regular.ttf'
 def missing_resources():
     required = [SLOTS_DIR / 'registry.json', SKILL_DIR / 'SKILL.md',
                 SKILL_DIR / 'scripts' / 'workbench.py', INDUSTRIES_DIR / 'index.md', FONT_FILE]
-    required += [TEMPLATES_DIR / name for name in ('dashboard.html', 'statistics.js', 'statistics-view.js')]
+    required += [TEMPLATES_DIR / name for name in ('dashboard.html', 'statistics.js', 'statistics-view.js', 'i18n.js', 'i18n-en.json')]
     required += [EXAMPLES_DIR / name for name in ('profile-credentials.json', 'experience-facts.json',
                                                   'answer.json', 'scan-first.json', 'scan-second.json', 'debrief.json')]
     return [str(path.relative_to(ROOT)) for path in required if not path.is_file()]

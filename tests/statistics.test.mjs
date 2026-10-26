@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {loadI18n} from './i18n-helper.mjs';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
@@ -36,6 +37,7 @@ test('inactivity has an exact 30 day threshold and is separate from hiring statu
 });
 test('line chart renders both series and accessible weekly values including all-zero data',()=>{
  const chartContext=vm.createContext({Date,Map,Number,esc:s=>String(s).replaceAll('<','&lt;')});
+ loadI18n(chartContext);
  vm.runInContext(readFileSync(new URL('../templates/statistics-view.js',import.meta.url),'utf8'),chartContext);
  const empty=statistics({jobs:{},applications:[]},at);
  const html=chartContext.lineChart(empty.weeks);
@@ -49,6 +51,7 @@ test('line chart renders both series and accessible weekly values including all-
 });
 test('ring segments expose labels on demand without a permanent legend, including single category',()=>{
  const chartContext=vm.createContext({esc:s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;')});
+ loadI18n(chartContext);
  vm.runInContext(readFileSync(new URL('../templates/statistics-view.js',import.meta.url),'utf8'),chartContext);
  const html=chartContext.ringChart([{label:'A < B',count:2,keys:['a','b']}],2,'申请');
  assert.ok(!html.includes('class="legend"'));
